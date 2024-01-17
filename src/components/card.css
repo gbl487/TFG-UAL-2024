@@ -1,0 +1,18 @@
+.p-card-title{
+    font-size: large;
+    font-weight: 700;
+}
+.p-card-subtitle{
+    font-size: medium;
+    font-weight: 500;
+    color: darkgrey;
+}
+.p-card-content{
+    padding: 0px;
+}
+.p-card-footer{
+    padding: 0;
+}
+.p-card-body{
+  padding: 5px;
+}

@@ -1,0 +1,33 @@
+---
+import SearchInput from '../components/SearchInput.jsx'
+import Layout from '../layouts/Layout.astro'
+import Filters from '../components/Filters.jsx'
+import InfoCard from '../components/InfoCard.jsx'
+---
+
+<Layout title="ASISEG">
+  <main>
+    <SearchInput client:visible />
+    <div class="flex flex-row">
+      <!-- <div class="w-1/6"> -->
+      <Filters client:visible />
+      <!-- </div> -->
+      <div class="w-full mt-5 mx-5">
+        <section class="flex flex-row flex-wrap justify-center">
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+          <InfoCard client:visible />
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>

@@ -1,5 +1,5 @@
-import AllFilters from './AllFilters'
 import useMediaQuery from '../hooks/useMediaQuery'
+import AllFilters from './AllFilters'
 export default function Filters() {
   const isDesktop = useMediaQuery('1280')
 

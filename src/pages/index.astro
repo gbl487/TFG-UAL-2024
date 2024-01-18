@@ -3,20 +3,24 @@ import SearchInput from '../components/SearchInput.jsx'
 import Layout from '../layouts/Layout.astro'
 import Filters from '../components/Filters.jsx'
 import InfoCard from '../components/InfoCard.jsx'
+import SearchBar from '../components/SearchBar.jsx'
+import { DeferredContent } from 'primereact/deferredcontent'
 ---
 
 <Layout title="ASISEG">
   <main>
-    <SearchInput client:visible />
+    <SearchBar client:visible />
+    <!-- <SearchInput client:visible /> -->
+
     <div class="flex flex-row">
       <!-- <div class="w-1/6"> -->
       <Filters client:visible />
       <!-- </div> -->
-      <div class="w-full mt-5 mx-5">
-        <section class="flex flex-row flex-wrap justify-center">
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
+      <div class="flex flex-col justify-center items-center w-full mt-5 mx-5">
+        <section
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
+        >
+          <!-- sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 -->
           <InfoCard client:visible />
           <InfoCard client:visible />
           <InfoCard client:visible />

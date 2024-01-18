@@ -1,6 +1,6 @@
-import useMediaQuery from '../hooks/useMediaQuery'
+// import useMediaQuery from '../../hooks/useMediaQuery'
 export default function SearchInput() {
-  const isDesktop = useMediaQuery('1280')
+  // const isDesktop = useMediaQuery('1280')
 
   return (
     <form

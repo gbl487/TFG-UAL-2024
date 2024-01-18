@@ -1,13 +1,13 @@
 ---
-import SearchInput from '../components/SearchInput.jsx'
 import Layout from '../layouts/Layout.astro'
-import Filters from '../components/Filters.jsx'
-import InfoCard from '../components/InfoCard.jsx'
-import SearchBar from '../components/SearchBar.jsx'
-import { DeferredContent } from 'primereact/deferredcontent'
+import Filters from '@components/Filters/Filters.jsx'
+import InfoCard from '@components/InfoCard.jsx'
+import SearchBar from '@components/SearchBar.jsx'
+import Header from '@components/Header'
 ---
 
 <Layout title="ASISEG">
+  <Header />
   <main>
     <SearchBar client:visible />
     <!-- <SearchInput client:visible /> -->

@@ -1,5 +1,4 @@
 ---
-import Header from '../components/Header.astro'
 import { PrimeReactProvider } from 'primereact/api'
 import { ViewTransitions } from 'astro:transitions'
 
@@ -24,7 +23,6 @@ const { title } = Astro.props
   </head>
   <PrimeReactProvider>
     <body>
-      <Header />
       <slot />
     </body>
   </PrimeReactProvider>
@@ -37,4 +35,6 @@ const { title } = Astro.props
       background-color: rgb(248 250 252);
     }
   </style>
+
+  ../Views/components/Header.jsx
 </html>

@@ -1,6 +1,6 @@
-import useMediaQuery from '../hooks/useMediaQuery'
+import useMediaQuery from '../../Controllers/hooks/useMediaQuery'
+import SideFilters from '@components/Filters/SideFilters'
 import SearchInput from './SearchInput'
-import SideFilters from './SideFIlters'
 export default function SearchBar() {
   const isDesktop = useMediaQuery('1280')
   return (

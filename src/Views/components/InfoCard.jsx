@@ -3,7 +3,6 @@ import 'primeicons/primeicons.css'
 import { useState } from 'react'
 // import useMediaQuery from '../hooks/useMediaQuery'
 import { Dialog } from 'primereact/dialog'
-import './card.css'
 import Chip from './Chip.jsx'
 export default function InfoCard() {
   const [visible, setVisible] = useState(false)

@@ -6,13 +6,13 @@ import './filter.css'
 export default function AllFilters() {
   const [curas, setCuras] = useState([])
   const [areas, setAreas] = useState([])
-  const area_afectada = [
+  const AREA_AFECTADA = [
     { name: 'Corazón', code: 'COR' },
     { name: 'Pulmón', code: 'PUL' },
     { name: 'Hígado', code: 'HIG' },
     { name: 'Estómago', code: 'EST' },
   ]
-  const tipo_cura = [
+  const TIPO_CURA = [
     { name: 'Preoperatorio', code: 'PREOP' },
     { name: 'Postoperatorio', code: 'POSTOP' },
   ]
@@ -21,7 +21,7 @@ export default function AllFilters() {
     <div className="w-full mx-5 mt-10">
       <div className="flex flex-1 justify-center">
         <button
-          className=" text-white bg-asiseg-blue hover:bg-sky-500 p-2 rounded-md mb-4"
+          className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4"
           onClick={() => {
             setCuras([])
             setAreas([])
@@ -35,10 +35,9 @@ export default function AllFilters() {
           id="SelectCura"
           value={curas}
           onChange={(e) => {
-            e.preventDefault
             setCuras(e.value)
           }}
-          options={tipo_cura}
+          options={TIPO_CURA}
           optionLabel="name"
           placeholder="Tipo de cura"
           maxSelectedLabels={3}
@@ -51,10 +50,9 @@ export default function AllFilters() {
           id="SelectArea"
           value={areas}
           onChange={(e) => {
-            e.preventDefault
             setAreas(e.value)
           }}
-          options={area_afectada}
+          options={AREA_AFECTADA}
           optionLabel="name"
           placeholder="Área afectada"
           maxSelectedLabels={3}

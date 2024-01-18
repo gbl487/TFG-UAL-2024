@@ -10,6 +10,7 @@
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
     background: #A6A6A6;
+    opacity: .7;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus{
     box-shadow: inset 0 0 0 0.15rem #03989E;
@@ -17,4 +18,7 @@
 }
 .p-hidden-accessible input{
     border: 1px solid #000;
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+    color: #03989E;
 }

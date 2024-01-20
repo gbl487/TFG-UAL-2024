@@ -8,10 +8,15 @@ export default function SearchBar() {
       {isDesktop ? (
         <SearchInput />
       ) : (
-        <div className="flex flex-row justify-center items-center">
-          {' '}
-          <SideFilters />
-          <SearchInput />
+        <div className="flex flex-row items-center w-full">
+          <div className="flex basis-1/3 justify-start">
+            <SideFilters />
+          </div>
+
+          <div className="flex basis-1/3 w-full justify-center">
+            <SearchInput />
+          </div>
+          <div className=" basis-1/3"></div>
         </div>
       )}
     </>

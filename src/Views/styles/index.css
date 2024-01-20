@@ -1,0 +1,37 @@
+.layout{
+    display: grid;
+  grid:
+    "header header header" auto
+    "search search search" auto
+    "leftSide body ." 1fr
+    "footer footer footer" auto
+    / auto 1fr auto;
+  gap: 8px;
+}
+.header { grid-area: header; }
+.leftSide { grid-area: leftSide; }
+.search { grid-area: search; }
+.body { grid-area: body; }
+.footer { grid-area: footer; }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #A6A6A6;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

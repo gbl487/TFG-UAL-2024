@@ -10,7 +10,7 @@ import '../Views/styles/index.css'
 <Layout title="ASISEG">
   <section class="layout antialiased">
     <div class="header">
-      <Header />
+      <Header client:visible />
     </div>
     <div class="leftSide sm:mx-5">
       <Filters client:visible />
@@ -37,26 +37,3 @@ import '../Views/styles/index.css'
     </footer>
   </section>
 </Layout>
-<!--  <main>
-      <SearchBar client:visible />
-      
-
-    <Filters client:visible />
-   
-    <div class="flex flex-col justify-center items-center w-full mt-5 mx-5">
-      <section
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
-      >
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-        <InfoCard client:visible />
-      </section>
-    </div>
-  </section>
-</Layout> -->

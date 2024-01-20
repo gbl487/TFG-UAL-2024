@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import Chip from './Tag.jsx'
 import { SeeMoreIcon } from '@Icons/Icons.jsx'
+
 export default function InfoCard({ titulo, descripcion }) {
   const [visible, setVisible] = useState(false)
 
@@ -50,6 +51,7 @@ export default function InfoCard({ titulo, descripcion }) {
       </button>
 
       <Dialog
+        id="cardModal"
         header="Header"
         visible={visible}
         className="w-4/6"

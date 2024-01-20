@@ -1,4 +1,4 @@
-import useMediaQuery from '../../Controllers/hooks/useMediaQuery'
+import useMediaQuery from '@hooks/useMediaQuery'
 import SideFilters from '@components/Filters/SideFilters'
 import SearchInput from './SearchInput'
 export default function SearchBar() {

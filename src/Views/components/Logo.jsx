@@ -6,7 +6,7 @@ export default function Logo() {
           <img
             id="logo"
             alt="logo"
-            src="/Logo.svg"
+            src="./asiseg-logo-desktop.svg"
             className="min-w-40 w-40 sm:w-48 lg:w-60 "
           />
         </picture>

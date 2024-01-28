@@ -2,8 +2,8 @@ import { InfoIcon, SearchIcon } from '@Icons/Icons'
 
 export default function SearchInput() {
   return (
-    <form className="flex justify-center items-center">
-      <div className="relative w-72 sm:w-96">
+    <form className="flex justify-center items-center ">
+      <div className="relative w-full">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <InfoIcon />
         </div>

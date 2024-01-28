@@ -9,14 +9,13 @@ export default function SearchBar() {
         <SearchInput />
       ) : (
         <div className="flex flex-row items-center w-full">
-          <div className="flex basis-1/3 justify-start">
+          <div className="flex basis-1/12 md:basis-1/3 justify-start w-0">
             <SideFilters />
           </div>
-
-          <div className="flex basis-1/3 w-full justify-center">
+          <div className="flex basis-11/12 md:basis-1/3 md:hidden w-full justify-center">
             <SearchInput />
           </div>
-          <div className=" basis-1/3"></div>
+          <div className="md:basis-1/3"></div>
         </div>
       )}
     </>

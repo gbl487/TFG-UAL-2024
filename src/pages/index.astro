@@ -9,21 +9,60 @@ import '../Views/styles/index.css'
 
 <Layout title="ASISEG">
   <section class="layout antialiased">
-    <div class="header">
-      <Header client:visible />
-    </div>
-    <div class="leftSide sm:mx-5">
+    <Header client:visible />
+    <div class="leftSide md:mx-5 mt-0 xl:mt-20">
       <Filters client:visible />
     </div>
 
-    <div class="search w-full h-full mb-5">
+    <div class="search w-full h-full mb-5 mt-20 xl:hidden">
       <SearchBar client:visible />
     </div>
 
-    <main class="body mb-10">
+    <main class="body mb-10 mt-0 xl:mt-20">
       <section
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
       >
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
         <InfoCard
           client:visible
           titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."

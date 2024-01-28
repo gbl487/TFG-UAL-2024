@@ -34,7 +34,7 @@ export default function InfoCard({ titulo, descripcion }) {
               {descripcion}
             </p>
             <div>
-              <div className="mb-2 flex flex-row flex-wrap gap-2 py-1">
+              <div className="mb-2 flex flex-row flex-wrap gap-2 py-1 overflow-hidden">
                 <Chip tag={'Preoperatorio'} />
                 <Chip tag={'Corazon'} />
                 <Chip tag={'Pulmon'} />

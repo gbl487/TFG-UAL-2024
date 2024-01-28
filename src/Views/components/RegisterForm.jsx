@@ -1,7 +1,11 @@
 import { InputMask } from 'primereact/inputmask'
 import { checkDNI_NIE } from 'src/Controllers/utils/checkDNI-NIE'
 import { useState } from 'react'
+import { useStore } from '@nanostores/react'
+import { register, setRegister } from 'src/Controllers/context/registerContext'
 export default function RegisterForm() {
+  const $register = useStore(register)
+
   const [dni_nie, setDni_nie] = useState('')
   const [phone, setPhone] = useState('')
   const [errorDNI, setErrorDNI] = useState(null)
@@ -37,9 +41,9 @@ export default function RegisterForm() {
   return (
     <>
       <div className="flex flex-1 justify-center w-full">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div className="space-y-4 md:space-y-6 sm:p-8 w-11/12">
           <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mb-5">
-            Inicia sesión en su cuenta
+            {$register ? 'Introduzca sus datos' : 'Inicia sesión en su cuenta'}
           </h1>
           <form className="space-y-4 md:space-y-6" action="#">
             <div className="w-full mb-7">
@@ -65,7 +69,7 @@ export default function RegisterForm() {
             <div className="w-full mb-7">
               <span className="p-float-label">
                 <InputMask
-                  id="phone"
+                  id="phoneNumber"
                   mask="(+99) 999 999 999"
                   autoClear={false}
                   className="h-8 start-5 w-full"
@@ -107,17 +111,21 @@ export default function RegisterForm() {
                   handleSubmit(e)
                 }}
               >
-                Iniciar sesión
+                {$register ? 'Registrarse' : 'Iniciar sesión'}
               </button>
             </div>
             <div className="flex flex-row w-full justify-start items-center">
               <p className="text-sm font-light text-gray-500">
-                ¿No tienes aún una cuenta?
+                {$register
+                  ? '¿Ya tienes una cuenta?'
+                  : '¿No tienes aún una cuenta?'}
+
                 <a
                   href="#"
                   className="font-medium text-primary-600 hover:underline hover:text-asiseg-blue mx-1"
+                  onClick={(e) => setRegister(e)}
                 >
-                  Regístrese
+                  {$register ? 'Inicia sesión' : 'Regístrese'}
                 </a>
               </p>
             </div>

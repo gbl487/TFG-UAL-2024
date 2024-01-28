@@ -5,9 +5,12 @@ import 'primereact/resources/themes/tailwind-light/theme.css'
 import '../styles/register.css'
 import RegisterForm from './RegisterForm'
 import SearchInput from './SearchInput'
+import { useStore } from '@nanostores/react'
+import { register } from 'src/Controllers/context/registerContext'
 // import RegisterForm from '@components/RegisterForm.jsx'
 // import useMediaQuery from '@hooks/useMediaQuery'
 export default function Header() {
+  const $register = useStore(register)
   const [visible, setVisible] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
 
@@ -118,7 +121,7 @@ export default function Header() {
         </div>
       </nav>
       <Dialog
-        header="¡Bienvenid@!"
+        header={$register ? '¡Bienvenid@!' : '¡Bienvenid@ de nuevo!'}
         visible={visible}
         onHide={() => {
           setVisible(!visible)

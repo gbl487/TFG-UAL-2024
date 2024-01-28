@@ -2,24 +2,16 @@ import { MultiSelect } from 'primereact/multiselect'
 import { FILTROS } from 'src/constants'
 import { ClearFiltersButton } from '@components/Buttons/ClearFiltersButton'
 import { useStore } from '@nanostores/react'
-import { filtros } from 'src/Controllers/context/filterContext'
+import {
+  filtros,
+  setAreas,
+  setCuras,
+} from 'src/Controllers/context/filterContext'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import './filter.css'
 
 export default function AllFilters() {
   const $filtros = useStore(filtros)
-  const setCuras = (e) => {
-    filtros.set({
-      ...$filtros,
-      curas: e.value,
-    })
-  }
-  const setAreas = (e) => {
-    filtros.set({
-      ...$filtros,
-      areas: e.value,
-    })
-  }
 
   return (
     <div className="flex flex-col w-full">

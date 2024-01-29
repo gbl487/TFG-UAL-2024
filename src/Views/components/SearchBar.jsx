@@ -1,4 +1,4 @@
-import useMediaQuery from '../../Controllers/hooks/useMediaQuery'
+import useMediaQuery from '@hooks/useMediaQuery'
 import SideFilters from '@components/Filters/SideFilters'
 import SearchInput from './SearchInput'
 export default function SearchBar() {
@@ -8,10 +8,14 @@ export default function SearchBar() {
       {isDesktop ? (
         <SearchInput />
       ) : (
-        <div className="flex flex-row justify-center items-center">
-          {' '}
-          <SideFilters />
-          <SearchInput />
+        <div className="flex flex-row items-center w-full">
+          <div className="flex basis-1/12 md:basis-1/3 justify-start w-0">
+            <SideFilters />
+          </div>
+          <div className="flex basis-11/12 md:basis-1/3 md:hidden w-full justify-center">
+            <SearchInput />
+          </div>
+          <div className="md:basis-1/3"></div>
         </div>
       )}
     </>

@@ -4,34 +4,80 @@ import Filters from '@components/Filters/Filters.jsx'
 import InfoCard from '@components/InfoCard.jsx'
 import SearchBar from '@components/SearchBar.jsx'
 import Header from '@components/Header'
+import '../Views/styles/index.css'
+import MyComponent from '@components/myComponent'
 ---
 
 <Layout title="ASISEG">
-  <Header />
-  <main>
-    <SearchBar client:visible />
-    <!-- <SearchInput client:visible /> -->
-
-    <div class="flex flex-row">
-      <!-- <div class="w-1/6"> -->
+  <section class="layout antialiased">
+    <Header client:visible />
+    <div class="leftSide md:mx-5 mt-0 xl:mt-20">
       <Filters client:visible />
-      <!-- </div> -->
-      <div class="flex flex-col justify-center items-center w-full mt-5 mx-5">
-        <section
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
-        >
-          <!-- sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 -->
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-          <InfoCard client:visible />
-        </section>
-      </div>
     </div>
-  </main>
+
+    <div class="search w-full h-full mb-5 mt-20 xl:hidden">
+      <SearchBar client:visible />
+    </div>
+
+    <main class="body mb-10 mt-0 xl:mt-20">
+      <section
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
+      >
+        <!-- <div vaul-drawer-wrapper=""> -->
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <InfoCard
+          client:visible
+          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
+          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
+        />
+        <!-- </div> -->
+      </section>
+    </main>
+    <!-- </FiltersProvider> -->
+    <footer class="footer">
+      <div vaul-drawer-wrapper="">
+        <MyComponent client:visible />
+      </div>
+    </footer>
+  </section>
 </Layout>

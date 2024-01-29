@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { Sidebar } from 'primereact/sidebar'
 import AllFilters from './AllFilters'
-import { FilterIcon } from '../../../assets/svg/FilterIcon'
+import { FilterIcon } from '@Icons/Icons'
 export default function SideFilters() {
   const [visible, setVisible] = useState(false)
   return (
-    <div className="card flex justify-content-center">
+    <div className="flex justify-content-center min-w-md">
       <Sidebar
-        className="w-full flex flex-1 justify-center"
+        className="w-full flex justify-center"
         visible={visible}
         onHide={() => setVisible(false)}
       >
         <AllFilters />
       </Sidebar>
-      <button className="ml-4" onClick={() => setVisible(true)}>
+      <button className="min-w-10 mx-2 z-10" onClick={() => setVisible(true)}>
         <FilterIcon />
       </button>
     </div>

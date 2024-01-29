@@ -3,8 +3,14 @@ import { checkDNI_NIE } from 'src/Controllers/utils/checkDNI-NIE'
 import { useState } from 'react'
 import { useStore } from '@nanostores/react'
 import { register, setRegister } from 'src/Controllers/context/registerContext'
+// import firebaseApp from 'src/Model/Firebase'
+// import { getAuth, signInWithPhoneNumber,  } from 'firebase/auth'
+// import { getFirestore, doc, collection, setDoc } from 'firebase/firestore'
+// const auth = getAuth(firebaseApp)
+
 export default function RegisterForm() {
   const $register = useStore(register)
+  // const firestore = getFirestore(firebaseApp)
 
   const [dni_nie, setDni_nie] = useState('')
   const [phone, setPhone] = useState('')

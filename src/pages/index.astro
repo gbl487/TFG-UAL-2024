@@ -5,6 +5,7 @@ import InfoCard from '@components/InfoCard.jsx'
 import SearchBar from '@components/SearchBar.jsx'
 import Header from '@components/Header'
 import '../Views/styles/index.css'
+import MyComponent from '@components/myComponent'
 ---
 
 <Layout title="ASISEG">
@@ -22,6 +23,7 @@ import '../Views/styles/index.css'
       <section
         class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
       >
+        <!-- <div vaul-drawer-wrapper=""> -->
         <InfoCard
           client:visible
           titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
@@ -68,11 +70,14 @@ import '../Views/styles/index.css'
           titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
           descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
         />
+        <!-- </div> -->
       </section>
     </main>
     <!-- </FiltersProvider> -->
     <footer class="footer">
-      <div class="bg-slate-100 h-96">hola</div>
+      <div vaul-drawer-wrapper="">
+        <MyComponent client:visible />
+      </div>
     </footer>
   </section>
 </Layout>

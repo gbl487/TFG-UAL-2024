@@ -5,7 +5,7 @@ import { FilterIcon } from '@Icons/Icons'
 export default function SideFilters() {
   const [visible, setVisible] = useState(false)
   return (
-    <div className="card flex justify-content-center">
+    <div className="flex justify-content-center min-w-md">
       <Sidebar
         className="w-full flex justify-center"
         visible={visible}
@@ -13,7 +13,7 @@ export default function SideFilters() {
       >
         <AllFilters />
       </Sidebar>
-      <button className="min-w-10 mx-4" onClick={() => setVisible(true)}>
+      <button className="min-w-10 mx-2 z-10" onClick={() => setVisible(true)}>
         <FilterIcon />
       </button>
     </div>

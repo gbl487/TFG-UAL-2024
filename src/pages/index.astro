@@ -1,27 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import Filters from '@components/Filters/Filters.jsx'
+import SideFilters from '@components/Filters/SideFilters'
 import InfoCard from '@components/InfoCard.jsx'
 import SearchBar from '@components/SearchBar.jsx'
 import Header from '@components/Header'
 import '../Views/styles/index.css'
-import MyComponent from '@components/myComponent'
 ---
 
 <Layout title="ASISEG">
   <section class="layout antialiased">
     <Header client:visible />
-    <div class="leftSide md:mx-5 mt-0 xl:mt-20">
-      <Filters client:visible />
-    </div>
+    <!-- <div class="leftSide md:mx-5 mt-0 xl:mt-20">
+      <SideFilters client:visible />
+    </div> -->
 
-    <div class="search w-full h-full mb-5 mt-20 xl:hidden">
+    <div class="search w-full h-full mb-5 mt-20">
       <SearchBar client:visible />
     </div>
 
-    <main class="body mb-10 mt-0 xl:mt-20">
+    <main class="body mb-10 mt-0">
       <section
-        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5"
+        class="grid grid-cols-1 md:grid-cols-2 lg+:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-4 gap-5"
       >
         <!-- <div vaul-drawer-wrapper=""> -->
         <InfoCard
@@ -74,10 +73,6 @@ import MyComponent from '@components/myComponent'
       </section>
     </main>
     <!-- </FiltersProvider> -->
-    <footer class="footer">
-      <div vaul-drawer-wrapper="">
-        <MyComponent client:visible />
-      </div>
-    </footer>
+    <footer class="footer"></footer>
   </section>
 </Layout>

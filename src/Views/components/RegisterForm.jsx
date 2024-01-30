@@ -30,8 +30,8 @@ export default function RegisterForm() {
       setErrorDNI(null)
       setDni_nie(value)
       if (value.charAt(8) !== '_' && value.charAt(8) !== '') {
-        console.log('hola')
-        const valid = checkDNI_NIE({ value })
+        const { valid } = checkDNI_NIE({ value })
+        console.log(valid)
         if (valid !== true) {
           setErrorDNI('El DNI/NIE introducido no es válido')
         } else {
@@ -59,6 +59,7 @@ export default function RegisterForm() {
                   value={dni_nie}
                   autoClear={false}
                   mask="*9999999a"
+                  slotChar=""
                   className="h-8 start-5 w-full"
                   onChange={(e) => {
                     handleDNI_NIE(e)
@@ -77,6 +78,7 @@ export default function RegisterForm() {
                 <InputMask
                   id="phoneNumber"
                   mask="(+99) 999 999 999"
+                  slotChar=""
                   autoClear={false}
                   className="h-8 start-5 w-full"
                   value={phone}

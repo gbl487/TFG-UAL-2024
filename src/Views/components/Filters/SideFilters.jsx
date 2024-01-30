@@ -7,13 +7,13 @@ export default function SideFilters() {
   return (
     <div className="flex justify-content-center min-w-md">
       <Sidebar
-        className="w-full flex justify-center"
+        className="w-50 flex justify-center"
         visible={visible}
         onHide={() => setVisible(false)}
       >
         <AllFilters />
       </Sidebar>
-      <button className="min-w-10 mx-2 z-10" onClick={() => setVisible(true)}>
+      <button className="min-w-10 mx-3 z-10" onClick={() => setVisible(true)}>
         <FilterIcon />
       </button>
     </div>

@@ -30,7 +30,7 @@ export default function AllFilters() {
           placeholder={FILTROS.TIPO_CURA.placeholder}
           maxSelectedLabels={3}
           display="chip"
-          className="border-2 rounded-md w-60"
+          className="border-2 rounded-md w-full"
         />
       </div>
       <div className="flex flex-1 justify-center mb-2">
@@ -43,9 +43,9 @@ export default function AllFilters() {
           options={FILTROS.AREA_AFECTADA.options}
           optionLabel="name"
           placeholder={FILTROS.AREA_AFECTADA.placeholder}
-          maxSelectedLabels={3}
+          // maxSelectedLabels={3}
           display="chip"
-          className="border-2 rounded-md w-60"
+          className="border-2 rounded-md w-full h-auto"
         />
       </div>
     </div>

@@ -3,7 +3,7 @@
   grid:
     "header header header" auto
     "search search search" auto
-    "leftSide body ." 1fr
+    "body body body" auto
     "footer footer footer" auto
     / auto 1fr auto;
   gap: 8px;

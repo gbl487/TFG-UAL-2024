@@ -7,7 +7,7 @@ export default function SideFilters() {
   return (
     <div className="flex justify-content-center min-w-md">
       <Sidebar
-        className="w-50 flex justify-center"
+        className="w-full sm:w-1/3 flex justify-center"
         visible={visible}
         onHide={() => setVisible(false)}
       >

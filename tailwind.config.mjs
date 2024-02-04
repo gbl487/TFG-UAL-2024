@@ -7,7 +7,7 @@ export default {
     screens: {
       vlarge: '1120px',
 
-      'lg+': '1152px',
+      'lg+': '1160px',
       // => @media (min-width: 1280px) { ... }
 
       sm: '640px',

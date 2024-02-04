@@ -9,15 +9,14 @@ export default function SearchInput() {
         </div>
         <input
           type="text"
-          id="simple-search"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+          id="barra_busqueda"
+          className="asiseg_input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-asiseg-blue focus:border-asiseg-blue ps-10 p-2.5 focus-visible:ring-asiseg-blue focus-visible:border-asiseg-blue"
           placeholder="Cura etc."
-          required
         />
       </div>
       <button
         type="submit"
-        className="p-2.5 ms-2 text-sm font-medium text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity rounded-lg border border-asiseg-blue focus:ring-4 focus:outline-none focus:ring-blue-300 "
+        className="p-2.5 ms-2 text-sm font-medium text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity rounded-lg border border-asiseg-blue  focus:outline-none focus:ring-asiseg-blue"
       >
         <SearchIcon />
       </button>

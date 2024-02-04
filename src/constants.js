@@ -5,6 +5,7 @@ const optionsArea = [
   { name: 'Pulmón', code: 'PUL' },
   { name: 'Hígado', code: 'HIG' },
   { name: 'Estómago', code: 'EST' },
+  { name: 'Riñones', code: 'EST' },
 ]
 
 const AREA_AFECTADA = {

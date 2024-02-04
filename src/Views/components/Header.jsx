@@ -4,7 +4,7 @@ import { Dialog } from 'primereact/dialog'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import '../styles/register.css'
 import RegisterForm from './RegisterForm'
-import SearchInput from './SearchInput'
+// import SearchInput from './SearchInput'
 import { useStore } from '@nanostores/react'
 import { registerState } from 'src/Controllers/context/registerContext'
 // import RegisterForm from '@components/RegisterForm.jsx'
@@ -79,11 +79,11 @@ export default function Header() {
             //   menuVisible ? 'block' : 'hidden'
             // }
           > */}
-          <ul className="hidden md:flex md:flex-col p-4 md:p-0  font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse  ">
+          {/* <ul className="hidden md:flex md:flex-col p-4 md:p-0  font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse  ">
             <li>
               <SearchInput />
             </li>
-          </ul>
+          </ul> */}
           {/* </div> */}
         </div>
       </nav>

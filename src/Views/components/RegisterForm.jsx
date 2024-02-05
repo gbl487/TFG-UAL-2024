@@ -4,24 +4,14 @@ import {
   setRegister,
 } from 'src/Controllers/context/registerContext'
 import { validNIF } from 'src/Controllers/context/dni_nie_context'
-import firebaseApp from 'src/Model/Firebase'
-import 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
-// import { getFirestore, doc, collection, setDoc } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import DNI_NIE from './Inputs/DNI_NIE_Input'
 import PhoneInput from './Inputs/PhoneInput'
 import RememberInput from './Inputs/RememberInput'
-import { useRef, useState } from 'react'
-// import { registrarUsuario } from 'src/Controllers/utils/registrarUsuario'
-import {
-  renderRecaptcha,
-  sendVerificationCode,
-} from 'src/Controllers/utils/reCaptcha'
-
+import { useState } from 'react'
+import ConfirmarOtp from './ConfirmarOtp'
+import { setUserData } from 'src/Controllers/context/userData_context'
 export default function RegisterForm() {
-  // const firestore = getFirestore(firebaseApp)
-  const auth = getAuth(firebaseApp)
   const {
     register,
     handleSubmit,
@@ -29,70 +19,20 @@ export default function RegisterForm() {
   } = useForm()
   const $registerState = useStore(registerState)
   const $validNIF = useStore(validNIF)
-  const [otp, setOtp] = useState('')
-  const [user, setUser] = useState(null)
-  const [usuario, setUsuario] = useState(null)
-  const [registrando, setRegistrando] = useState(false)
-  const recaptchaContainerRef = useRef('recaptcha-container')
 
-  const onVerificationCompleted = (response) => {
-    // Lógica adicional después de completar la verificación
-    console.log('Verificación completada:', response)
-  }
+  const [registrando, setRegistrando] = useState(false)
 
   const onSubmit = async (data) => {
     if (!$validNIF) return
     setRegistrando(true)
-    let appVerifier
-    let confirmation
-    try {
-      appVerifier = await renderRecaptcha({
-        auth,
-        containerOrId: recaptchaContainerRef.current,
-        onVerificationCompleted,
-      })
-
-      confirmation = await sendVerificationCode({
-        auth,
-        telefono: data.telefono,
-        appVerifier,
-      })
-      setUser(confirmation)
-      console.log(confirmation)
-    } catch (error) {
-      console.log(error)
-    }
+    setUserData({ value: data })
   }
 
   return (
     <>
       <div className="flex flex-1 justify-center w-full">
-        <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
         {registrando ? (
-          <div className="w-full">
-            <p>
-              Por favor, complete la verificación reCAPTCHA antes de continuar:
-            </p>
-            <div>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-              <button
-                onClick={(e) => {
-                  e.preventDefault()
-                  user.confirm(otp).then((result) => {
-                    const usuario = result.user
-                    console.log(usuario)
-                  })
-                }}
-              >
-                Aceptar
-              </button>
-            </div>
-            {/* <div id="recaptcha-container" ref={recaptchaContainerRef}></div> */}
-          </div>
+          <ConfirmarOtp />
         ) : (
           <div className="space-y-4 md:space-y-6 sm:p-8 w-full">
             <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mb-5">

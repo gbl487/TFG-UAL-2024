@@ -6,7 +6,7 @@ export const renderRecaptcha = ({
   onVerificationCompleted,
 }) => {
   const appVerifier = new RecaptchaVerifier(auth, containerOrId, {
-    size: 'invisible',
+    size: 'normal',
     callback: (response) => {
       // Aquí puedes realizar acciones adicionales después de que se complete la verificación de reCAPTCHA
       console.log('reCAPTCHA completed')

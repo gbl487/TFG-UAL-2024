@@ -1,5 +1,4 @@
 // import Logo from '@components/Logo.jsx'
-import { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import '../styles/register.css'
@@ -7,11 +6,12 @@ import RegisterForm from './RegisterForm'
 // import SearchInput from './SearchInput'
 import { useStore } from '@nanostores/react'
 import { registerState } from 'src/Controllers/context/registerContext'
+import { modal, setModal } from 'src/Controllers/context/modal_context'
 // import RegisterForm from '@components/RegisterForm.jsx'
 // import useMediaQuery from '@hooks/useMediaQuery'
 export default function Header() {
   const $registerState = useStore(registerState)
-  const [visible, setVisible] = useState(false)
+  const $modal = useStore(modal)
   // const [menuVisible, setMenuVisible] = useState(false)
 
   // const toggleMenu = () => {
@@ -41,7 +41,7 @@ export default function Header() {
               type="button"
               className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
               onClick={() => {
-                setVisible(!visible)
+                setModal({ value: true })
               }}
             >
               Iniciar sesión
@@ -89,9 +89,9 @@ export default function Header() {
       </nav>
       <Dialog
         header={$registerState ? '¡Bienvenid@!' : '¡Bienvenid@ de nuevo!'}
-        visible={visible}
+        visible={$modal}
         onHide={() => {
-          setVisible(!visible)
+          setModal({ value: false })
         }}
         style={{ width: '450px', minWidth: '300px' }}
         breakpoints={{ '640px': '350px' }}

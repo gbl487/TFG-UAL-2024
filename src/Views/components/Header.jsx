@@ -7,17 +7,32 @@ import RegisterForm from './RegisterForm'
 import { useStore } from '@nanostores/react'
 import { registerState } from 'src/Controllers/context/registerContext'
 import { modal, setModal } from 'src/Controllers/context/modal_context'
+import { auth } from '../../Model/Firebase'
+import { setUser, user } from 'src/Controllers/context/userContext'
+import { useEffect } from 'react'
 // import RegisterForm from '@components/RegisterForm.jsx'
 // import useMediaQuery from '@hooks/useMediaQuery'
 export default function Header() {
   const $registerState = useStore(registerState)
   const $modal = useStore(modal)
-  // const [menuVisible, setMenuVisible] = useState(false)
+  const $user = useStore(user)
 
-  // const toggleMenu = () => {
-  //   setMenuVisible(!menuVisible)
-  // }
-  // const isDesktop = useMediaQuery('1280')
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // El usuario está autenticado
+        setUser({ value: authUser })
+      } else {
+        // El usuario no está autenticado
+        setUser({ value: null })
+      }
+    })
+
+    // Cleanup function
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   return (
     <>
@@ -37,15 +52,25 @@ export default function Header() {
             </span>
           </a>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button
-              type="button"
-              className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
-              onClick={() => {
-                setModal({ value: true })
-              }}
-            >
-              Iniciar sesión
-            </button>
+            {$user ? (
+              <button
+                type="button"
+                className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
+              >
+                <a href="/panel">Panel de usuario</a>
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
+                onClick={() => {
+                  setModal({ value: true })
+                }}
+              >
+                Iniciar sesión
+              </button>
+            )}
+
             {/* <button
               type="button"
               onClick={toggleMenu}
@@ -79,10 +104,9 @@ export default function Header() {
             //   menuVisible ? 'block' : 'hidden'
             // }
           > */}
+
           {/* <ul className="hidden md:flex md:flex-col p-4 md:p-0  font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse  ">
-            <li>
-              <SearchInput />
-            </li>
+            <a href="/panel">Ir a panel de control</a>
           </ul> */}
           {/* </div> */}
         </div>

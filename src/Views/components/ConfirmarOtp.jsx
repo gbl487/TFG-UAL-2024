@@ -5,8 +5,7 @@ import {
   renderRecaptcha,
   sendVerificationCode,
 } from 'src/Controllers/utils/reCaptcha'
-import firebaseApp from 'src/Model/Firebase'
-import { getAuth } from 'firebase/auth'
+import { auth } from '../../Model/Firebase'
 import { userData } from 'src/Controllers/context/userData_context'
 import { useStore } from '@nanostores/react'
 
@@ -16,22 +15,14 @@ export default function ConfirmarOtp() {
   const [user, setUser] = useState(null)
   const [ingresarOtp, setIngresarOtp] = useState(false)
   const [captcha, setCaptcha] = useState(false)
-  const recaptchaContainerRef = useRef('recaptcha-container')
-  const auth = getAuth(firebaseApp)
+  const recaptchaContainerRef = useRef()
   const $userData = useStore(userData)
-
-  const onVerificationCompleted = (response) => {
-    // Lógica adicional después de completar la verificación
-    setTimeout(1000)
-    setIngresarOtp(true)
-    console.log('Verificación completada:', response)
-  }
 
   useEffect(() => {
     setCaptcha(true)
-
     async function renderCaptcha() {
       let appVerifier
+      if (typeof recaptchaContainerRef.current === 'undefined') return
       try {
         appVerifier = await renderRecaptcha({
           auth,
@@ -39,13 +30,15 @@ export default function ConfirmarOtp() {
           onVerificationCompleted,
         })
         // Cuando se ha mostrado el captcha, mostramos el boton para ingresar codigo otp
-
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (typeof appVerifier === 'undefined') return
         const { confirmation } = await sendVerificationCode({
-          auth,
           telefono: $userData.telefono,
           appVerifier,
         })
-
         setUser(confirmation)
       } catch (error) {
         console.log(error)
@@ -58,16 +51,27 @@ export default function ConfirmarOtp() {
       setCaptcha(false)
       // Perform any clean-up here if necessary
     }
-  }, [captcha, auth, $userData.telefono])
+  }, [captcha, $userData.telefono])
   const verifyOtp = async (e) => {
     e.preventDefault()
-    const { usuario, errorResult } = usuarioClase.confirmOtp({
-      confirmation: user,
-      otp,
-    })
-    console.log(usuario)
-    console.log(errorResult)
+    await usuarioClase
+      .registrarUsuario({
+        confirmation: user,
+        otp,
+        dni_nie: $userData.dni_nie,
+      })
+      .then((resultado) => {
+        console.log(resultado)
+        console.log(auth)
+      })
+
     setModal({ value: false })
+  }
+
+  const onVerificationCompleted = (response) => {
+    // Lógica adicional después de completar la verificación
+    setIngresarOtp(true)
+    console.log('Verificación completada:', response)
   }
 
   return (
@@ -76,6 +80,7 @@ export default function ConfirmarOtp() {
         <>
           {ingresarOtp ? (
             <div className="flex flex-col gap-y-5">
+              <div>Se ha enviado un sms al telefono {$userData.telefono}</div>
               <input
                 type="text"
                 value={otp}
@@ -90,9 +95,9 @@ export default function ConfirmarOtp() {
                 continuar:
               </p>
               <div
-                className="flex justify-center"
                 id="recaptcha-container"
                 ref={recaptchaContainerRef}
+                className="flex justify-center"
               ></div>
             </>
           )}

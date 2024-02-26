@@ -1,8 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import UserPanel from '@components/UserPanel'
+import PanelDeUsuario from 'src/layouts/PanelDeUsuario.astro'
 ---
 
-<Layout title="Panel de usuario">
-  <UserPanel client:only />
-</Layout>
+<PanelDeUsuario title="Panel de usuario">
+  <div class="p-4 sm:ml-64 w-auto h-full">Hola</div>
+</PanelDeUsuario>

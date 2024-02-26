@@ -1,4 +1,3 @@
-import { Usuario } from 'src/Model/Usuario'
 import { setModal } from 'src/Controllers/context/modal_context'
 import { useEffect, useState, useRef } from 'react'
 import {
@@ -8,9 +7,8 @@ import {
 import { auth } from '../../Model/Firebase'
 import { userData } from 'src/Controllers/context/userData_context'
 import { useStore } from '@nanostores/react'
-
+import { registrarUsuario } from 'src/Model/Usuario'
 export default function ConfirmarOtp() {
-  const usuarioClase = new Usuario()
   const [otp, setOtp] = useState('')
   const [user, setUser] = useState(null)
   const [ingresarOtp, setIngresarOtp] = useState(false)
@@ -54,16 +52,19 @@ export default function ConfirmarOtp() {
   }, [captcha, $userData.telefono])
   const verifyOtp = async (e) => {
     e.preventDefault()
-    await usuarioClase
-      .registrarUsuario({
-        confirmation: user,
-        otp,
-        dni_nie: $userData.dni_nie,
-      })
+    console.log(user)
+    console.log(otp)
+    console.log($userData.dni_nie)
+    await registrarUsuario({
+      confirmation: user,
+      otp,
+      dni_nie: $userData.dni_nie,
+    })
       .then((resultado) => {
         console.log(resultado)
         console.log(auth)
       })
+      .catch((error) => console.log(error))
 
     setModal({ value: false })
   }

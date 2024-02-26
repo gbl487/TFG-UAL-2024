@@ -1,16 +1,14 @@
 export default function Logo() {
   return (
-    <div className="flex justify-start sm:justify-center ml-5">
-      <a href="/" aria-label="logo">
-        <picture>
-          <img
-            id="logo"
-            alt="logo"
-            src="./asiseg-logo-desktop.svg"
-            className="min-w-40 w-40 sm:w-48 lg:w-60 "
-          />
-        </picture>
-      </a>
-    </div>
+    <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+      <img
+        src="/favicon_asiseg.svg"
+        className="h-14 ml-5 my-2"
+        alt="Asiseg Logo"
+      />
+      <span className="self-center text-2xl font-semibold whitespace-nowrap text-asiseg-blue">
+        ASISEG
+      </span>
+    </a>
   )
 }

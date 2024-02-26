@@ -1,4 +1,6 @@
-export function ClearFiltersButton({ filtros }) {
+import { filtros } from 'src/Controllers/context/filterContext'
+
+export function ClearFiltersButton() {
   const clearFiltros = (e) => {
     e.preventDefault()
     filtros.set({

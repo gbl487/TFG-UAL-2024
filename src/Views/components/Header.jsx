@@ -53,12 +53,14 @@ export default function Header() {
           </a>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             {$user ? (
-              <button
-                type="button"
-                className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
-              >
-                <a href="/panel">Panel de usuario</a>
-              </button>
+              <a href="/panel">
+                <button
+                  type="button"
+                  className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
+                >
+                  Panel de usuario
+                </button>
+              </a>
             ) : (
               <button
                 type="button"

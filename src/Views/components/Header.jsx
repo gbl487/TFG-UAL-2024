@@ -7,53 +7,24 @@ import RegisterForm from './RegisterForm'
 import { useStore } from '@nanostores/react'
 import { registerState } from 'src/Controllers/context/registerContext'
 import { modal, setModal } from 'src/Controllers/context/modal_context'
-import { auth } from '../../Model/Firebase'
-import { setUser, user } from 'src/Controllers/context/userContext'
-import { useEffect } from 'react'
+import { useAuth } from 'src/Controllers/context/userContext'
+import Logo from './Logo'
 // import RegisterForm from '@components/RegisterForm.jsx'
 // import useMediaQuery from '@hooks/useMediaQuery'
 export default function Header() {
   const $registerState = useStore(registerState)
   const $modal = useStore(modal)
-  const $user = useStore(user)
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        // El usuario está autenticado
-        setUser({ value: authUser })
-      } else {
-        // El usuario no está autenticado
-        setUser({ value: null })
-      }
-    })
-
-    // Cleanup function
-    return () => {
-      unsubscribe()
-    }
-  }, [])
-
+  const { usuario } = useAuth()
+  console.log(usuario)
   return (
     <>
       <nav className=" bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-          <a
-            href="/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
-          >
-            <img
-              src="/favicon_asiseg.svg"
-              className="h-14 ml-5 my-2"
-              alt="Asiseg Logo"
-            />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-asiseg-blue">
-              ASISEG
-            </span>
-          </a>
+          <Logo />
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {$user ? (
-              <a href="/panel">
+            {usuario ? (
+              <a href="/misdatos">
                 <button
                   type="button"
                   className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
@@ -121,6 +92,7 @@ export default function Header() {
         }}
         style={{ width: '450px', minWidth: '300px' }}
         breakpoints={{ '640px': '350px' }}
+        className="bg-gray-50"
       >
         <RegisterForm />
       </Dialog>

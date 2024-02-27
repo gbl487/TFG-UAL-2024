@@ -15,7 +15,7 @@ export default function InfoCard({ titulo, descripcion }) {
       <Drawer.Root open={visible} direction="bottom" onClose={() => ocultar()}>
         <Drawer.Trigger asChild onClick={() => setVisible(true)}>
           <div className="w-full flex justify-center">
-            <button className="max-w-sm min-w-80 bg-gray-100 border border-gray-200 rounded-lg shadow-md hover:shadow-asiseg-gray hover:transition-shadow subpixel-antialiased overflow-hidden text-left">
+            <button className="max-w-sm min-w-80 bg-gray-50/50 border border-gray-200 rounded-lg shadow-md hover:shadow-asiseg-gray hover:transition-shadow subpixel-antialiased overflow-hidden text-left">
               {/* dark:bg-gray-800 dark:border-gray-700 */}
 
               <img
@@ -31,7 +31,7 @@ export default function InfoCard({ titulo, descripcion }) {
                   {titulo}
                 </h5>
 
-                <p className="p-car-text mb-3 font-normal text-gray-700  dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-3 min-h-[72px]">
+                <p className="p-car-text mb-3 font-normal text-gray-9 00  dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-3 min-h-[72px]">
                   {descripcion}
                 </p>
                 <div>
@@ -52,11 +52,12 @@ export default function InfoCard({ titulo, descripcion }) {
             </button>
           </div>
         </Drawer.Trigger>
+
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0" />
-          <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-[100%] mt-24 fixed bottom-0 left-0 right-0 z-50">
-            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-10 mt-5" />
-            <div className=" fixed top-4 right-4 ">
+          <Drawer.Content className="bg-gray-50 flex flex-col  h-[100%] mt-24 fixed bottom-0 left-0 right-0 z-50">
+            {/* <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-10 mt-5" /> */}
+            <div className=" fixed top-4 right-4 sm:right-10 md:right-15 xl:right-20 ">
               <button onClick={() => ocultar()}>
                 <CloseIcon />
               </button>

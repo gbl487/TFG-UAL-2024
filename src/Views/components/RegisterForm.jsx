@@ -44,9 +44,15 @@ export default function RegisterForm() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="" action="#">
               <DNI_NIE register={register} errors={errors} />
-              <PhoneInput register={register} errors={errors} />
+              {/* Contraseña */}
+              <PhoneInput register={register} errors={errors} />{' '}
+              {/* Validar contrasña */}
+              {$registerState ? (
+                <PhoneInput register={register} errors={errors} />
+              ) : (
+                ''
+              )}
               <RememberInput register={register} />
-
               <div className="flex flex-1 justify-center">
                 <input
                   type="submit"

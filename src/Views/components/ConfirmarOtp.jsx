@@ -7,7 +7,8 @@ import {
 import { auth } from '../../Model/Firebase'
 import { userData } from 'src/Controllers/context/userData_context'
 import { useStore } from '@nanostores/react'
-import { registrarUsuario } from 'src/Model/Usuario'
+import { useAuth } from 'src/Controllers/context/userContext'
+
 export default function ConfirmarOtp() {
   const [otp, setOtp] = useState('')
   const [user, setUser] = useState(null)
@@ -15,6 +16,8 @@ export default function ConfirmarOtp() {
   const [captcha, setCaptcha] = useState(false)
   const recaptchaContainerRef = useRef()
   const $userData = useStore(userData)
+
+  const { registrarUsuario } = useAuth()
 
   useEffect(() => {
     setCaptcha(true)
@@ -47,7 +50,6 @@ export default function ConfirmarOtp() {
     // Clean-up function (optional)
     return () => {
       setCaptcha(false)
-      // Perform any clean-up here if necessary
     }
   }, [captcha, $userData.telefono])
   const verifyOtp = async (e) => {

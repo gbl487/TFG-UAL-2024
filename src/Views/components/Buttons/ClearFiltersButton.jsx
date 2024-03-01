@@ -10,7 +10,7 @@ export function ClearFiltersButton() {
   }
   return (
     <button
-      className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4"
+      className="btn btn-primary text-white opacity-65 transition-opacity p-2 rounded-md mb-4"
       onClick={(e) => clearFiltros(e)}
     >
       Borrar filtros

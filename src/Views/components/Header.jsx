@@ -3,42 +3,54 @@ import { Dialog } from 'primereact/dialog'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import '../styles/register.css'
 import RegisterForm from './RegisterForm'
-// import SearchInput from './SearchInput'
 import { useStore } from '@nanostores/react'
 import { registerState } from 'src/Controllers/context/registerContext'
 import { modal, setModal } from 'src/Controllers/context/modal_context'
 import { useAuth } from 'src/Controllers/context/userContext'
 import Logo from './Logo'
-// import RegisterForm from '@components/RegisterForm.jsx'
-// import useMediaQuery from '@hooks/useMediaQuery'
+import AsisegLoader from './Buttons/AsisegLoader'
 export default function Header() {
   const $registerState = useStore(registerState)
   const $modal = useStore(modal)
-
   const { usuario } = useAuth()
-  console.log(usuario)
   return (
     <>
       <nav className=" bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
           <Logo />
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {usuario ? (
+            {typeof usuario === 'undefined' ? (
+              <>
+                <div className="mr-5 px-2 py-1">
+                  <AsisegLoader showLogo={false} />
+                </div>
+              </>
+            ) : usuario ? (
               <a href="/misdatos">
-                <button
-                  type="button"
-                  className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
-                >
-                  Panel de usuario
+                <button className="btn btn-primary opacity-80 transition-opacity mr-5 px-2 py-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-user"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="#ffffff"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                  </svg>
                 </button>
               </a>
             ) : (
               <button
                 type="button"
                 className="text-white bg-asiseg-blue hover:bg-asiseg-blue/70 focus:ring-4 focus:outline-none focus:asiseg-blue font-medium rounded-lg text-sm px-4 py-2 text-center mr-5"
-                onClick={() => {
-                  setModal({ value: true })
-                }}
+                onClick={() => setModal({ value: true })}
               >
                 Iniciar sesión
               </button>

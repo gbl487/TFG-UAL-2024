@@ -42,7 +42,7 @@ export default function RegisterForm() {
                 : 'Inicia sesión en su cuenta'}
             </h1>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="" action="#">
+            <form onSubmit={handleSubmit(onSubmit)} action="#">
               <DNI_NIE register={register} errors={errors} />
               {/* Contraseña */}
               <PhoneInput register={register} errors={errors} />{' '}

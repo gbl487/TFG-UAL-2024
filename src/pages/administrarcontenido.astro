@@ -1,9 +1,11 @@
 ---
-import { loadTSConfig } from 'astro/dist/core/config'
 import PanelDeUsuario from '../layouts/PanelDeUsuario.astro'
 import AdminContent from '../Views/components/AdminContent'
+import ProtectedRoute from '../Views/components/ProtectedRoute'
 ---
 
-<PanelDeUsuario title="Panel de usuario">
-  <AdminContent client:load />
-</PanelDeUsuario>
+<ProtectedRoute client:only>
+  <PanelDeUsuario title="Panel de usuario">
+    <AdminContent client:only />
+  </PanelDeUsuario>
+</ProtectedRoute>

@@ -8,7 +8,7 @@ import {
 import { useStore } from '@nanostores/react'
 
 // export const FirebaseUser = atom(new Usuario({ authState: auth }))
-const usuarioAtom = atom(null)
+export const usuarioAtom = atom()
 
 export const useAuth = () => {
   // Usar useStore para acceder al estado y acciones relacionadas con la autenticación
@@ -53,7 +53,6 @@ export const useAuth = () => {
   const cerrarSesion = async () => {
     try {
       await auth.signOut()
-      setUser({ value: null })
     } catch (error) {
       console.error('Error al cerrar sesión:', error)
       throw error
@@ -85,8 +84,7 @@ export const useAuth = () => {
       await confirmation
         .confirm(otp)
         .then((result) => {
-          setUser({ value: result.user })
-          usuario = result.user
+          // setUser({ value: result.user })
           console.log(result)
         })
         .catch((error) => (errorResult = error))
@@ -110,7 +108,7 @@ export const useAuth = () => {
     return () => {
       unsubscribe()
     }
-  })
+  }, [])
 
   return {
     usuario,

@@ -12,6 +12,7 @@ import './filter.css'
 
 export default function AllFilters() {
   const $filtros = useStore(filtros)
+  console.log($filtros)
 
   return (
     <div className="flex flex-col w-full">

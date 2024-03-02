@@ -1,8 +1,10 @@
 // import { useForm } from 'react-hook-form'
-import { useState } from 'react'
-// import Card from './Card'
-import { Editor } from 'primereact/editor'
+import { useRef, useState } from 'react'
+import Card from './Card'
 import './quill.css'
+import { Editor } from 'primereact/editor'
+import { SeeMoreIcon } from '@Icons/Icons'
+import { FILTROS } from 'src/constants'
 export default function CrearTarjeta() {
   // const {
   //   register,
@@ -12,7 +14,7 @@ export default function CrearTarjeta() {
   const [titulo, setTitulo] = useState()
   const [fichero, setFichero] = useState()
   const [text, setText] = useState('')
-  const [value, setValue] = useState('')
+  const quillRef = useRef()
   const CabeceraEditor = () => {
     return (
       <div id="toolbar">
@@ -25,59 +27,61 @@ export default function CrearTarjeta() {
     )
   }
   const cabecera = CabeceraEditor()
-  // const Footer = () => {
-  //   return (
-  //     <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-asiseg-blue rounded-lg opacity-65 hover:opacity-100 transition-opacity ">
-  //       Ver más
-  //       <SeeMoreIcon />
-  //     </div>
-  //   )
-  // }
-  let html = '' // Utilizaremos esta variable para construir el HTML
-  function deltaToHtml(delta) {
-    delta.ops.forEach((op) => {
-      console.log(html)
-
-      if (op.delete) {
-        html = html.slice(0, -1)
-      }
-
-      if (op.insert) {
-        console.log(op.insert)
-        if (typeof op.insert === 'string') {
-          if (html === '') {
-            if (op.insert !== '\n') {
-              html += '<p>'
-            }
-          }
-          if (op.insert === '\n') {
-            html += '</p></br>'
-          }
-          html += op.insert // Concatenamos el texto directamente
-        } else if (typeof op.insert === 'object' && op.insert.image) {
-          html += `<img src="${op.insert.image}" >` // Concatenamos la etiqueta de la imagen
-        }
-      }
-      // class="flex justify-center max-h-14 mb-5"
-
-      if (op.attributes) {
-        Object.keys(op.attributes).forEach((key) => {
-          if (key === 'link') {
-            html += `<a href="${op.attributes.link}">${html}</a>` // Envolver enlace alrededor del HTML existente
-          } else if (key === 'italic' && op.attributes[key]) {
-            html += `<em>${html}</em>` // Aplicamos estilo de cursiva al HTML existente
-          } else if (key === 'bold' && op.attributes[key]) {
-            html += `<strong>${html}</strong>` // Aplicamos estilo de negrita al HTML existenteD
-          } else if (key === 'underline' && op.attributes[key]) {
-            html += `<u>${html}</u>` // Aplicamos subrayado al HTML existente
-          }
-        })
-      }
-    })
-    setText(html)
+  const Footer = () => {
+    return (
+      <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-asiseg-blue rounded-lg opacity-65 hover:opacity-100 transition-opacity ">
+        Ver más
+        <SeeMoreIcon />
+      </div>
+    )
+  }
+  const obtenerContenido = () => {
+    const newDelta = quillRef.current.getQuill().editor.delta
+    const newHtml = deltaToHtml(newDelta)
+    setText(newHtml)
   }
 
-  console.log(text)
+  function deltaToHtml(delta) {
+    let html = ''
+    let newInsert = ''
+    // let string = ''
+    // const patron = /\n{2,}/g
+    delta.ops.forEach((op) => {
+      if (op.insert) {
+        if (typeof op.insert === 'string') {
+          // if (patron.test(op.insert)) {
+          //   string = op.insert
+          //   string.replace(patron, '\n')
+          //   console.log(string)
+          // }
+          if (op.insert !== '\n') {
+            newInsert = op.insert.replace(/\n/g, '</br>')
+            html += `<p>${newInsert}</p>` // Para texto
+          }
+        } else if (typeof op.insert === 'object' && op.insert.image) {
+          html += `<div class="flex justify-center">
+          <img src="${op.insert.image}"></div>` // Para imágenes
+        }
+      }
+      // Verifica los atributos del op
+      if (op.attributes) {
+        if (op.attributes.link) {
+          html = `<a href="${op.attributes.link}">${html}</a>`
+        }
+        if (op.attributes.italic) {
+          html = `<em>${html}</em>`
+        }
+        if (op.attributes.bold) {
+          html = `<strong>${html}</strong>`
+        }
+        if (op.attributes.underline) {
+          html = `<u>${html}</u>`
+        }
+      }
+    })
+
+    return html
+  }
 
   return (
     <>
@@ -94,6 +98,7 @@ export default function CrearTarjeta() {
               </div>
               <input
                 type="text"
+                id="titulo"
                 placeholder="Cura..."
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
@@ -106,36 +111,108 @@ export default function CrearTarjeta() {
               </div>
               <input
                 type="file"
+                id="portada"
                 value={fichero}
                 onChange={(e) => setFichero(e.target.value)}
                 className="file-input bg-asiseg-gray/20 w-full max-w-md"
               />
+            </div>
+            <div className="form-control w-full max-w-md mt-5">
+              <div className="label">
+                <span className="label-text text-black text-lg">
+                  Categorías
+                </span>
+              </div>
+              <div className="flex flex-row">
+                <div className="flex flex-col mx-2">
+                  <div className="form-control bg-asiseg-gray/10 p-2 rounded-lg">
+                    <p>
+                      <strong>Tipo de Cura</strong>
+                    </p>
+                    <label htmlFor="PREOP" className="label cursor-pointer">
+                      <span className="label-text text-black pr-2">
+                        Preoperatorio
+                      </span>
+                      <input
+                        id="PREOP"
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                      />
+                    </label>
+                    <label htmlFor="POSTOP" className="label cursor-pointer">
+                      <span className="label-text text-black pr-2">
+                        Postoperatorio
+                      </span>
+                      <input
+                        id="POSTOP"
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col mx-2">
+                  <div className="form-control bg-asiseg-gray/10 p-2 rounded-lg">
+                    <p>
+                      <strong>Área afectada</strong>
+                    </p>
+                    <label className="label cursor-pointer">
+                      <span className="label-text text-black pr-2">
+                        Corazón
+                      </span>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                      />
+                    </label>
+                    <label className="label cursor-pointer">
+                      <span className="label-text text-black pr-2">Pulmón</span>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                      />
+                    </label>
+
+                    <label className="label cursor-pointer">
+                      <span className="label-text text-black pr-2">Hígado</span>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="mt-5">
               <div className="label">
                 <span className="label-text text-black text-lg">Contenido</span>
               </div>
               <Editor
-                value={text}
-                onTextChange={(e) => deltaToHtml(e.delta)}
+                id="editor"
+                // value={text}
+                ref={quillRef}
+                // onTextChange={(e) => handleEditorChange(e)}
                 className="max-w-3xl"
                 headerTemplate={cabecera}
                 style={{ height: '400px' }}
               />
+              <button onClick={obtenerContenido}>Obtener Delta</button>
             </div>
           </form>
         </div>
 
-        <div className="flex basis-1/3 bg-asiseg-blue/50">
-          <div className="flex flex-col w-full gap-y-5">
-            <h1>Ejemplo</h1>
-            {/* <Card titulo={titulo} descripcion={text} Footer={Footer} /> */}
-            <div>
-              <div
-                className="flex flex-col w-full justify-center inner"
-                dangerouslySetInnerHTML={{ __html: text }}
-              />
-            </div>
+        <div className="flex flex-col w-full basis-1/3 gap-y-5">
+          <h1>Ejemplo</h1>
+          <div className="flex justify-center">
+            <Card titulo={titulo} descripcion={text} Footer={Footer} />
+          </div>
+
+          <div>
+            <div
+              className=" inner"
+              dangerouslySetInnerHTML={{ __html: text }}
+            />
           </div>
         </div>
       </div>

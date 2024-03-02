@@ -9,7 +9,7 @@ export default function Card({ titulo, descripcion, Footer }) {
         alt="Titulo del contenido"
       />
       <div className="p-5">
-        <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 text-ellipsis overflow-hidden line-clamp-2 min-h-14">
+        <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 text-ellipsis line-clamp-2 min-h-14">
           {titulo}
         </h5>
         <p className="p-car-text mb-3 font-normal text-gray-9 00  dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-3 min-h-[72px]">

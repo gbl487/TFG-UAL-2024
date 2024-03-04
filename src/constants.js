@@ -5,7 +5,7 @@ const optionsArea = [
   { name: 'Pulmón', code: 'PUL' },
   { name: 'Hígado', code: 'HIG' },
   { name: 'Estómago', code: 'EST' },
-  { name: 'Riñones', code: 'EST' },
+  { name: 'Riñones', code: 'RIN' },
 ]
 
 const AREA_AFECTADA = {
@@ -27,4 +27,4 @@ const TIPO_CURA = {
   options: optionsCura,
 }
 
-export const FILTROS = { AREA_AFECTADA, TIPO_CURA }
+export const FILTROS = [AREA_AFECTADA, TIPO_CURA]

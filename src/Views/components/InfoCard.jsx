@@ -1,11 +1,11 @@
 import 'primeicons/primeicons.css'
 import { useState } from 'react'
-import Chip from './Tag.jsx'
 import { CloseIcon, SeeMoreIcon } from '@Icons/Icons.jsx'
 import { Drawer } from 'vaul'
 import Card from './Card.jsx'
-
-export default function InfoCard({ titulo, descripcion }) {
+import './quill.css'
+import TagArray from './TagArray.jsx'
+export default function InfoCard({ titulo, tags, descripcion, contenido }) {
   const [visible, setVisible] = useState(false)
 
   const ocultar = () => {
@@ -25,7 +25,12 @@ export default function InfoCard({ titulo, descripcion }) {
         <div className="w-full flex justify-center">
           <Drawer.Trigger asChild onClick={() => setVisible(true)}>
             <button>
-              <Card titulo={titulo} descripcion={descripcion} Footer={Footer} />
+              <Card
+                titulo={titulo}
+                descripcion={descripcion}
+                tags={tags}
+                Footer={Footer}
+              />
             </button>
           </Drawer.Trigger>
         </div>
@@ -42,99 +47,16 @@ export default function InfoCard({ titulo, descripcion }) {
             <div className="max-w-full w-full mx-auto flex flex-col overflow-y-auto p-4 rounded-t-[10px]">
               <div className="max-w-6xl mx-auto leading-loose text-lg">
                 <Drawer.Title className="text-2xl font-semibold mb-2">
-                  Titulo de la tarjeta
+                  {titulo}
                 </Drawer.Title>
 
                 <div className="mb-2 flex flex-row flex-wrap gap-2 py-1">
-                  <Chip tag={'Preoperatorio'} />
-                  <Chip tag={'Corazon'} />
-                  <Chip tag={'Pulmon'} />
+                  <TagArray tags={tags} />
                 </div>
                 <div>
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <img
-                    className="w-full flex justify-center h-52 mb-5"
-                    src="/asiseg-logo-desktop.svg"
-                    alt=""
-                  />
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <img
-                    className="w-full flex justify-center h-52 mb-5"
-                    src="/asiseg-logo-desktop.svg"
-                    alt=""
-                  />
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <img
-                    className="w-full flex justify-center h-52 mb-5"
-                    src="/asiseg-logo-desktop.svg"
-                    alt=""
-                  />
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <img
-                    className="w-full flex justify-center h-52 mb-5"
-                    src="/asiseg-logo-desktop.svg"
-                    alt=""
-                  />
-                  <p className="mb-5 text-pretty">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p>
-                  <img
-                    className="w-full flex justify-center h-52 mb-5"
-                    src="/asiseg-logo-desktop.svg"
-                    alt=""
+                  <div
+                    className=" inner"
+                    dangerouslySetInnerHTML={{ __html: contenido }}
                   />
                 </div>
               </div>

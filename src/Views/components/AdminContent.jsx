@@ -43,27 +43,32 @@ export default function AdminContent() {
                 <Card
                   titulo={titulo}
                   descripcion={descripcion}
+                  tags={[]}
                   Footer={Footer}
                 />
 
                 <Card
                   titulo={titulo}
                   descripcion={descripcion}
+                  tags={[]}
                   Footer={Footer}
                 />
                 <Card
                   titulo={titulo}
                   descripcion={descripcion}
+                  tags={[]}
                   Footer={Footer}
                 />
                 <Card
                   titulo={titulo}
                   descripcion={descripcion}
+                  tags={[]}
                   Footer={Footer}
                 />
                 <Card
                   titulo={titulo}
                   descripcion={descripcion}
+                  tags={[]}
                   Footer={Footer}
                 />
               </section>

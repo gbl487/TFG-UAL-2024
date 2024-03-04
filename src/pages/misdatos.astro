@@ -1,10 +1,11 @@
 ---
 import ProtectedRoute from '@components/ProtectedRoute'
 import PanelDeUsuario from '../layouts/PanelDeUsuario.astro'
+import Misdatos from '../Views/components/MisDatos'
 ---
 
 <ProtectedRoute client:only>
   <PanelDeUsuario title="Panel de usuario">
-    <div class="p-4 sm:ml-64 w-auto h-full">Mis datos</div>
+    <Misdatos client:only />
   </PanelDeUsuario>
 </ProtectedRoute>

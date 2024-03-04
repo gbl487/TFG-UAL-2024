@@ -1,6 +1,6 @@
-import Chip from './Tag'
+import TagArray from './TagArray'
 
-export default function Card({ titulo, descripcion, Footer }) {
+export default function Card({ titulo, descripcion, tags, Footer }) {
   return (
     <div className="max-w-sm min-w-80 bg-gray-50/50 border border-gray-200 rounded-lg shadow-md hover:shadow-asiseg-gray hover:transition-shadow subpixel-antialiased overflow-hidden text-left">
       <img
@@ -17,10 +17,7 @@ export default function Card({ titulo, descripcion, Footer }) {
         </p>
         <div>
           <div className="mb-2 flex flex-row flex-wrap gap-2 py-1 overflow-hidden min-h-20">
-            <Chip tag={'Preoperatorio'} />
-            <Chip tag={'Corazon'} />
-            <Chip tag={'Pulmon'} />
-            <Chip tag={'Estomago'} />
+            <TagArray tags={tags} />
           </div>
           <Footer />
         </div>

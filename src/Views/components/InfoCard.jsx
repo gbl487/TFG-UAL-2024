@@ -5,7 +5,13 @@ import { Drawer } from 'vaul'
 import Card from './Card.jsx'
 import './quill.css'
 import TagArray from './TagArray.jsx'
-export default function InfoCard({ titulo, tags, descripcion, contenido }) {
+export default function InfoCard({
+  titulo,
+  portada,
+  tags,
+  descripcion,
+  contenido,
+}) {
   const [visible, setVisible] = useState(false)
 
   const ocultar = () => {
@@ -27,6 +33,7 @@ export default function InfoCard({ titulo, tags, descripcion, contenido }) {
             <button>
               <Card
                 titulo={titulo}
+                portada={portada}
                 descripcion={descripcion}
                 tags={tags}
                 Footer={Footer}

@@ -39,7 +39,7 @@ export default function AllFilters() {
           onChange={(e) => {
             setAreas(e)
           }}
-          options={FILTROS[0].id.options}
+          options={FILTROS[0].options}
           optionLabel="name"
           placeholder={FILTROS[0].placeholder}
           // maxSelectedLabels={3}

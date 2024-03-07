@@ -8,6 +8,7 @@ export default function Card({ titulo, portada, descripcion, tags, Footer }) {
       <img
         className="h-56 w-full object-cover object-center rounded-t-lg "
         src={portada ? portada : url}
+        alt={titulo}
       />
       <div className="p-5">
         <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 text-ellipsis line-clamp-2 min-h-14">

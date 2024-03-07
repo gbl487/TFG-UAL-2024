@@ -2,7 +2,9 @@ import { atom } from 'nanostores'
 import { auth } from '../../Model/Firebase'
 import { useEffect } from 'react'
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
+  setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useStore } from '@nanostores/react'
@@ -19,13 +21,16 @@ export const useAuth = () => {
   }
 
   const crearUsuario = async (email, password) => {
+    console.log(email, password)
     try {
+      await setPersistence(auth, browserLocalPersistence)
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       )
       const newUser = userCredential.user
+      console.log(newUser)
       setUser({ value: newUser })
       return newUser
     } catch (error) {
@@ -36,6 +41,7 @@ export const useAuth = () => {
 
   const iniciarSesion = async (email, password) => {
     try {
+      await setPersistence(auth, browserLocalPersistence)
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,

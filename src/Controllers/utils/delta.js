@@ -3,7 +3,7 @@ export function deltaToHtml(delta) {
   let newInsert = ''
   // let string = ''
   // const patron = /\n{2,}/g
-  delta.ops.forEach((op) => {
+  delta.forEach((op) => {
     if (op.insert) {
       if (typeof op.insert === 'string') {
         // if (patron.test(op.insert)) {

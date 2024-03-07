@@ -4,6 +4,7 @@ import AsisegLoader from './Buttons/AsisegLoader'
 const ProtectedRoute = ({ children }) => {
   const { usuario } = useAuth()
   const [loading, setLoading] = useState(true)
+  console.log(usuario)
 
   useEffect(() => {
     if (typeof usuario === 'undefined') {

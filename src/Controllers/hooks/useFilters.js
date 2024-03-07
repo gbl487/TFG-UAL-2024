@@ -3,16 +3,24 @@ import { filtros } from 'src/Controllers/context/filterContext'
 
 export function useFilters() {
   const $filtros = useStore(filtros)
-  const tarjetasFiltradas = (tarjetas) => {
+
+  const getTarjetasFiltradas = (tarjetas) => {
+    if ($filtros.areas.length === 0 && $filtros.curas.length === 0)
+      return tarjetas
     return tarjetas.filter((tarjeta) => {
-      const areaMatch = tarjeta.categorias.some((categoria) =>
-        $filtros.areas.some((filtro) => filtro.code === categoria.code)
+      return (
+        tarjeta
+          .data()
+          .categorias.some((categoria) =>
+            $filtros.areas.some((filtro) => filtro.code === categoria)
+          ) ||
+        tarjeta
+          .data()
+          .categorias.some((categoria) =>
+            $filtros.curas.some((filtro) => filtro.code === categoria)
+          )
       )
-      const curaMatch = tarjeta.categorias.some((categoria) =>
-        $filtros.curas.some((filtro) => filtro.code === categoria.code)
-      )
-      return areaMatch || curaMatch
     })
   }
-  return { tarjetasFiltradas }
+  return { getTarjetasFiltradas }
 }

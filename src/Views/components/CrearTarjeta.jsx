@@ -39,7 +39,7 @@ export default function CrearTarjeta() {
 
   function getHtml(delta) {
     setContent(delta)
-    const html = deltaToHtml(delta)
+    const html = deltaToHtml(delta.ops)
     setText(html)
     setDesc(html.replace(/<[^>]+>/g, ''))
   }

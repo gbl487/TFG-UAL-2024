@@ -12,8 +12,6 @@ import './filter.css'
 
 export default function AllFilters() {
   const $filtros = useStore(filtros)
-  console.log($filtros)
-
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-1 justify-center">
@@ -21,14 +19,14 @@ export default function AllFilters() {
       </div>
       <div className="flex flex-1 justify-center mb-2">
         <MultiSelect
-          id={FILTROS.TIPO_CURA.id}
+          id={FILTROS[1].id}
           value={$filtros.curas}
           onChange={(e) => {
             setCuras(e)
           }}
-          options={FILTROS.TIPO_CURA.options}
+          options={FILTROS[1].options}
           optionLabel="name"
-          placeholder={FILTROS.TIPO_CURA.placeholder}
+          placeholder={FILTROS[1].placeholder}
           maxSelectedLabels={3}
           display="chip"
           className="border-2 rounded-md w-full"
@@ -36,14 +34,14 @@ export default function AllFilters() {
       </div>
       <div className="flex flex-1 justify-center mb-2">
         <MultiSelect
-          id={FILTROS.AREA_AFECTADA.id}
+          id={FILTROS[0].id}
           value={$filtros.areas}
           onChange={(e) => {
             setAreas(e)
           }}
-          options={FILTROS.AREA_AFECTADA.options}
+          options={FILTROS[0].id.options}
           optionLabel="name"
-          placeholder={FILTROS.AREA_AFECTADA.placeholder}
+          placeholder={FILTROS[0].placeholder}
           // maxSelectedLabels={3}
           display="chip"
           className="border-2 rounded-md w-full h-auto"

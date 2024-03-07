@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import InfoCard from '@components/InfoCard.jsx'
+import AllTarjetas from '@components/AllTarjetas'
 import SearchBar from '@components/SearchBar.jsx'
 import Header from '@components/Header'
 import '../Views/styles/index.css'
@@ -15,74 +15,7 @@ import '../Views/styles/index.css'
     </div>
 
     <main class="body pt-36">
-      <section
-        class="grid grid-cols-1 sm:grid-cols-2 lg+:grid-cols-3 xl:grid-cols-4 gap-5"
-      >
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-        <InfoCard
-          client:visible
-          titulo="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper."
-          descripcion="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet."
-          tags={[]}
-          contenido={''}
-        />
-      </section>
+      <AllTarjetas client:visible />
     </main>
 
     <footer class="footer h-96 bg-slate-300">Footer</footer>

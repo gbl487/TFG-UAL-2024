@@ -6,11 +6,7 @@ export default function TagArray({ tags }) {
     <>
       {tags.map((tag) => {
         const name = getCategoryName(tag)
-        return (
-          <>
-            <Chip key={tag} tag={name} />
-          </>
-        )
+        return <Chip key={tag} tag={name} />
       })}
     </>
   )

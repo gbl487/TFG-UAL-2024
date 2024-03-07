@@ -4,7 +4,10 @@ import { FILTROS } from 'src/constants'
 import { useForm } from 'react-hook-form'
 import InfoCard from './InfoCard'
 import { deltaToHtml } from 'src/Controllers/utils/delta'
+import firebaseApp from 'src/Model/Firebase'
+import { collection, doc, getFirestore, setDoc } from 'firebase/firestore'
 export default function CrearTarjeta() {
+  const allowedFileTypes = ['image/png', 'image/jpeg']
   const {
     register,
     handleSubmit,
@@ -13,8 +16,12 @@ export default function CrearTarjeta() {
   const [titulo, setTitulo] = useState()
   const [text, setText] = useState('')
   const [content, setContent] = useState('')
-  const [desc, setDesc] = useState('')
+  const [errorContent, setErrorContent] = useState(false)
+  const [portada, setPortada] = useState('')
+  const [errorPortada, setErrorPortada] = useState(false)
   const [tags, setTags] = useState([])
+  const [errorTag, setErrorTag] = useState(false)
+  const [desc, setDesc] = useState('')
   const quillRef = useRef()
   const CabeceraEditor = () => {
     return (
@@ -50,12 +57,43 @@ export default function CrearTarjeta() {
       setTags((prevTags) => prevTags.filter((tag) => tag !== checkboxID))
     }
   }
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = reject
+    })
+  const db = getFirestore(firebaseApp)
   const onSubmit = async (data) => {
-    console.log(data)
-    console.log(quillRef.current.getQuill().editor.delta)
-    console.log(content)
-  }
+    tags.length === 0 ? setErrorTag(true) : setErrorTag(false)
+    content.length === 0 ? setErrorContent(true) : setErrorContent(false)
+    console.log(data.portada[0].type)
+    !allowedFileTypes.includes(data.portada[0].type)
+      ? setErrorPortada(true)
+      : setErrorPortada(false)
+    if (!errorContent && !errorTag && !errorPortada) {
+      const tarjetasRef = collection(db, 'Tarjetas')
+      const nuevaData = {
+        titulo: titulo,
+        portada: portada,
+        categorias: tags,
+        contenido: content.ops,
+      }
+      try {
+        // Utiliza setDoc para agregar el nuevo documento
+        await setDoc(doc(tarjetasRef), nuevaData)
 
+        console.log('Tarjeta agregada correctamente')
+      } catch (error) {
+        console.error('Error al agregar la tarjeta:', error)
+      }
+    }
+  }
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]
+    toBase64(file).then((data) => setPortada(data))
+  }
   return (
     <>
       <div className="p-10 md:ml-64 w-auto flex flex-col xl:flex-row justify-between gap-10">
@@ -64,7 +102,6 @@ export default function CrearTarjeta() {
             Por favor, introduzca todos los valores de todos los siguientes
             campos:
           </h1>
-
           <form onSubmit={handleSubmit(onSubmit)} action="#">
             <label className="form-control w-full max-w-md">
               <div className="label">
@@ -73,15 +110,20 @@ export default function CrearTarjeta() {
               <input
                 type="text"
                 id="titulo"
-                {...register('titulo', { required: false })}
+                {...register('titulo', { required: true, minLength: 5 })}
                 placeholder="Cura..."
                 // value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 className="input bg-asiseg-gray/10 input-bordered w-full max-w-md"
               />
               {errors.titulo?.type === 'required' && (
-                <small className="text-red-400 text-xs" role="alert">
+                <small className="text-red-400 text-xs mt-2" role="alert">
                   Este campo es obligatorio
+                </small>
+              )}
+              {errors.titulo?.type === 'minLength' && (
+                <small className="text-red-400 text-xs mt-2" role="alert">
+                  El título debe tener 50 caracteres
                 </small>
               )}
             </label>
@@ -92,11 +134,20 @@ export default function CrearTarjeta() {
               <input
                 type="file"
                 id="portada"
-                {...register('portada', { required: false })}
-                // value={fichero}
-                // onChange={(e) => setFichero(e.target.value)}
+                {...register('portada', { required: true })}
+                onChange={handleFileChange}
                 className="file-input bg-asiseg-gray/10 w-full max-w-md"
               />
+              {errors.portada?.type === 'required' && (
+                <small className="text-red-400 text-xs mt-2" role="alert">
+                  Este campo es obligatorio
+                </small>
+              )}
+              {errorPortada && (
+                <small className="text-red-400 text-xs mt-2" role="alert">
+                  Tipo de archivo inválido
+                </small>
+              )}
             </div>
             <div className="form-control w-full max-w-lg mt-5">
               <div className="label">
@@ -116,31 +167,34 @@ export default function CrearTarjeta() {
                       </p>
                       {filtro.options.map((categoria) => {
                         return (
-                          <>
-                            <label
-                              key={categoria.code}
-                              htmlFor={categoria.code}
-                              className="label cursor-pointer"
-                            >
-                              <span className="label-text text-black pr-2">
-                                {categoria.name}
-                              </span>
-                              <input
-                                id={categoria.code}
-                                {...register('cat_' + categoria.code, {
-                                  required: false,
-                                })}
-                                onChange={(e) => handleTagChange(e.target)}
-                                type="checkbox"
-                                className="checkbox checkbox-primary"
-                              />
-                            </label>
-                          </>
+                          <label
+                            key={categoria.code}
+                            htmlFor={categoria.code}
+                            className="label cursor-pointer"
+                          >
+                            <span className="label-text text-black pr-2">
+                              {categoria.name}
+                            </span>
+                            <input
+                              id={categoria.code}
+                              {...register('cat_' + categoria.code, {
+                                required: false,
+                              })}
+                              onChange={(e) => handleTagChange(e.target)}
+                              type="checkbox"
+                              className="checkbox checkbox-primary"
+                            />
+                          </label>
                         )
                       })}
                     </div>
                   )
                 })}
+                {errorTag && (
+                  <small className="text-red-400 text-xs mt-2" role="alert">
+                    Debe seleccionar al menos una categoía
+                  </small>
+                )}
               </div>
             </div>
             <div className="mt-5">
@@ -149,7 +203,6 @@ export default function CrearTarjeta() {
               </div>
               <Editor
                 id="contenido"
-                // value={text}
                 ref={quillRef}
                 onTextChange={() =>
                   getHtml(quillRef.current.getQuill().editor.delta)
@@ -158,7 +211,11 @@ export default function CrearTarjeta() {
                 headerTemplate={cabecera}
                 style={{ height: '600px' }}
               />
-              {/* <button onClick={obtenerContenido}>Obtener Delta</button> */}
+              {errorContent && (
+                <small className="text-red-400 text-xs mt-2" role="alert">
+                  Este campo es obligatorio
+                </small>
+              )}
             </div>
             <div className="flex flex-1 justify-center mt-10">
               <input
@@ -174,6 +231,7 @@ export default function CrearTarjeta() {
           <div className="flex justify-center">
             <InfoCard
               titulo={titulo}
+              portada={portada}
               descripcion={desc}
               tags={tags}
               contenido={text}

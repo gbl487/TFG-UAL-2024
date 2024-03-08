@@ -21,7 +21,7 @@ export default function Card({ titulo, portada, descripcion, tags, Footer }) {
           <div className="mb-2 flex flex-row flex-wrap gap-2 py-1 overflow-hidden min-h-20">
             <TagArray tags={tags} />
           </div>
-          <Footer />
+          {Footer && <Footer />}
         </div>
       </div>
     </div>

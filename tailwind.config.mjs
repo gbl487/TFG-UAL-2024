@@ -61,7 +61,7 @@ export default {
 
           info: '#00afff',
 
-          success: '#009400',
+          success: '#3CB371',
 
           warning: '#ffcf00',
 

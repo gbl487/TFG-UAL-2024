@@ -24,7 +24,6 @@ export default function ALlTarjetas() {
         console.error('Error al obtener las tarjetas:', error)
       }
     }
-
     obtenerTarjetas().then((result) => {
       setDocs(result)
       setLoading(false)
@@ -45,7 +44,7 @@ export default function ALlTarjetas() {
               <InfoCard
                 key={tarjeta.id}
                 titulo={data.titulo}
-                portada={data.portada}
+                portada={data.imagen}
                 descripcion={desc}
                 tags={data.categorias}
                 contenido={html}

@@ -2,35 +2,105 @@ import { DeleteCardIcon, ModidyCardIcon, SeeCardIcon } from '@Icons/Icons'
 import { AddContentButton } from './Buttons/AddContentButton'
 import Card from './Card'
 import { useAuth } from 'src/Controllers/context/userContext'
+import { useEffect, useState } from 'react'
+import { db } from 'src/Model/Firebase'
+import { collection, getDocs } from 'firebase/firestore'
+import { deltaToHtml } from 'src/Controllers/utils/delta'
+import AsisegLoader from './Buttons/AsisegLoader'
 
 export default function AdminContent() {
   const { usuario } = useAuth()
-  const titulo =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper.'
-  const descripcion =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac dui et mauris tincidunt fermentum. Quisque vestibulum quam id turpis facilisis, in ullamcorper nulla ullamcorper. Nulla facilisi. Sed feugiat augue eget fermentum aliquam. Integer bibendum auctor ex, vel euismod purus. Sed tristique ligula nec ligula blandit, sit amet aliquam elit laoreet.'
-  const Footer = () => {
+
+  const [docs, setDocs] = useState([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    const obtenerTarjetas = async () => {
+      try {
+        // Obtén una referencia a la colección 'Tarjetas'
+        const tarjetasRef = collection(db, 'Tarjetas')
+
+        // Obtiene todos los documentos de la colección 'Tarjetas'
+        const querySnapshot = await getDocs(tarjetasRef)
+
+        return querySnapshot.docs
+      } catch (error) {
+        console.error('Error al obtener las tarjetas:', error)
+      }
+    }
+    obtenerTarjetas().then((result) => {
+      setDocs(result)
+      setLoading(false)
+    })
+  }, [])
+
+  const Footer = (id) => {
+    const modHref = `/administrarcontenido/modificartarjeta/${id.id}`
     return (
       <div className="flex w-full bg-slate justify-end gap-2 ">
-        <button className="btn btn-success opacity-65">
-          <a href="/administrarcontenido/visualizar">
+        <a href="/administrarcontenido/visualizar">
+          <button className="btn btn-success opacity-65">
             <SeeCardIcon />
-          </a>
-        </button>
-        <button className="btn btn-primary ">
-          <a href="/administrarcontenido/modificar">
+          </button>
+        </a>
+        <a href={modHref}>
+          <button className="btn btn-primary ">
             <ModidyCardIcon />
-          </a>
-        </button>
+          </button>
+        </a>
         <button className="btn btn-error ">
           <DeleteCardIcon />
         </button>
       </div>
     )
   }
+
   return (
     <>
-      {usuario && (
+      {usuario ? (
+        <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
+          <div className="flex justify-center my-5">
+            <a href="/administrarcontenido/crear">
+              <AddContentButton />
+            </a>
+          </div>
+          {!loading && docs.length !== 0 && (
+            <div className="w-full flex justify-center">
+              <section className="grid grid-cols-1 lg+:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-5">
+                {docs.map((tarjeta) => {
+                  const data = tarjeta.data()
+                  const html = deltaToHtml(data.contenido)
+                  const desc = html.replace(/<[^>]+>/g, '')
+                  return (
+                    <Card
+                      key={tarjeta.id}
+                      titulo={data.titulo}
+                      portada={data.imagen}
+                      descripcion={desc}
+                      tags={data.categorias}
+                      contenido={html}
+                      Footer={() => <Footer id={tarjeta.id} />}
+                    />
+                  )
+                })}
+              </section>
+            </div>
+          )}
+          {!loading && docs.length === 0 && (
+            <div className="h-screen w-full flex justify-center items-center">
+              <p className="text-3xl">No hay resultados</p>
+            </div>
+          )}
+          {loading && (
+            <div className="flex w-full flex-col h-screen justify-center content-center">
+              <AsisegLoader showLogo={true} />
+            </div>
+          )}
+        </div>
+      ) : (
+        ''
+      )}
+
+      {/* {usuario && (
         <>
           <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
             <div className="flex justify-center my-5">
@@ -38,44 +108,30 @@ export default function AdminContent() {
                 <AddContentButton />
               </a>
             </div>
+
             <div className="w-full flex justify-center">
               <section className="grid grid-cols-1 lg+:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-5">
-                <Card
-                  titulo={titulo}
-                  descripcion={descripcion}
-                  tags={[]}
-                  Footer={Footer}
-                />
-
-                <Card
-                  titulo={titulo}
-                  descripcion={descripcion}
-                  tags={[]}
-                  Footer={Footer}
-                />
-                <Card
-                  titulo={titulo}
-                  descripcion={descripcion}
-                  tags={[]}
-                  Footer={Footer}
-                />
-                <Card
-                  titulo={titulo}
-                  descripcion={descripcion}
-                  tags={[]}
-                  Footer={Footer}
-                />
-                <Card
-                  titulo={titulo}
-                  descripcion={descripcion}
-                  tags={[]}
-                  Footer={Footer}
-                />
+                {docs.map((tarjeta) => {
+                  const data = tarjeta.data()
+                  const html = deltaToHtml(data.contenido)
+                  const desc = html.replace(/<[^>]+>/g, '')
+                  return (
+                    <Card
+                      key={tarjeta.id}
+                      titulo={data.titulo}
+                      portada={data.imagen}
+                      descripcion={desc}
+                      tags={data.categorias}
+                      contenido={html}
+                      Footer={() => <Footer id={tarjeta.id} />}
+                    />
+                  )
+                })}
               </section>
             </div>
           </div>
         </>
-      )}
+      )} */}
     </>
   )
 }

@@ -1,0 +1,23 @@
+---
+import ProtectedRoute from '../../../Views/components/ProtectedRoute'
+import ModificarTarjeta from '../../../Views/components/ModificarTarjeta'
+import PanelDeUsuario from '../../../layouts/PanelDeUsuario.astro'
+import { getAllTarjetasUids } from '../../../Model/Tarjetas'
+export async function getStaticPaths() {
+  const uids = await getAllTarjetasUids()
+
+  return uids?.map((uid) => {
+    return {
+      params: { id: uid },
+    }
+  })
+}
+
+const { id } = Astro.params
+---
+
+<ProtectedRoute client:only>
+  <PanelDeUsuario title="Modificar tarjeta">
+    <ModificarTarjeta uid={id} client:only />
+  </PanelDeUsuario>
+</ProtectedRoute>

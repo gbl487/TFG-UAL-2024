@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Sidebar } from 'primereact/sidebar'
 import AllFilters from './AllFilters'
-import { FilterIcon } from '@Icons/Icons'
+import { FilterIcon } from '@icons/Icons'
 export default function SideFilters() {
   const [visible, setVisible] = useState(false)
   return (

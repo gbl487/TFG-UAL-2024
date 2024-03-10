@@ -9,7 +9,7 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
 import { crearTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
-import Toast from './Toast'
+import Toast from './core/Toast'
 import AsisegLoader from './Buttons/AsisegLoader'
 export default function CrearTarjeta() {
   const {
@@ -21,8 +21,8 @@ export default function CrearTarjeta() {
   const [text, setText] = useState('')
   const [content, setContent] = useState('')
   const [errorContent, setErrorContent] = useState(false)
-  const [portada, setPortada] = useState('')
-  const [errorPortada, setErrorPortada] = useState(false)
+  const [imagen, setImagen] = useState('')
+  const [errorImagen, setErrorImagen] = useState(false)
   const [tags, setTags] = useState([])
   const [errorTag, setErrorTag] = useState(false)
   const [desc, setDesc] = useState('')
@@ -76,14 +76,14 @@ export default function CrearTarjeta() {
   const onSubmit = async (data) => {
     setErrorTag(isEmptyArray(tags))
     setErrorContent(isEmptyArray(content))
-    !ALLOWEDFILETYPES.includes(data.portada[0].type)
-      ? setErrorPortada(true)
-      : setErrorPortada(false)
-    if (!errorContent && !errorTag && !errorPortada) {
+    !ALLOWEDFILETYPES.includes(data.imagen[0].type)
+      ? setErrorImagen(true)
+      : setErrorImagen(false)
+    if (!errorContent && !errorTag && !errorImagen) {
       setLoading(true)
       const { result } = await crearTarjeta({
         titulo: titulo,
-        imagen: portada,
+        imagen: imagen,
         categorias: tags,
         contenido: content.ops,
       })
@@ -99,8 +99,13 @@ export default function CrearTarjeta() {
   }
   const handleFileChange = (event) => {
     const file = event.target.files[0]
-    toBase64(file).then((data) => setPortada(data))
+    console.log(file)
+    toBase64(file).then((data) => {
+      console.log(data)
+      setImagen(data)
+    })
   }
+  console.log(imagen)
   return (
     <>
       <div className="p-10 md:ml-64 w-auto flex flex-col xl:flex-row justify-between gap-10">
@@ -150,17 +155,17 @@ export default function CrearTarjeta() {
                   </div>
                   <input
                     type="file"
-                    id="portada"
-                    {...register('portada', { required: true })}
+                    id="imagen"
+                    {...register('imagen', { required: true })}
                     onChange={handleFileChange}
                     className="file-input bg-asiseg-gray/10 w-full max-w-md"
                   />
-                  {errors.portada?.type === 'required' && (
+                  {errors.imagen?.type === 'required' && (
                     <small className="text-red-400 text-xs mt-2" role="alert">
                       Este campo es obligatorio
                     </small>
                   )}
-                  {errorPortada && (
+                  {errorImagen && (
                     <small className="text-red-400 text-xs mt-2" role="alert">
                       Tipo de archivo inválido
                     </small>
@@ -250,7 +255,7 @@ export default function CrearTarjeta() {
               <div className="flex justify-center">
                 <InfoCard
                   titulo={titulo}
-                  portada={portada}
+                  imagen={imagen}
                   descripcion={desc}
                   tags={tags}
                   contenido={text}

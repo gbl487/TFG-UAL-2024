@@ -1,4 +1,4 @@
-import { InfoIcon, SearchIcon } from '@Icons/Icons'
+import { InfoIcon, SearchIcon } from '@icons/Icons'
 
 export default function SearchInput() {
   return (

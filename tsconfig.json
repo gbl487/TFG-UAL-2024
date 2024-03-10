@@ -11,7 +11,7 @@
       "@hooks/*": [
         "src/Controllers/hooks/*"
       ],
-      "@Icons/*": [
+      "@icons/*": [
         "src/assets/svg/*"
       ]
     }

@@ -1,13 +1,13 @@
 import 'primeicons/primeicons.css'
 import { useState } from 'react'
-import { CloseIcon, SeeMoreIcon } from '@Icons/Icons.jsx'
+import { CloseIcon, SeeMoreIcon } from '@icons/Icons.jsx'
 import { Drawer } from 'vaul'
-import Card from './Card.jsx'
+import Card from './core/Card.jsx'
 import './quill.css'
-import TagArray from './TagArray.jsx'
+import TagArray from './core/TagArray.jsx'
 export default function InfoCard({
   titulo,
-  portada,
+  imagen,
   tags,
   descripcion,
   contenido,
@@ -33,7 +33,7 @@ export default function InfoCard({
             <button>
               <Card
                 titulo={titulo}
-                portada={portada}
+                imagen={imagen}
                 descripcion={descripcion}
                 tags={tags}
                 Footer={Footer}

@@ -1,12 +1,12 @@
-import { DeleteCardIcon, ModidyCardIcon, SeeCardIcon } from '@Icons/Icons'
-import { AddContentButton } from './Buttons/AddContentButton'
-import Card from './Card'
+import { DeleteCardIcon, ModidyCardIcon, SeeCardIcon } from '@icons/Icons'
+import { AddContentButton } from '../Buttons/AddContentButton'
+import Card from '../core/Card'
 import { useAuth } from 'src/Controllers/context/userContext'
 import { useEffect, useState } from 'react'
 import { db } from 'src/Model/Firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { deltaToHtml } from 'src/Controllers/utils/delta'
-import AsisegLoader from './Buttons/AsisegLoader'
+import AsisegLoader from '../Buttons/AsisegLoader'
 
 export default function AdminContent() {
   const { usuario } = useAuth()
@@ -74,7 +74,7 @@ export default function AdminContent() {
                     <Card
                       key={tarjeta.id}
                       titulo={data.titulo}
-                      portada={data.imagen}
+                      imagen={data.imagen}
                       descripcion={desc}
                       tags={data.categorias}
                       contenido={html}

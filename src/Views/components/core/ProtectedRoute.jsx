@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from 'src/Controllers/context/userContext'
-import AsisegLoader from './Buttons/AsisegLoader'
+import AsisegLoader from '../Buttons/AsisegLoader'
+
 const ProtectedRoute = ({ children }) => {
   const { usuario } = useAuth()
   const [loading, setLoading] = useState(true)

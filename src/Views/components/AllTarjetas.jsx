@@ -44,7 +44,7 @@ export default function ALlTarjetas() {
               <InfoCard
                 key={tarjeta.id}
                 titulo={data.titulo}
-                portada={data.imagen}
+                imagen={data.imagen}
                 descripcion={desc}
                 tags={data.categorias}
                 contenido={html}

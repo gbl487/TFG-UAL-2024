@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Sidebar } from 'primereact/sidebar'
-import { PanelIcon } from '@Icons/Icons'
+import { PanelIcon } from '@icons/Icons'
 import { PanelContent } from './PanelContent'
-import Logo from './Logo'
+import Logo from '../Logo'
 export default function SideUserPanel() {
   const [visible, setVisible] = useState(false)
 

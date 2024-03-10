@@ -4,7 +4,7 @@ import {
   EditIcon,
   SignOutIcon,
   UserIcon,
-} from '@Icons/Icons'
+} from '@icons/Icons'
 import { useAuth } from 'src/Controllers/context/userContext'
 
 export function PanelContent() {

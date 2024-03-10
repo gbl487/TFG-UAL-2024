@@ -1,4 +1,4 @@
-import { TagIcon } from '@Icons/Icons'
+import { TagIcon } from '@icons/Icons'
 
 export default function Chip({ tag }) {
   return (

@@ -1,13 +1,12 @@
 import TagArray from './TagArray'
 
-export default function Card({ titulo, portada, descripcion, tags, Footer }) {
-  const url =
-    'https://media.istockphoto.com/id/519085852/es/foto/3-d-ilustraci%C3%B3n-de-intestino-delgado.jpg?s=2048x2048&w=is&k=20&c=i172otnZoBgfuY9Pdpl5R7KMteyFxhWzVnvzsgUW3LU='
+export default function Card({ titulo, imagen, descripcion, tags, Footer }) {
+  const defaultImagen = ''
   return (
     <div className="max-w-sm min-w-80 bg-gray-50/50 border border-gray-200 rounded-lg shadow-md hover:shadow-asiseg-gray hover:transition-shadow subpixel-antialiased overflow-hidden text-left">
       <img
         className="h-56 w-full object-cover object-center rounded-t-lg "
-        src={portada ? portada : url}
+        src={imagen ? imagen : defaultImagen}
         alt={titulo}
       />
       <div className="p-5">

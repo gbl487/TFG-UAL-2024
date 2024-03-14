@@ -6,7 +6,8 @@ import {
   UserIcon,
 } from '@icons/Icons'
 import { useAuth } from 'src/Controllers/context/userContext'
-
+import { Link } from 'react-router-dom'
+import { setSidebar } from 'src/Controllers/context/sidebar_context'
 export function PanelContent() {
   const { cerrarSesion } = useAuth()
   const handleLogout = () => {
@@ -16,28 +17,28 @@ export function PanelContent() {
     <div className="h-full px-3 overflow-y-auto ">
       <ul className="space-y-2 font-medium text-black">
         <li>
-          <a href="/misdatos">
+          <Link to="/misdatos" onClick={() => setSidebar({ value: false })}>
             <div className="flex items-center p-2 0 rounded-lg hover:bg-gray-200 group cursor-pointer">
               <UserIcon />
               <span className="ms-3">Mis datos</span>
             </div>
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/administrarcitas">
+          <Link to="/citas" onClick={() => setSidebar({ value: false })}>
             <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">
               <CalendarIcon />
               <span className="ms-3">Administrar citas</span>
             </div>
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/administrarcontenido">
+          <Link to="/contenido" onClick={() => setSidebar({ value: false })}>
             <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">
               <EditIcon />
               <span className="ms-3">Administrar contenido</span>
             </div>
-          </a>
+          </Link>
         </li>
         <li>
           <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">

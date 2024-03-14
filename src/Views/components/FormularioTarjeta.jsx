@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Editor } from 'primereact/editor'
 import { FILTROS, ALLOWEDFILETYPES } from 'src/constants'
 import { useForm } from 'react-hook-form'
@@ -11,7 +11,7 @@ import { crearTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
 import Toast from './core/Toast'
 import AsisegLoader from './Buttons/AsisegLoader'
-export default function CrearTarjeta() {
+export default function FormularioTarjeta({ initialValue }) {
   const {
     register,
     handleSubmit,
@@ -28,6 +28,12 @@ export default function CrearTarjeta() {
   const [desc, setDesc] = useState('')
   const [loading, setLoading] = useState(false)
   const quillRef = useRef()
+  useEffect(() => {
+    if (initialValue) {
+      console.log(initialValue)
+    }
+  }, [initialValue])
+
   // const CabeceraEditor = () => {
   //   return (
   //     <div id="toolbar">
@@ -129,7 +135,7 @@ export default function CrearTarjeta() {
                     id="titulo"
                     {...register('titulo', { required: true, minLength: 5 })}
                     placeholder="Cura..."
-                    // value={titulo}
+                    value={initialValue.titulo}
                     onChange={(e) => setTitulo(e.target.value)}
                     className="input bg-asiseg-gray/10 input-bordered w-full max-w-md"
                   />
@@ -154,6 +160,7 @@ export default function CrearTarjeta() {
                     type="file"
                     id="imagen"
                     {...register('imagen', { required: true })}
+                    // value={initialValue.imagen}
                     onChange={handleFileChange}
                     className="file-input bg-asiseg-gray/10 w-full max-w-md"
                   />
@@ -199,6 +206,9 @@ export default function CrearTarjeta() {
                                   {...register('cat_' + categoria.code, {
                                     required: false,
                                   })}
+                                  checked={initialValue.categorias.includes(
+                                    categoria.code
+                                  )}
                                   onChange={(e) => handleTagChange(e.target)}
                                   type="checkbox"
                                   className="checkbox checkbox-primary"
@@ -225,6 +235,7 @@ export default function CrearTarjeta() {
                   <Editor
                     id="contenido"
                     ref={quillRef}
+                    // value={initialValue.contenido}
                     onTextChange={() =>
                       getHtml(quillRef.current.getQuill().editor.delta)
                     }

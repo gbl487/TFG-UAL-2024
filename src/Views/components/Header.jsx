@@ -9,6 +9,7 @@ import { modal, setModal } from 'src/Controllers/context/modal_context'
 import { useAuth } from 'src/Controllers/context/userContext'
 import Logo from './Logo'
 import AsisegLoader from './Buttons/AsisegLoader'
+import { Link } from 'react-router-dom'
 export default function Header() {
   const $registerState = useStore(registerState)
   const $modal = useStore(modal)
@@ -26,7 +27,7 @@ export default function Header() {
                 </div>
               </>
             ) : usuario ? (
-              <a href="/misdatos">
+              <Link to="/misdatos">
                 <button className="btn btn-primary opacity-80 transition-opacity mr-5 px-2 py-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +46,7 @@ export default function Header() {
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                   </svg>
                 </button>
-              </a>
+              </Link>
             ) : (
               <button
                 type="button"

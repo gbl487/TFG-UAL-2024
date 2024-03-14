@@ -1,6 +1,4 @@
 ---
-import { PrimeReactProvider } from 'primereact/api'
-
 interface Props {
   title: string
 }
@@ -19,27 +17,22 @@ const { title } = Astro.props
     <title>{title}</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </head>
-  <PrimeReactProvider>
-    <body>
-      <slot />
-    </body>
-  </PrimeReactProvider>
-
-  <style is:global>
-    html {
-      font-family: 'Inter var', system-ui, sans-serif;
-    }
-    body {
-      --focus-ring: 0 0 0 1px #03989e;
-      --primary-color: #03989e;
-      --highlight-text-color: #03989e;
-      /* background-color: rgb(248 250 252); */
-    }
-    .asiseg_input:focus-visible {
-      box-shadow: 0 0 0 1px #03989e;
-      outline: none;
-    }
-  </style>
-
-
+  <body>
+    <slot />
+    <style is:global>
+      html {
+        font-family: 'Inter var', system-ui, sans-serif;
+      }
+      body {
+        --focus-ring: 0 0 0 1px #03989e;
+        --primary-color: #03989e;
+        --highlight-text-color: #03989e;
+        /* background-color: rgb(248 250 252); */
+      }
+      .asiseg_input:focus-visible {
+        box-shadow: 0 0 0 1px #03989e;
+        outline: none;
+      }
+    </style>
+  </body>
 </html>

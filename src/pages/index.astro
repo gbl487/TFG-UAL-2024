@@ -1,24 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import AllTarjetas from '@components/AllTarjetas'
-import SearchBar from '@components/SearchBar.jsx'
-import Header from '@components/Header'
-import '../Views/styles/index.css'
+import Main from '@components/Main.jsx'
+const { pathname } = new URL(Astro.request.url)
 ---
 
 <Layout title="ASISEG">
-  <section class="layout antialiased">
-    <Header client:visible />
-
-    <div class="search w-full pt-24 flex items-end bg-white fixed z-10 pb-6">
-      <SearchBar client:visible />
-    </div>
-
-    <main class="body pt-36">
-      <AllTarjetas client:visible />
-    </main>
-
-    <footer class="footer h-96 bg-slate-300">Footer</footer>
-  </section>
-  <!-- <MenuPanel client:visible /> -->
+  <!-- <PrimeReactProvider client:only> -->
+  <Main {pathname} client:load />
+  <!-- </PrimeReactProvider> -->
 </Layout>

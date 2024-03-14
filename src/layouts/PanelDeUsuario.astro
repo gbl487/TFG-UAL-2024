@@ -1,11 +1,8 @@
 ---
-import { PrimeReactProvider } from 'primereact/api'
-import UserPanel from '@components/UserPanel/UserPanel'
 interface Props {
   title: string
 }
 const { title } = Astro.props
-import { ViewTransitions } from 'astro:transitions'
 ---
 
 <!doctype html>
@@ -18,28 +15,23 @@ import { ViewTransitions } from 'astro:transitions'
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    <ViewTransitions />
   </head>
-  <PrimeReactProvider>
-    <body>
-      <UserPanel client:only />
-      <slot />
-    </body>
-  </PrimeReactProvider>
-
-  <style is:global>
-    html {
-      font-family: 'Inter var', system-ui, sans-serif;
-    }
-    body {
-      --focus-ring: 0 0 0 1px #03989e;
-      --primary-color: #03989e;
-      --highlight-text-color: #03989e;
-      /* background-color: rgb(248 250 252); */
-    }
-    .asiseg_input:focus-visible {
-      box-shadow: 0 0 0 1px #03989e;
-      outline: none;
-    }
-  </style>
+  <body>
+    <slot />
+    <style is:global>
+      html {
+        font-family: 'Inter var', system-ui, sans-serif;
+      }
+      body {
+        --focus-ring: 0 0 0 1px #03989e;
+        --primary-color: #03989e;
+        --highlight-text-color: #03989e;
+        /* background-color: rgb(248 250 252); */
+      }
+      .asiseg_input:focus-visible {
+        box-shadow: 0 0 0 1px #03989e;
+        outline: none;
+      }
+    </style>
+  </body>
 </html>

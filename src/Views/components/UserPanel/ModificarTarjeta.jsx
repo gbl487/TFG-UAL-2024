@@ -1,3 +1,4 @@
+import FormularioTarjeta from '@components/FormularioTarjeta'
 import { useEffect, useState } from 'react'
 import { getTarjetaFromId } from 'src/Model/Tarjetas'
 
@@ -16,6 +17,5 @@ export default function ModificarTarjeta({ uid }) {
       setTarjeta(result)
     })
   }, [uid])
-  console.log(tarjeta)
-  return <div className="p-4 sm:ml-64 w-auto h-full">{uid}</div>
+  return <>{tarjeta && <FormularioTarjeta initialValue={tarjeta} />}</>
 }

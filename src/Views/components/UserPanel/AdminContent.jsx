@@ -7,6 +7,7 @@ import { db } from 'src/Model/Firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { deltaToHtml } from 'src/Controllers/utils/delta'
 import AsisegLoader from '../Buttons/AsisegLoader'
+import { Link } from 'react-router-dom'
 
 export default function AdminContent() {
   const { usuario } = useAuth()
@@ -34,19 +35,19 @@ export default function AdminContent() {
   }, [])
 
   const Footer = (id) => {
-    const modHref = `/administrarcontenido/modificartarjeta/${id.id}`
+    const modHref = `/contenido/modificar/${id.id}`
     return (
       <div className="flex w-full bg-slate justify-end gap-2 ">
-        <a href="/administrarcontenido/visualizar">
+        <Link href="/contenido/visualizar">
           <button className="btn btn-success opacity-65">
             <SeeCardIcon />
           </button>
-        </a>
-        <a href={modHref}>
+        </Link>
+        <Link to={modHref}>
           <button className="btn btn-primary ">
             <ModidyCardIcon />
           </button>
-        </a>
+        </Link>
         <button className="btn btn-error ">
           <DeleteCardIcon />
         </button>
@@ -59,9 +60,9 @@ export default function AdminContent() {
       {usuario ? (
         <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
           <div className="flex justify-center my-5">
-            <a href="/administrarcontenido/crear">
+            <Link to="/contenido/crear">
               <AddContentButton />
-            </a>
+            </Link>
           </div>
           {!loading && docs.length !== 0 && (
             <div className="w-full flex justify-center">

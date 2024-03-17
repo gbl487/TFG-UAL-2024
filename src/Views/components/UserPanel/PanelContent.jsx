@@ -46,6 +46,14 @@ export function PanelContent() {
             <span className="ms-3">Chat</span>
           </div>
         </li>
+        <li>
+          <Link to="/claves" onClick={() => setSidebar({ value: false })}>
+            <div className="flex items-center p-2 0 rounded-lg hover:bg-gray-200 group cursor-pointer">
+              <UserIcon />
+              <span className="ms-3">Claves de registro</span>
+            </div>
+          </Link>
+        </li>
         <li onClick={handleLogout}>
           <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">
             <SignOutIcon />

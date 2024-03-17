@@ -61,11 +61,11 @@ export default {
 
           info: '#00afff',
 
-          success: '#3CB371',
+          success: '#00a345',
 
           warning: '#ffcf00',
 
-          error: '#B91C1C',
+          error: '#ba2100',
         },
       },
     ],

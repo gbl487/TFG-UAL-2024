@@ -1,5 +1,5 @@
 import { DeleteCardIcon, ModidyCardIcon, SeeCardIcon } from '@icons/Icons'
-import { AddContentButton } from '../Buttons/AddContentButton'
+import { AsisegButton } from '../Buttons/AddContentButton'
 import Card from '../core/Card'
 import { useAuth } from 'src/Controllers/context/userContext'
 import { useEffect, useState } from 'react'
@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom'
 
 export default function AdminContent() {
   const { usuario } = useAuth()
-
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(true)
   useEffect(() => {
@@ -61,7 +60,7 @@ export default function AdminContent() {
         <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
           <div className="flex justify-center my-5">
             <Link to="/contenido/crear">
-              <AddContentButton />
+              <AsisegButton text={'Añadir contenido'} />
             </Link>
           </div>
           {!loading && docs.length !== 0 && (

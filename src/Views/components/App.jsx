@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import HomePage from './HomePage.jsx'
+import HomePage from './Home/HomePage.jsx'
 import MisDatos from './UserPanel/MisDatos.jsx'
 import AdminContent from './UserPanel/AdminContent.jsx'
 import CrearTarjeta from './UserPanel/CrearTarjeta.jsx'

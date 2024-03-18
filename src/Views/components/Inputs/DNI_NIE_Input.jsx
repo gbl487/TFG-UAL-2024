@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { checkDNI_NIE } from 'src/Controllers/utils/checkDNI-NIE'
 import { setValidNIF } from 'src/Controllers/context/dni_nie_context'
-export default function DNI_NIE({ register, errors }) {
+export default function DNI_NIE({ id, register, errors }) {
   const [dni_nie, setDni_nie] = useState('')
   const [errorDNI, setErrorDNI] = useState(null)
   const handleDNI_NIE = (e) => {
@@ -39,10 +39,12 @@ export default function DNI_NIE({ register, errors }) {
       <span className="p-float-label">
         DNI/NIE
         <input
-          id="dni_nie"
+          id={id}
           type="text"
           {...register('dni_nie', { required: true, minLength: 9 })}
-          className="asiseg_input h-8 ps-2 w-full rounded-md"
+          className={`asiseg_input h-8 ps-2 w-full rounded-md ${
+            errors ? 'ring-red-600' : ''
+          }`}
           value={dni_nie}
           onChange={(e) => {
             handleDNI_NIE(e)

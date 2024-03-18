@@ -1,8 +1,8 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import firebaseApp from 'src/Model/Firebase'
-import InfoCard from './InfoCard'
-import AsisegLoader from './Buttons/AsisegLoader'
+import InfoCard from '../InfoCard'
+import AsisegLoader from '../Buttons/AsisegLoader'
 import { deltaToHtml } from 'src/Controllers/utils/delta'
 import { useFilters } from '@hooks/useFilters'
 export default function ALlTarjetas() {

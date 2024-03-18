@@ -3,7 +3,7 @@ import { useAuth } from 'src/Controllers/context/userContext'
 import { PanelContent } from './PanelContent'
 import SideUserPanel from './SideUserPanel'
 import 'primereact/resources/themes/tailwind-light/theme.css'
-import Logo from '../Logo'
+import Logo from '../core/Logo'
 
 export default function UserPanel() {
   const isDesktop = useMediaQuery('768')

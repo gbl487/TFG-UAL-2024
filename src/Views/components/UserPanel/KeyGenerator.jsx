@@ -2,20 +2,12 @@ import { AsisegButton } from '@components/Buttons/AddContentButton'
 import AsisegLoader from '@components/Buttons/AsisegLoader'
 import Toast from '@components/core/Toast'
 import { DeleteKeyICon } from '@icons/Icons'
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
+import { deleteDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { setToast } from 'src/Controllers/context/toast_context'
 import { useAuth } from 'src/Controllers/context/userContext'
 import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
-import { crearClave, getAllClaves } from 'src/Model/Claves'
-import { db } from 'src/Model/Firebase'
+import { crearClave, getAllClaves, getClaveDoc } from 'src/Model/Claves'
 
 export default function KeyGenerator() {
   const { usuario } = useAuth()
@@ -23,7 +15,7 @@ export default function KeyGenerator() {
   const [indiceClave, setIndiceClave] = useState()
   const [clave, setClave] = useState()
   const [loading, setLoading] = useState(true)
-  const [toastText, setToasText] = useState(true)
+  const [toastText, setToasText] = useState()
   const username = usuario?.email.replace('@asiseg.com', '').toUpperCase()
 
   useEffect(() => {
@@ -64,14 +56,7 @@ export default function KeyGenerator() {
   const deleteClave = async (e) => {
     e.preventDefault()
     if (clave) {
-      const usuariosQuery = query(
-        collection(db, 'Claves'),
-        where('clave', '==', clave)
-      )
-      const querySnapshot = await getDocs(usuariosQuery)
-      const id = querySnapshot.docs[0].id
-
-      const documentoRef = doc(db, 'Claves', id)
+      const { documentoRef } = await getClaveDoc({ value: clave })
       await deleteDoc(documentoRef)
       setToasText('Clave eliminada correctamente')
       setToast({ value: true })
@@ -84,7 +69,7 @@ export default function KeyGenerator() {
   }
 
   return (
-    <div className="p-10 md:ml-64 w-auto flex flex-col xl:flex-row justify-center gap-5 overflow-x-auto">
+    <div className="p-5 md:p-10 md:ml-64 w-auto flex flex-col justify-center">
       {loading ? (
         <div className="flex w-full flex-col h-screen justify-center content-center">
           <AsisegLoader showLogo={true} />
@@ -96,7 +81,7 @@ export default function KeyGenerator() {
           </div>
 
           {claves.length !== 0 ? (
-            <table className="table table-sm lg:table-lg">
+            <table className="table table-xs lg:table-lg">
               <thead>
                 <tr className="text-black ">
                   <th></th>

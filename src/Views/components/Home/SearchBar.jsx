@@ -1,6 +1,6 @@
 // import useMediaQuery from '@hooks/useMediaQuery'
 import SideFilters from '@components/Filters/SideFilters'
-import SearchInput from './SearchInput'
+import SearchInput from './SearchInput.jsx'
 export default function SearchBar() {
   return (
     <>

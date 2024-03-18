@@ -1,17 +1,16 @@
 // import Logo from '@components/Logo.jsx'
 import { Dialog } from 'primereact/dialog'
 import 'primereact/resources/themes/tailwind-light/theme.css'
-import '../styles/register.css'
-import RegisterForm from './RegisterForm'
+import './register.css'
 import { useStore } from '@nanostores/react'
-import { registerState } from 'src/Controllers/context/registerContext'
 import { modal, setModal } from 'src/Controllers/context/modal_context'
 import { useAuth } from 'src/Controllers/context/userContext'
-import Logo from './Logo'
-import AsisegLoader from './Buttons/AsisegLoader'
+import Logo from '../../core/Logo'
+import AsisegLoader from '../../Buttons/AsisegLoader'
 import { Link } from 'react-router-dom'
+import AuthForm from './AuthForm'
+import { setClaveRegisto } from 'src/Controllers/context/claveContext'
 export default function Header() {
-  const $registerState = useStore(registerState)
   const $modal = useStore(modal)
   const { usuario } = useAuth()
   return (
@@ -98,16 +97,18 @@ export default function Header() {
         </div>
       </nav>
       <Dialog
-        header={$registerState ? '¡Bienvenid@!' : '¡Bienvenid@ de nuevo!'}
+        header={'¡Bienvenid@!'}
         visible={$modal}
         onHide={() => {
           setModal({ value: false })
+          setClaveRegisto({ value: false })
         }}
         style={{ width: '450px', minWidth: '300px' }}
         breakpoints={{ '640px': '350px' }}
         className="bg-gray-50"
+        draggable={false}
       >
-        <RegisterForm />
+        <AuthForm />
       </Dialog>
     </>
   )

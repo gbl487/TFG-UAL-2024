@@ -1,7 +1,7 @@
 import ALlTarjetas from './AllTarjetas'
-import Header from './Header'
+import Header from './Header/Header'
 import SearchBar from './SearchBar'
-import '../styles/index.css'
+import './index.css'
 
 export default function HomePage() {
   return (

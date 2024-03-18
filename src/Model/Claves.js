@@ -1,4 +1,12 @@
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore'
 import { db } from './Firebase'
 import { getNIFUsuario } from './Usuario'
 
@@ -39,4 +47,45 @@ export async function getAllClaves() {
   } catch (error) {
     console.log(error)
   }
+}
+
+export async function getClaveId({ value }) {
+  const usuariosQuery = query(
+    collection(db, 'Claves'),
+    where('clave', '==', value)
+  )
+  const querySnapshot = getDocs(usuariosQuery)
+    .then((result) => console.log(result.docs[0]))
+    .catch((error) => console.log(error))
+  const id = querySnapshot.docs[0].id
+  const documentoRef = doc(db, 'Claves', id)
+  const clave = await getDoc(documentoRef)
+  console.log(clave.data().clave)
+  return { clave: clave.data().clave }
+}
+
+export async function claveExists({ value }) {
+  let claveExiste = false
+  const usuariosQuery = query(
+    collection(db, 'Claves'),
+    where('clave', '==', value)
+  )
+  await getDocs(usuariosQuery)
+    .then((result) => {
+      if (result.docs[0]) claveExiste = true
+      if (typeof result.docs[0] === 'undefined') claveExiste = false
+    })
+    .catch(() => (claveExiste = false))
+  return claveExiste
+}
+
+export async function getClaveDoc({ value }) {
+  const usuariosQuery = query(
+    collection(db, 'Claves'),
+    where('clave', '==', value)
+  )
+  const querySnapshot = await getDocs(usuariosQuery)
+  const id = querySnapshot.docs[0].id
+  const documentoRef = doc(db, 'Claves', id)
+  return { documentoRef }
 }

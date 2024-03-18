@@ -1,7 +1,7 @@
 import { Sidebar } from 'primereact/sidebar'
 import { PanelIcon } from '@icons/Icons'
 import { PanelContent } from './PanelContent'
-import Logo from '../Logo'
+import Logo from '../core/Logo'
 import { useStore } from '@nanostores/react'
 import { setSidebar, sidebar } from 'src/Controllers/context/sidebar_context'
 export default function SideUserPanel() {

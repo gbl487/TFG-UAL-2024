@@ -1,3 +1,4 @@
+import Toast from '@components/core/Toast'
 import ALlTarjetas from './AllTarjetas'
 import Header from './Header/Header'
 import SearchBar from './SearchBar'
@@ -15,6 +16,7 @@ export default function HomePage() {
       <main className="body pt-36">
         <ALlTarjetas />
       </main>
+      <Toast />
 
       <footer className="footer h-96 bg-slate-300">Footer</footer>
     </section>

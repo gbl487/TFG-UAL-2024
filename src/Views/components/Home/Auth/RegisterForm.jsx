@@ -4,7 +4,6 @@ import { validNIF } from 'src/Controllers/context/dni_nie_context'
 import { useForm } from 'react-hook-form'
 import DNI_NIE from '../../Inputs/DNI_NIE_Input'
 import RememberInput from '../../Inputs/RememberInput'
-import { setUserData } from 'src/Controllers/context/userData_context'
 import { useAuth } from 'src/Controllers/context/userContext'
 import PasswordInput from '@components/Inputs/PasswordInput'
 import ValidarClave from './ValidarClave'
@@ -22,8 +21,11 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     if (!$validNIF) return
-    setUserData({ value: data })
-    await crearUsuario(data.dni_nie + '@asiseg.com', data.password)
+    await crearUsuario(
+      data.dni_nie + '@asiseg.com',
+      data.password,
+      data.remember
+    )
     setModal({ value: false })
   }
 

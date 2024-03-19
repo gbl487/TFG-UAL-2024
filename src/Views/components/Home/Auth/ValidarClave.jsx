@@ -1,6 +1,5 @@
 import AsisegLoader from '@components/Buttons/AsisegLoader'
 import ClaveInput from '@components/Inputs/ClaveInput'
-import Toast from '@components/core/Toast'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { setClaveRegisto } from 'src/Controllers/context/claveContext'
@@ -16,15 +15,13 @@ export default function ValidarClave() {
 
   const [errorClave, setErrorClave] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [toastText, setToasText] = useState()
   const onSubmit = async (data) => {
     setLoading(true)
     const claveExiste = await checkClave({ value: data.clave })
     if (claveExiste) {
       setErrorClave(false)
       setClaveRegisto({ value: true })
-      setToasText('Clave válida')
-      setToast({ value: true })
+      setToast({ value: true, text: 'Clave válida' })
     } else {
       setErrorClave(true)
     }
@@ -57,7 +54,6 @@ export default function ValidarClave() {
           )}
         </div>
       </form>
-      <Toast text={toastText} />
     </div>
   )
 }

@@ -1,12 +1,13 @@
+import AsisegLoader from '@components/Buttons/AsisegLoader'
 import DNI_NIE from '@components/Inputs/DNI_NIE_Input'
 import PasswordInput from '@components/Inputs/PasswordInput'
 import RememberInput from '@components/Inputs/RememberInput'
 import { useStore } from '@nanostores/react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { validNIF } from 'src/Controllers/context/dni_nie_context'
 import { setModal } from 'src/Controllers/context/modal_context'
 import { useAuth } from 'src/Controllers/context/userContext'
-import { setUserData } from 'src/Controllers/context/userData_context'
 
 export default function LoginForm() {
   const {
@@ -16,12 +17,26 @@ export default function LoginForm() {
   } = useForm()
   const { iniciarSesion } = useAuth()
   const $validNIF = useStore(validNIF)
+  const [loading, setLoading] = useState(false)
+  const [errorLogin, setErrorLogin] = useState(false)
+  const [errorText, setErrorText] = useState('')
   const onSubmit = async (data) => {
     if (!$validNIF) return
-
-    setUserData({ value: data })
-    await iniciarSesion(data.dni_nie + '@asiseg.com', data.password)
-    setModal({ value: false })
+    setLoading(true)
+    console.log(data)
+    const { usuarioValido, errorUsuario } = await iniciarSesion(
+      data.dni_nie + '@asiseg.com',
+      data.password,
+      data.remember
+    )
+    if (usuarioValido) {
+      setErrorLogin(false)
+      setModal({ value: false })
+    } else {
+      setErrorLogin(true)
+      setErrorText(errorUsuario)
+    }
+    setLoading(false)
   }
 
   return (
@@ -35,14 +50,25 @@ export default function LoginForm() {
           {/* Contraseña */}
           <PasswordInput register={register} errors={errors} />
           <RememberInput register={register} />
-          <div className="flex justify-center">
-            <input
-              type="submit"
-              id="loginInput"
-              value={'Iniciar sesión'}
-              className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer  "
-            />
-          </div>
+          {loading ? (
+            <AsisegLoader />
+          ) : (
+            <>
+              <div className="flex justify-center">
+                <input
+                  type="submit"
+                  id="loginInput"
+                  value={'Iniciar sesión'}
+                  className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer  "
+                />
+              </div>
+              <div className="flex w-full justify-center mt-1">
+                {errorLogin && (
+                  <small className="text-red-400 text-base">{errorText}</small>
+                )}
+              </div>
+            </>
+          )}
         </form>
       </div>
     </div>

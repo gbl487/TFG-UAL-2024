@@ -3,6 +3,7 @@ import { auth } from '../../Model/Firebase'
 import { useEffect } from 'react'
 import {
   browserLocalPersistence,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
@@ -20,40 +21,49 @@ export const useAuth = () => {
     usuarioAtom.set(value)
   }
 
-  const crearUsuario = async (email, password) => {
+  const crearUsuario = async (email, password, remember) => {
     console.log(email, password)
-    try {
-      await setPersistence(auth, browserLocalPersistence)
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-      const newUser = userCredential.user
-      console.log(newUser)
-      setUser({ value: newUser })
-      return newUser
-    } catch (error) {
-      console.error('Error al crear usuario:', error)
-      throw error
-    }
+    let errorUsuario = ''
+    let usuarioValido = false
+    remember
+      ? await setPersistence(auth, browserLocalPersistence)
+      : await setPersistence(auth, browserSessionPersistence)
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        usuarioValido = true
+        console.log(result.user.uid)
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.code === 'auth/email-already-in-use')
+          errorUsuario = 'EMAIL_IN_USE'
+        if (error.code === 'auth/too-many-requests')
+          errorUsuario = 'TOO_MANY_REQUESTS'
+        usuarioValido = false
+      })
+    return { usuarioValido, errorUsuario }
   }
 
-  const iniciarSesion = async (email, password) => {
-    try {
-      await setPersistence(auth, browserLocalPersistence)
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-      const signedInUser = userCredential.user
-      setUser({ value: signedInUser })
-      return signedInUser
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error)
-      throw error
-    }
+  const iniciarSesion = async (email, password, remember) => {
+    let errorUsuario = ''
+    let usuarioValido = false
+    remember
+      ? await setPersistence(auth, browserLocalPersistence)
+      : await setPersistence(auth, browserSessionPersistence)
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        usuarioValido = true
+        setUser({ value: result.user })
+      })
+      .catch((error) => {
+        if (error.code === 'auth/invalid-login-credentials')
+          errorUsuario = 'INVALID_CREDENTIAL'
+        if (error.code === 'auth/too-many-requests')
+          errorUsuario = 'TOO_MANY_REQUESTS'
+        usuarioValido = false
+      })
+
+    return { usuarioValido, errorUsuario }
   }
 
   const cerrarSesion = async () => {

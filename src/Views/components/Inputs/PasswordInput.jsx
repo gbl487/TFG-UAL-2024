@@ -1,12 +1,33 @@
 import { useState } from 'react'
+import validarContraseña from 'src/Controllers/utils/validarContraseña'
 export default function PasswordInput({ id, register, errors }) {
   const [password, setPassword] = useState('')
-  const [errorPassword, setErrorPassword] = useState(null)
+  const [errorPassword, setErrorPassword] = useState()
+  const [errorMayus, setErrorMayus] = useState(false)
+  const [errorNum, setErrorNum] = useState(false)
+  const [errorSpecialChar, setErrorSpecialChar] = useState(false)
   const handlePassword = (e) => {
     const value = e.target.value
-    if (value.length > 9) return
     setPassword(value)
-    setErrorPassword(false)
+    if (value.length === 0) {
+      setErrorPassword(false)
+    } else if (value.length >= 1) {
+      setErrorMayus(true)
+      setErrorNum(true)
+      setErrorSpecialChar(true)
+      setErrorPassword(true)
+      if (value.length > 32) return
+      const { validMayus, validNum, validSpecialChar } =
+        validarContraseña(value)
+      setErrorMayus(validMayus)
+      setErrorNum(validNum)
+      setErrorSpecialChar(validSpecialChar)
+      if (!validMayus || !validNum || !validSpecialChar) {
+        setErrorPassword(true)
+      } else {
+        setErrorPassword(false)
+      }
+    }
   }
   return (
     <div className="w-full">
@@ -32,13 +53,26 @@ export default function PasswordInput({ id, register, errors }) {
         )}
         {errors.password?.type === 'minLength' && (
           <small className="text-red-400 text-xs" role="alert">
-            Entrada inválida. Ingresa el menos 9 caracteres.
+            Entrada inválida. Ingresa el menos 8 caracteres.
           </small>
         )}
       </span>
       <div className="flex w-full justify-start mt-1">
         {errorPassword && (
           <small className="text-red-400 text-xs">{errorPassword}</small>
+        )}
+        {errorPassword && (
+          <ul className="text-red-400 text-sm list-disc">
+            <li className={`${errorMayus ? 'text-green-500' : ''}`}>
+              Al menos una mayúscula
+            </li>
+            <li className={`${errorNum ? 'text-green-500' : ''}`}>
+              Al menos un número
+            </li>
+            <li className={`${errorSpecialChar ? 'text-green-500' : ''}`}>
+              Al menos un carácter especial
+            </li>
+          </ul>
         )}
       </div>
     </div>

@@ -15,7 +15,6 @@ export default function KeyGenerator() {
   const [indiceClave, setIndiceClave] = useState()
   const [clave, setClave] = useState()
   const [loading, setLoading] = useState(true)
-  const [toastText, setToasText] = useState()
   const username = usuario?.email.replace('@asiseg.com', '').toUpperCase()
 
   useEffect(() => {
@@ -39,8 +38,7 @@ export default function KeyGenerator() {
       fechaCreacion: fecha,
     })
     if (result === 'OK') {
-      setToasText('Clave creada con éxito')
-      setToast({ value: true })
+      setToast({ value: true, text: 'Clave creada con éxito' })
     }
     setClaves([...claves, nuevaClave])
   }
@@ -58,8 +56,7 @@ export default function KeyGenerator() {
     if (clave) {
       const { documentoRef } = await getClaveDoc({ value: clave })
       await deleteDoc(documentoRef)
-      setToasText('Clave eliminada correctamente')
-      setToast({ value: true })
+      setToast({ value: true, text: 'Clave eliminada correctamente' })
 
       const nuevasClaves = claves.filter((_, i) => i !== indiceClave)
       setClaves(nuevasClaves)
@@ -139,7 +136,7 @@ export default function KeyGenerator() {
               </form>
             </div>
           </dialog>
-          <Toast text={toastText} />
+          <Toast />
         </div>
       )}
     </div>

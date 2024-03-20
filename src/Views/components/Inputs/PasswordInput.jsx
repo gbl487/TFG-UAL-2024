@@ -8,6 +8,7 @@ export default function PasswordInput({ id, register, errors }) {
   const [errorSpecialChar, setErrorSpecialChar] = useState(false)
   const handlePassword = (e) => {
     const value = e.target.value
+    if (value.length >= 32) return
     setPassword(value)
     if (value.length === 0) {
       setErrorPassword(false)
@@ -16,7 +17,7 @@ export default function PasswordInput({ id, register, errors }) {
       setErrorNum(true)
       setErrorSpecialChar(true)
       setErrorPassword(true)
-      if (value.length > 32) return
+
       const { validMayus, validNum, validSpecialChar } =
         validarContraseña(value)
       setErrorMayus(validMayus)

@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form'
 import DNI_NIE from '../../Inputs/DNI_NIE_Input'
 import RememberInput from '../../Inputs/RememberInput'
 import { useAuth } from 'src/Controllers/context/userContext'
-import PasswordInput from '@components/Inputs/PasswordInput'
 import ValidarClave from './ValidarClave'
 import { setModal } from 'src/Controllers/context/modal_context'
+import ValidatePasswordInput from '@components/Inputs/ValidatePasswordInput'
+import { correctPassword } from 'src/Controllers/context/passwordContext'
 
 export default function RegisterForm() {
   const {
@@ -16,11 +17,13 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm()
   const $validNIF = useStore(validNIF)
+  const $correctPassword = useStore(correctPassword)
   const { crearUsuario } = useAuth()
   const $claveRegistro = useStore(claveRegistro)
 
   const onSubmit = async (data) => {
     if (!$validNIF) return
+    if (!$correctPassword) return
     await crearUsuario(
       data.dni_nie + '@asiseg.com',
       data.password,
@@ -46,17 +49,8 @@ export default function RegisterForm() {
                 errors={errors}
               />
               {/* Contraseña */}
-              <PasswordInput
-                id={'register_pass'}
-                register={register}
-                errors={errors}
-              />
-              {/* Validar contraseña */}
-              <PasswordInput
-                id={'validate_pass'}
-                register={register}
-                errors={errors}
-              />
+              <ValidatePasswordInput register={register} errors={errors} />
+
               <RememberInput register={register} />
               <div className="flex justify-center">
                 <input

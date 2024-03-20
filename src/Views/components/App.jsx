@@ -6,6 +6,7 @@ import CrearTarjeta from './UserPanel/CrearTarjeta.jsx'
 import ProtectedRoute from './core/ProtectedRoute.jsx'
 import UserPanel from './UserPanel/UserPanel.jsx'
 import KeyGenerator from './UserPanel/KeyGenerator.jsx'
+import MisCitas from './UserPanel/MisCitas/MisCitas.jsx'
 
 export default function App() {
   return (
@@ -26,7 +27,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
-              <div>Mis citas</div>
+              <MisCitas />
             </>
           }
         />

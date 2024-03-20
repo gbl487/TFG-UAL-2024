@@ -1,5 +1,5 @@
 import { atom } from 'nanostores'
-import { auth } from '../../Model/Firebase'
+import { auth, db } from '../../Model/Firebase'
 import { useEffect } from 'react'
 import {
   browserLocalPersistence,
@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useStore } from '@nanostores/react'
+import { collection, doc, setDoc } from 'firebase/firestore'
 
 // export const FirebaseUser = atom(new Usuario({ authState: auth }))
 export const usuarioAtom = atom()
@@ -23,15 +24,18 @@ export const useAuth = () => {
 
   const crearUsuario = async (email, password, remember) => {
     console.log(email, password)
+    let result
     let errorUsuario = ''
     let usuarioValido = false
+    let uid
     remember
       ? await setPersistence(auth, browserLocalPersistence)
       : await setPersistence(auth, browserSessionPersistence)
     await createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         usuarioValido = true
-        console.log(result.user.uid)
+        setUser({ value: result.user })
+        uid = result.user.uid
       })
       .catch((error) => {
         console.log(error)
@@ -41,6 +45,17 @@ export const useAuth = () => {
           errorUsuario = 'TOO_MANY_REQUESTS'
         usuarioValido = false
       })
+    if (usuarioValido) {
+      const usuarioRef = collection(db, 'Usuarios')
+      const nuevaData = {
+        NIF: email,
+      }
+      // Utiliza setDoc para agregar el nuevo documento
+      await setDoc(doc(usuarioRef, uid), nuevaData)
+      result = 'VALID'
+
+      return { result }
+    }
     return { usuarioValido, errorUsuario }
   }
 

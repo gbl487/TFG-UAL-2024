@@ -20,6 +20,7 @@ export default function KeyGenerator() {
   useEffect(() => {
     getAllClaves().then((result) => {
       setClaves(result)
+      console.log(result)
       setLoading(false)
     })
   }, [])

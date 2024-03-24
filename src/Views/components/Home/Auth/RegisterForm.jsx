@@ -1,5 +1,8 @@
 import { useStore } from '@nanostores/react'
-import { claveRegistro } from 'src/Controllers/context/claveContext'
+import {
+  claveRegistro,
+  setClaveRegisto,
+} from 'src/Controllers/context/claveContext'
 import { validNIF } from 'src/Controllers/context/dni_nie_context'
 import { useForm } from 'react-hook-form'
 import DNI_NIE from '../../Inputs/DNI_NIE_Input'
@@ -9,6 +12,8 @@ import ValidarClave from './ValidarClave'
 import { setModal } from 'src/Controllers/context/modal_context'
 import ValidatePasswordInput from '@components/Inputs/ValidatePasswordInput'
 import { correctPassword } from 'src/Controllers/context/passwordContext'
+import { useState } from 'react'
+import AsisegLoader from '@components/Buttons/AsisegLoader'
 
 export default function RegisterForm() {
   const {
@@ -18,17 +23,21 @@ export default function RegisterForm() {
   } = useForm()
   const $validNIF = useStore(validNIF)
   const $correctPassword = useStore(correctPassword)
-  const { crearUsuario } = useAuth()
+  const { registrarUsuario } = useAuth()
   const $claveRegistro = useStore(claveRegistro)
-
+  const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
     if (!$validNIF) return
     if (!$correctPassword) return
-    await crearUsuario(
-      data.dni_nie + '@asiseg.com',
+    setLoading(true)
+    const { result } = await registrarUsuario(
+      data.dni_nie,
       data.password,
       data.remember
     )
+    console.log(result)
+    setLoading(false)
+    setClaveRegisto({ value: false })
     setModal({ value: false })
   }
 
@@ -53,12 +62,16 @@ export default function RegisterForm() {
 
               <RememberInput register={register} />
               <div className="flex justify-center">
-                <input
-                  type="submit"
-                  id="registerInput"
-                  value={'Registrarse'}
-                  className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer  "
-                />
+                {loading ? (
+                  <AsisegLoader showLogo={false} />
+                ) : (
+                  <input
+                    type="submit"
+                    id="registerInput"
+                    value={'Registrarse'}
+                    className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer  "
+                  />
+                )}
               </div>
             </form>
           </div>

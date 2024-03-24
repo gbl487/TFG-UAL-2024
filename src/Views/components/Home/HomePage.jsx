@@ -3,8 +3,10 @@ import ALlTarjetas from './AllTarjetas'
 import Header from './Header/Header'
 import SearchBar from './SearchBar'
 import './index.css'
+import { setSidebar } from 'src/Controllers/context/sidebar_context'
 
 export default function HomePage() {
+  setSidebar({ value: false })
   return (
     <section className="layout antialiased">
       <Header />

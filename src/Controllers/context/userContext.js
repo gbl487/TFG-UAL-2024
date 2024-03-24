@@ -1,15 +1,14 @@
 import { atom } from 'nanostores'
-import { auth, db } from '../../Model/Firebase'
+import { auth } from '../../Model/Firebase'
 import { useEffect } from 'react'
 import {
   browserLocalPersistence,
   browserSessionPersistence,
-  createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useStore } from '@nanostores/react'
-import { collection, doc, setDoc } from 'firebase/firestore'
+import { crearUsuario, registrarUsuarioFirebase } from 'src/Model/Usuario'
 
 // export const FirebaseUser = atom(new Usuario({ authState: auth }))
 export const usuarioAtom = atom()
@@ -22,41 +21,29 @@ export const useAuth = () => {
     usuarioAtom.set(value)
   }
 
-  const crearUsuario = async (email, password, remember) => {
+  const registrarUsuario = async (username, password, remember) => {
+    let email = username + '@asiseg.com'
     console.log(email, password)
     let result
-    let errorUsuario = ''
-    let usuarioValido = false
-    let uid
-    remember
-      ? await setPersistence(auth, browserLocalPersistence)
-      : await setPersistence(auth, browserSessionPersistence)
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        usuarioValido = true
-        setUser({ value: result.user })
-        uid = result.user.uid
+    const { uid_usuario, usuarioValido, errorUsuario } =
+      await registrarUsuarioFirebase({
+        email: email,
+        password: password,
+        remember: remember,
       })
-      .catch((error) => {
-        console.log(error)
-        if (error.code === 'auth/email-already-in-use')
-          errorUsuario = 'EMAIL_IN_USE'
-        if (error.code === 'auth/too-many-requests')
-          errorUsuario = 'TOO_MANY_REQUESTS'
-        usuarioValido = false
-      })
+    console.log(uid_usuario, usuarioValido, errorUsuario)
     if (usuarioValido) {
-      const usuarioRef = collection(db, 'Usuarios')
-      const nuevaData = {
-        NIF: email,
-      }
-      // Utiliza setDoc para agregar el nuevo documento
-      await setDoc(doc(usuarioRef, uid), nuevaData)
-      result = 'VALID'
-
+      const { result } = await crearUsuario({
+        uid: uid_usuario,
+        username: username,
+        remember,
+      })
+      console.log(result)
       return { result }
+    } else {
+      result = errorUsuario
     }
-    return { usuarioValido, errorUsuario }
+    return { result }
   }
 
   const iniciarSesion = async (email, password, remember) => {
@@ -68,7 +55,8 @@ export const useAuth = () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         usuarioValido = true
-        setUser({ value: result.user })
+        console.log(result)
+        // setUser({ value: result.user })
       })
       .catch((error) => {
         if (error.code === 'auth/invalid-login-credentials')
@@ -90,40 +78,40 @@ export const useAuth = () => {
     }
   }
 
-  async function registrarUsuario({ confirmation, otp, dni_nie }) {
-    let error
-    let usuario
-    await confirmOtp({
-      confirmation,
-      otp,
-    }).then((result) => {
-      // Se ha creado correctamente el usuario
-      if (result.errorResult.code === 'auth/invalid-verification-code') {
-        error = 'INVALID_CODE'
-      }
-      console.log(result)
-      usuario = result.usuario
-    })
-    return { usuario, dni_nie, error }
-  }
+  // async function registrarUsuario({ confirmation, otp, dni_nie }) {
+  //   let error
+  //   let usuario
+  //   await confirmOtp({
+  //     confirmation,
+  //     otp,
+  //   }).then((result) => {
+  //     // Se ha creado correctamente el usuario
+  //     if (result.errorResult.code === 'auth/invalid-verification-code') {
+  //       error = 'INVALID_CODE'
+  //     }
+  //     console.log(result)
+  //     usuario = result.usuario
+  //   })
+  //   return { usuario, dni_nie, error }
+  // }
 
-  async function confirmOtp({ confirmation, otp }) {
-    let usuario
-    let errorResult
+  // async function confirmOtp({ confirmation, otp }) {
+  //   let usuario
+  //   let errorResult
 
-    try {
-      await confirmation
-        .confirm(otp)
-        .then((result) => {
-          // setUser({ value: result.user })
-          console.log(result)
-        })
-        .catch((error) => (errorResult = error))
-    } catch (error) {
-      errorResult = error
-    }
-    return { usuario, errorResult }
-  }
+  //   try {
+  //     await confirmation
+  //       .confirm(otp)
+  //       .then((result) => {
+  //         // setUser({ value: result.user })
+  //         console.log(result)
+  //       })
+  //       .catch((error) => (errorResult = error))
+  //   } catch (error) {
+  //     errorResult = error
+  //   }
+  //   return { usuario, errorResult }
+  // }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -143,9 +131,8 @@ export const useAuth = () => {
 
   return {
     usuario,
-    crearUsuario,
     registrarUsuario,
-    confirmOtp,
+    // confirmOtp,
     iniciarSesion,
     cerrarSesion,
   }

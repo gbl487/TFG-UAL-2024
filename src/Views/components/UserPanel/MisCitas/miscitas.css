@@ -4,3 +4,7 @@
 .rbc-event.rbc-selected{
     background-color: #03989E
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}

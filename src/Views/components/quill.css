@@ -4,3 +4,41 @@
     justify-content: center;
     aspect-ratio: 16/9;
 }
+.inner {
+   user-select: text;
+}
+.inner ol{
+    list-style-type: decimal;
+    padding-left: 20px;
+}
+.inner ul{
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.inner a{
+   color: blue;
+   text-decoration: underline;
+}
+
+.inner p:has(> img) {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.inner .ql-align-justify{
+    text-align: justify;
+}
+.inner .ql-align-center{
+    text-align: center;
+}
+.inner .ql-align-right{
+    text-align: right;
+}
+.inner h1{
+    font-size: 2em;
+}
+.inner h2{
+    font-size: 1.5em;
+}

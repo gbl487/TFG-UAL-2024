@@ -34,6 +34,7 @@ export default function AdminContent() {
   }, [])
 
   const Footer = (id) => {
+    console.log()
     const modHref = `/contenido/modificar/${id.id}`
     return (
       <div className="flex w-full bg-slate justify-end gap-2 ">
@@ -78,7 +79,7 @@ export default function AdminContent() {
                       descripcion={desc}
                       tags={data.categorias}
                       contenido={html}
-                      Footer={() => <Footer id={tarjeta.id} />}
+                      Footer={() => <Footer id={data.idTarjeta} />}
                     />
                   )
                 })}
@@ -86,8 +87,8 @@ export default function AdminContent() {
             </div>
           )}
           {!loading && docs.length === 0 && (
-            <div className="h-screen w-full flex justify-center items-center">
-              <p className="text-3xl">No hay resultados</p>
+            <div className="flex justify-center mt-10 p-5 border-2 rounded-lg">
+              No hay resultados
             </div>
           )}
           {loading && (

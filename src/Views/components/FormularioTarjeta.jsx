@@ -9,8 +9,8 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
 import { crearTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
-import Toast from './core/Toast'
 import AsisegLoader from './Buttons/AsisegLoader'
+import { useNavigate } from 'react-router'
 export default function FormularioTarjeta({ initialValue }) {
   const {
     register,
@@ -27,26 +27,66 @@ export default function FormularioTarjeta({ initialValue }) {
   const [errorTag, setErrorTag] = useState(false)
   const [desc, setDesc] = useState('')
   const [loading, setLoading] = useState(false)
+  // const [delta, setDelta] = useState()
   const quillRef = useRef()
+  const navigate = useNavigate()
   useEffect(() => {
     if (initialValue) {
       console.log(initialValue)
+      // quillRef.current.getQuill().editor.delta.ops = initialValue.contenido
+      setTitulo(initialValue.titulo)
+      setTags(initialValue.categorias)
     }
   }, [initialValue])
 
-  // const CabeceraEditor = () => {
-  //   return (
-  //     <div id="toolbar">
-  //       <span className="ql-formats">
-  //         <button className="ql-bold" aria-label="Bold"></button>
-  //         <button className="ql-italic" aria-label="Italic"></button>
-  //         <button className="ql-underline" aria-label="Underline"></button>
-  //         <button className="ql-image" aria-label="Image"></button>
-  //       </span>
-  //     </div>
-  //   )
-  // }
-  // const cabecera = CabeceraEditor()
+  const CabeceraEditor = () => {
+    return (
+      <div id="toolbar">
+        <span className="ql-formats">
+          <button className="ql-bold" aria-label="Bold"></button>
+          <button className="ql-italic" aria-label="Italic"></button>
+          <button className="ql-underline" aria-label="Underline"></button>
+          <button className="ql-strike" aria-label="Strike"></button>
+          <button className="ql-link" aria-label="Insert Link"></button>
+          <button className="ql-image" aria-label="Insert Image"></button>
+        </span>
+        <span className="ql-formats">
+          <button
+            className="ql-list"
+            value="ordered"
+            aria-label="Ordered List"
+          ></button>
+          <button
+            className="ql-list"
+            value="bullet"
+            aria-label="Unordered List"
+          ></button>
+          <select className="ql-align" aria-label="Text Alignment">
+            <option value=""></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+          </select>
+        </span>
+        <span className="ql-formats">
+          <select className="ql-color" aria-label="Text Color">
+            <option value=""></option>
+            <option value="red"></option>
+            <option value="green"></option>
+            <option value="blue"></option>
+          </select>
+          <select className="ql-background" aria-label="Background Color">
+            <option value=""></option>
+            <option value="red"></option>
+            <option value="green"></option>
+            <option value="blue"></option>
+          </select>
+          <button className="ql-clean" aria-label="Remove Format"></button>
+        </span>
+      </div>
+    )
+  }
+  const cabecera = CabeceraEditor()
 
   function getHtml(delta) {
     setContent(delta)
@@ -58,6 +98,7 @@ export default function FormularioTarjeta({ initialValue }) {
     setDesc(html.replace(/<[^>]+>/g, ''))
   }
   function handleTagChange(e) {
+    console.log(e.id)
     const checkboxID = e.id
     const isChecked = e.checked
 
@@ -70,6 +111,7 @@ export default function FormularioTarjeta({ initialValue }) {
       // Si el checkbox está desmarcado, eliminamos el ID de la lista de tags
       setTags((prevTags) => prevTags.filter((tag) => tag !== checkboxID))
     }
+    console.log(tags)
   }
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -94,12 +136,9 @@ export default function FormularioTarjeta({ initialValue }) {
         contenido: content.ops,
       })
       if (result === 'VALID') {
-        setToast({ value: true })
-        const timer = setTimeout(() => {
-          setLoading(false)
-          if (window) window.location.href = '/administrarcontenido'
-        }, 1000)
-        timer()
+        setToast({ value: true, text: 'Contenido modificado correctamente' })
+        setLoading(false)
+        navigate('/contenido')
       }
     }
   }
@@ -135,7 +174,7 @@ export default function FormularioTarjeta({ initialValue }) {
                     id="titulo"
                     {...register('titulo', { required: true, minLength: 5 })}
                     placeholder="Cura..."
-                    value={initialValue.titulo}
+                    defaultValue={initialValue.titulo}
                     onChange={(e) => setTitulo(e.target.value)}
                     className="input bg-asiseg-gray/10 input-bordered w-full max-w-md"
                   />
@@ -206,7 +245,7 @@ export default function FormularioTarjeta({ initialValue }) {
                                   {...register('cat_' + categoria.code, {
                                     required: false,
                                   })}
-                                  checked={initialValue.categorias.includes(
+                                  defaultChecked={initialValue.categorias.includes(
                                     categoria.code
                                   )}
                                   onChange={(e) => handleTagChange(e.target)}
@@ -235,12 +274,12 @@ export default function FormularioTarjeta({ initialValue }) {
                   <Editor
                     id="contenido"
                     ref={quillRef}
-                    // value={initialValue.contenido}
+                    defaultValue={initialValue.contenido}
                     onTextChange={() =>
                       getHtml(quillRef.current.getQuill().editor.delta)
                     }
                     className="max-w-4xl"
-                    // headerTemplate={cabecera}
+                    headerTemplate={cabecera}
                     style={{ height: '600px' }}
                   />
                   {errorContent && (
@@ -272,8 +311,6 @@ export default function FormularioTarjeta({ initialValue }) {
             </div>
           </>
         )}
-
-        <Toast text={'Contenido creado con éxito'} />
       </div>
     </>
   )

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import firebaseApp from 'src/Model/Firebase'
 import InfoCard from '../InfoCard'
 import AsisegLoader from '../Buttons/AsisegLoader'
-import { deltaToHtml } from 'src/Controllers/utils/delta'
 import { useFilters } from '@hooks/useFilters'
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 export default function ALlTarjetas() {
   const db = getFirestore(firebaseApp)
   const [docs, setDocs] = useState([])
@@ -38,8 +38,10 @@ export default function ALlTarjetas() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg+:grid-cols-3 xl:grid-cols-4 gap-5">
           {tarjetas.map((tarjeta) => {
             const data = tarjeta.data()
-            const html = deltaToHtml(data.contenido)
-            const desc = html.replace(/<[^>]+>/g, '')
+            var cfg = {}
+            var converter = new QuillDeltaToHtmlConverter(data.contenido, cfg)
+            var contenido = converter.convert()
+            const desc = contenido.replace(/<[^>]+>/g, '')
             return (
               <InfoCard
                 key={tarjeta.id}
@@ -47,15 +49,17 @@ export default function ALlTarjetas() {
                 imagen={data.imagen}
                 descripcion={desc}
                 tags={data.categorias}
-                contenido={html}
+                contenido={contenido}
               />
             )
           })}
         </section>
       )}
       {!loading && tarjetas.length === 0 && (
-        <div className="h-screen w-full flex justify-center items-center">
-          <p className="text-3xl">No hay resultados</p>
+        <div className="h-screen">
+          <div className="flex justify-center mt-10 p-5 border-2 rounded-lg">
+            No hay resultados
+          </div>
         </div>
       )}
       {loading && (

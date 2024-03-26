@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { CloseIcon, SeeMoreIcon } from '@icons/Icons.jsx'
 import { Drawer } from 'vaul'
 import Card from './core/Card.jsx'
+import 'quill/dist/quill.core.css'
 import './quill.css'
 import TagArray from './core/TagArray.jsx'
 export default function InfoCard({
@@ -43,7 +44,7 @@ export default function InfoCard({
         </div>
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0" />
-          <Drawer.Content className="bg-gray-50 flex flex-col  h-[100%] mt-24 fixed bottom-0 left-0 right-0 z-50">
+          <Drawer.Content className="bg-white flex flex-col  h-[100%] mt-24 fixed bottom-0 left-0 right-0 z-50">
             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-10 mt-5" />
             <div className="fixed top-4 right-4 sm:right-10 md:right-15 xl:right-20 ">
               <button onClick={() => ocultar()}>
@@ -62,7 +63,7 @@ export default function InfoCard({
                 </div>
                 <div>
                   <div
-                    className=" inner"
+                    className="inner"
                     dangerouslySetInnerHTML={{ __html: contenido }}
                   />
                 </div>

@@ -80,11 +80,11 @@ export async function claveExists({ value }) {
 }
 
 export async function getClaveDoc({ value }) {
-  const usuariosQuery = query(
+  const claveQuery = query(
     collection(db, 'Claves'),
     where('clave', '==', value)
   )
-  const querySnapshot = await getDocs(usuariosQuery)
+  const querySnapshot = await getDocs(claveQuery)
   const id = querySnapshot.docs[0].id
   const documentoRef = doc(db, 'Claves', id)
   return { documentoRef }

@@ -7,6 +7,8 @@ import ProtectedRoute from './core/ProtectedRoute.jsx'
 import UserPanel from './UserPanel/UserPanel.jsx'
 import KeyGenerator from './UserPanel/KeyGenerator.jsx'
 import MisCitas from './UserPanel/MisCitas/MisCitas.jsx'
+import ModificarTarjeta from './UserPanel/ModificarTarjeta.jsx'
+import Modificar from 'src/pages/contenido/modificar.astro'
 
 export default function App() {
   return (
@@ -46,6 +48,24 @@ export default function App() {
             <>
               <UserPanel />
               <CrearTarjeta />
+            </>
+          }
+        />
+        <Route
+          path="/contenido/modificar"
+          element={
+            <>
+              <UserPanel />
+              <Modificar />
+            </>
+          }
+        />
+        <Route
+          path="/contenido/modificar/:id"
+          element={
+            <>
+              <UserPanel />
+              <ModificarTarjeta />
             </>
           }
         />

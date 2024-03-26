@@ -79,7 +79,7 @@ export default function MisCitas() {
                 <AsisegButton text={'Añadir cita'} />
               </button>
             </div>
-            <div className="h-[960px]">
+            <div className="h-[768px]">
               <Calendar
                 culture={'es'}
                 localizer={localizer}

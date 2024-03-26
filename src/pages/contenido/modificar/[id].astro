@@ -1,0 +1,17 @@
+---
+import { getAllIdsTarjetas } from 'src/Model/Tarjetas'
+import PanelDeUsuario from '../../../layouts/PanelDeUsuario.astro'
+import App from '../../index.astro'
+export async function getStaticPaths() {
+  const arrayIds = await getAllIdsTarjetas()
+  return arrayIds?.map((idTarjeta) => {
+    return {
+      params: { id: idTarjeta },
+    }
+  })
+}
+---
+
+<PanelDeUsuario title="Panel de usuario">
+  <App />
+</PanelDeUsuario>

@@ -20,13 +20,12 @@ export default function KeyGenerator() {
   useEffect(() => {
     getAllClaves().then((result) => {
       setClaves(result)
-      console.log(result)
       setLoading(false)
     })
   }, [])
 
   const handleClick = async () => {
-    const clave = generarCodigo()
+    const clave = generarCodigo(16)
     var fecha = new Date().toLocaleDateString()
     const nuevaClave = {
       clave: clave,

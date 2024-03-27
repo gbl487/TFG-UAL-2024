@@ -20,7 +20,7 @@ export default function HomePage() {
       </main>
       <Toast />
 
-      <footer className="footer h-96 bg-slate-300">Footer</footer>
+      <footer className="footer w-auto h-96 bg-slate-300"></footer>
     </section>
   )
 }

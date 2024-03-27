@@ -19,5 +19,5 @@ export default function ModificarTarjeta() {
       setTarjeta(result)
     })
   }, [id])
-  return <>{tarjeta && <FormularioTarjeta initialValue={tarjeta} />}</>
+  return <>{tarjeta && <FormularioTarjeta id={id} />}</>
 }

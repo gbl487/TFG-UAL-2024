@@ -1,3 +1,5 @@
+import Delta from 'quill-delta'
+
 export function deltaToHtml(delta) {
   let html = ''
   let newInsert = ''
@@ -38,4 +40,9 @@ export function deltaToHtml(delta) {
   })
 
   return html
+}
+
+export function getDelta(ops) {
+  const delta = new Delta(ops)
+  return { delta }
 }

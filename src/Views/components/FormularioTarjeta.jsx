@@ -3,41 +3,74 @@ import { Editor } from 'primereact/editor'
 import { FILTROS, ALLOWEDFILETYPES } from 'src/constants'
 import { useForm } from 'react-hook-form'
 import InfoCard from './InfoCard'
-import { deltaToHtml } from 'src/Controllers/utils/delta'
+import { getDelta } from 'src/Controllers/utils/delta'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
-import { crearTarjeta } from 'src/Model/Tarjetas'
+import { crearTarjeta, getTarjetaFromId } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
 import AsisegLoader from './Buttons/AsisegLoader'
 import { useNavigate } from 'react-router'
-export default function FormularioTarjeta({ initialValue }) {
+export default function FormularioTarjeta({ id }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
-  const [titulo, setTitulo] = useState()
+  const [titulo, setTitulo] = useState('')
   const [text, setText] = useState('')
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState('Hola')
   const [errorContent, setErrorContent] = useState(false)
   const [imagen, setImagen] = useState('')
   const [errorImagen, setErrorImagen] = useState(false)
   const [tags, setTags] = useState([])
   const [errorTag, setErrorTag] = useState(false)
   const [desc, setDesc] = useState('')
-  const [loading, setLoading] = useState(false)
-  // const [delta, setDelta] = useState()
+  const [loading, setLoading] = useState(true)
+  const [loadingEditor, setLoadingEditor] = useState(true)
   const quillRef = useRef()
+  const [tarjeta, setTarjeta] = useState()
   const navigate = useNavigate()
+
   useEffect(() => {
-    if (initialValue) {
-      console.log(initialValue)
-      // quillRef.current.getQuill().editor.delta.ops = initialValue.contenido
-      setTitulo(initialValue.titulo)
-      setTags(initialValue.categorias)
+    const obtenerTarjeta = async () => {
+      try {
+        const tarjeta = await getTarjetaFromId({ idTarjeta: id })
+        return tarjeta
+      } catch (error) {
+        console.error('Error al obtener las tarjetas:', error)
+      }
     }
-  }, [initialValue])
+    obtenerTarjeta().then((result) => {
+      setTarjeta(result)
+
+      const { delta } = getDelta(result.contenido)
+      var converter = new QuillDeltaToHtmlConverter(delta.ops, {})
+      var contenido = converter.convert()
+
+      setContent(contenido)
+      setDesc(contenido.replace(/<[^>]+>/g, ''))
+      setText(contenido)
+
+      // Actualiza el título y las etiquetas
+      setTitulo(result.titulo)
+      setTags(result.categorias)
+      setImagen(result.imagen)
+
+      setLoading(false)
+    })
+  }, [id])
+  useEffect(() => {
+    if (quillRef.current && tarjeta && tarjeta.contenido) {
+      setTimeout(() => {
+        const editor = quillRef.current.getQuill()
+        if (editor) {
+          editor.setContents(tarjeta.contenido)
+        }
+        setLoadingEditor(false)
+      }, 1000)
+    }
+  }, [quillRef, tarjeta])
 
   const CabeceraEditor = () => {
     return (
@@ -87,16 +120,6 @@ export default function FormularioTarjeta({ initialValue }) {
     )
   }
   const cabecera = CabeceraEditor()
-
-  function getHtml(delta) {
-    setContent(delta)
-    var cfg = {}
-    var converter = new QuillDeltaToHtmlConverter(delta.ops, cfg)
-    var contenido = converter.convert()
-    const html = deltaToHtml(delta.ops)
-    setText(contenido)
-    setDesc(html.replace(/<[^>]+>/g, ''))
-  }
   function handleTagChange(e) {
     console.log(e.id)
     const checkboxID = e.id
@@ -174,7 +197,7 @@ export default function FormularioTarjeta({ initialValue }) {
                     id="titulo"
                     {...register('titulo', { required: true, minLength: 5 })}
                     placeholder="Cura..."
-                    defaultValue={initialValue.titulo}
+                    defaultValue={tarjeta.titulo}
                     onChange={(e) => setTitulo(e.target.value)}
                     className="input bg-asiseg-gray/10 input-bordered w-full max-w-md"
                   />
@@ -199,7 +222,6 @@ export default function FormularioTarjeta({ initialValue }) {
                     type="file"
                     id="imagen"
                     {...register('imagen', { required: true })}
-                    // value={initialValue.imagen}
                     onChange={handleFileChange}
                     className="file-input bg-asiseg-gray/10 w-full max-w-md"
                   />
@@ -245,7 +267,7 @@ export default function FormularioTarjeta({ initialValue }) {
                                   {...register('cat_' + categoria.code, {
                                     required: false,
                                   })}
-                                  defaultChecked={initialValue.categorias.includes(
+                                  defaultChecked={tarjeta.categorias.includes(
                                     categoria.code
                                   )}
                                   onChange={(e) => handleTagChange(e.target)}
@@ -271,13 +293,23 @@ export default function FormularioTarjeta({ initialValue }) {
                       Contenido
                     </span>
                   </div>
+
+                  {loadingEditor && (
+                    <div className="flex flex-col justify-center my-5 pt-2 border-2 rounded-lg max-w-4xl">
+                      <p className="flex w-full justify-center">
+                        Cargando contenido del editor...
+                      </p>
+                      <AsisegLoader showLogo={false} />
+                    </div>
+                  )}
                   <Editor
                     id="contenido"
                     ref={quillRef}
-                    defaultValue={initialValue.contenido}
-                    onTextChange={() =>
-                      getHtml(quillRef.current.getQuill().editor.delta)
-                    }
+                    // defaultValue={content}
+                    onTextChange={(e) => {
+                      setContent(e.htmlValue)
+                      console.log(e)
+                    }}
                     className="max-w-4xl"
                     headerTemplate={cabecera}
                     style={{ height: '600px' }}

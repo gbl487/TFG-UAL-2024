@@ -12,7 +12,8 @@ export function cerrarSesionUsuario() {
   auth.signOut()
 }
 
-export async function getNIFUsuario({ uid }) {
+export async function getNIFUsuario() {
+  const uid = auth.currentUser.uid
   try {
     const docRef = await doc(db, 'Usuarios', uid)
     const documentSnapshot = await getDoc(docRef)
@@ -20,7 +21,7 @@ export async function getNIFUsuario({ uid }) {
     if (documentSnapshot.exists()) {
       // Accede a los datos del documento
       const documentData = documentSnapshot.data()
-      return documentData
+      return documentData.nif
     } else {
       console.log('El documento no existe')
       return null
@@ -84,4 +85,8 @@ export async function getAllNifs() {
     console.log(doc.id, ' => ', doc.data().nif)
   })
   return pacientes
+}
+
+export async function getIdUsuario() {
+  return auth.currentUser.uid
 }

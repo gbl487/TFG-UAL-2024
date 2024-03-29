@@ -30,3 +30,5 @@ const TIPO_CURA = {
 export const FILTROS = [AREA_AFECTADA, TIPO_CURA]
 
 export const ALLOWEDFILETYPES = ['image/png', 'image/jpeg']
+
+export const ROLES = { USUARIO: 'USUARIO', MEDICO: 'MEDICO' }

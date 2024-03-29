@@ -8,24 +8,32 @@ import {
   where,
 } from 'firebase/firestore'
 import { db } from './Firebase'
-import { getNIFUsuario } from './Usuario'
+import { getIdUsuario, getNIFUsuario } from './Usuario'
+import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
 
-export async function crearClave({ clave, creador, fechaCreacion }) {
+export async function crearClave() {
   let result = ''
+  const clave = generarCodigo(16)
+  var fechaCreacion = new Date()
+  var fechaCreacion_txt = fechaCreacion.toLocaleDateString('es-ES')
   const clavesRef = collection(db, 'Claves')
-  const nuevaData = {
+  const nombre_usuario = await getNIFUsuario()
+  const id_usuario = await getIdUsuario()
+  const nuevaClave = {
     clave: clave,
-    creador: creador,
+    nombre_creador: nombre_usuario,
+    id_creador: id_usuario,
     fechaCreacion: fechaCreacion,
+    fechaCreacionString: fechaCreacion_txt,
   }
   try {
     // Utiliza setDoc para agregar el nuevo documento
-    await setDoc(doc(clavesRef), nuevaData)
+    await setDoc(doc(clavesRef), nuevaClave)
     result = 'OK'
   } catch (error) {
     result = error
   }
-  return { result }
+  return { result, nuevaClave }
 }
 
 export async function getAllClaves() {
@@ -35,12 +43,10 @@ export async function getAllClaves() {
 
     for (const doc of querySnapshot.docs) {
       const data = doc.data()
-      const result = await getNIFUsuario({ uid: data.creador })
       claves.push({
-        id: doc.id,
         clave: data.clave,
-        creador: result.NIF,
-        fechaCreacion: data.fechaCreacion,
+        creador: data.nombre_creador,
+        fechaCreacion: data.fechaCreacionString,
       })
     }
     return claves

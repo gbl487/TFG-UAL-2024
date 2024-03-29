@@ -9,33 +9,34 @@ import { AsisegButton } from '@components/Buttons/AddContentButton'
 import { Dialog } from 'primereact/dialog'
 import CrearCita from './CrearCita'
 import { getCitas } from 'src/Model/Citas'
-import { auth } from 'src/Model/Firebase'
 import AsisegLoader from '@components/Buttons/AsisegLoader'
 import { useStore } from '@nanostores/react'
 import {
+  citaModModal,
   citaModal,
+  setCitaModModal,
   setCitaModal,
 } from 'src/Controllers/context/cita_modal_context'
+import ModificarCita from './ModificarCita'
 
 dayjs.locale('es')
 const localizer = dayjsLocalizer(dayjs)
 export default function MisCitas() {
-  const [visualizarModal, setVisualizarModal] = useState(false)
+  const modCita = useStore(citaModModal)
   const modal = useStore(citaModal)
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(false)
   const [cita, setCita] = useState(false)
   const [citaCreada, setCitaCreada] = useState(false)
+  const [citaModificada, setCitaModificada] = useState(false)
   const onDoubleClickEvent = (calEvent) => {
-    console.log(calEvent)
-
     setCita({
+      id: calEvent.uid,
       paciente: calEvent.title,
-      fecha_cita: calEvent.start.toLocaleDateString('es-ES'),
-      hora_cita: calEvent.start.toLocaleTimeString('es-ES'),
+      fecha_cita: calEvent.start,
       mensaje: calEvent.mensaje,
     })
-    setVisualizarModal(true)
+    setCitaModModal({ value: true })
   }
 
   const handleClick = (e) => {
@@ -45,11 +46,9 @@ export default function MisCitas() {
 
   useEffect(() => {
     const obtenerCitas = async () => {
-      const uid = auth.currentUser.uid
-      const citas = await getCitas({ uid })
+      const citas = await getCitas()
       return citas
     }
-
     setLoading(true)
     obtenerCitas().then((result) => {
       setEvents(result)
@@ -63,7 +62,13 @@ export default function MisCitas() {
         setCitaCreada(false) // Restaurar el estado
       })
     }
-  }, [citaCreada])
+    if (citaModificada) {
+      obtenerCitas().then((result) => {
+        setEvents(result)
+        setCitaModificada(false) // Restaurar el estado
+      })
+    }
+  }, [citaCreada, citaModificada])
 
   return (
     <>
@@ -122,38 +127,20 @@ export default function MisCitas() {
       </Dialog>
       <Dialog
         id="vis_cita"
-        header={'Visualizar cita'}
-        visible={visualizarModal}
+        header={`Cita del paciente: ${cita.paciente}`}
+        visible={modCita}
         onHide={() => {
-          setVisualizarModal(false)
+          setCitaModModal({ value: false })
         }}
         style={{ width: '700px', minWidth: '300px' }}
         breakpoints={{ '640px': '350px' }}
         className="bg-gray-50"
         draggable={false}
       >
-        {/* <VisualizarCita /> */}
-        <div className="space-y-4 md:space-y-6 w-full">
-          <p>
-            <strong>Paciente: </strong>
-            {cita.paciente}
-          </p>
-          <p>
-            <strong>Fecha de la cita: </strong>
-            {cita.fecha_cita}
-          </p>
-          <p>
-            <strong>Hora de la cita: </strong>
-            {cita.hora_cita}
-          </p>
-          <textarea
-            name="textarea"
-            id=""
-            className="w-full min-h-40 max-h-40"
-            value={cita.mensaje}
-            disabled
-          ></textarea>
-        </div>
+        <ModificarCita
+          cita={cita}
+          onCitaModificada={() => setCitaModificada(true)}
+        />
       </Dialog>
     </>
   )

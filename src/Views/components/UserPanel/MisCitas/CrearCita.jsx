@@ -172,7 +172,6 @@ export default function CrearCita({ onCitaCreada }) {
             onSelect={handleFechaSelect}
             className="asiseg-input h-8 text-sm"
             locale="es"
-            // showButtonBar
             dateTemplate={dateTemplate}
           />
           {errorFecha === 'FECHA_MENOR' && (
@@ -199,7 +198,7 @@ export default function CrearCita({ onCitaCreada }) {
             Mensaje
             <textarea
               id="mensaje"
-              className="textarea asiseg-input bg-white border-asiseg-gray focus:outline-asiseg-blue focus:border-asiseg-blue"
+              className="textarea asiseg-input bg-white border-[#a6a6a6] focus:outline-asiseg-blue focus:border-asiseg-blue"
               placeholder="Contenido del mensaje..."
               {...register('mensaje', { required: true })}
             ></textarea>

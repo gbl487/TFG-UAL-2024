@@ -5,18 +5,13 @@ import { DeleteKeyICon } from '@icons/Icons'
 import { deleteDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { setToast } from 'src/Controllers/context/toast_context'
-import { useAuth } from 'src/Controllers/context/userContext'
-import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
 import { crearClave, getAllClaves, getClaveDoc } from 'src/Model/Claves'
 
 export default function KeyGenerator() {
-  const { usuario } = useAuth()
   const [claves, setClaves] = useState([])
   const [indiceClave, setIndiceClave] = useState()
   const [clave, setClave] = useState()
   const [loading, setLoading] = useState(true)
-  const username = usuario?.email.replace('@asiseg.com', '').toUpperCase()
-
   useEffect(() => {
     getAllClaves().then((result) => {
       setClaves(result)
@@ -25,22 +20,16 @@ export default function KeyGenerator() {
   }, [])
 
   const handleClick = async () => {
-    const clave = generarCodigo(16)
-    var fecha = new Date().toLocaleDateString()
-    const nuevaClave = {
-      clave: clave,
-      creador: username,
-      fechaCreacion: fecha,
-    }
-    const { result } = await crearClave({
-      clave,
-      creador: usuario.uid,
-      fechaCreacion: fecha,
-    })
+    const { result, nuevaClave } = await crearClave()
     if (result === 'OK') {
       setToast({ value: true, text: 'Clave creada con éxito' })
+      const clave = {
+        clave: nuevaClave.clave,
+        creador: nuevaClave.nombre_creador,
+        fechaCreacion: nuevaClave.fechaCreacionString,
+      }
+      setClaves([...claves, clave])
     }
-    setClaves([...claves, nuevaClave])
   }
 
   const showModal = (e, clave, index) => {
@@ -57,14 +46,12 @@ export default function KeyGenerator() {
       const { documentoRef } = await getClaveDoc({ value: clave })
       await deleteDoc(documentoRef)
       setToast({ value: true, text: 'Clave eliminada correctamente' })
-
       const nuevasClaves = claves.filter((_, i) => i !== indiceClave)
       setClaves(nuevasClaves)
       setIndiceClave()
       document.getElementById('my_modal').close()
     }
   }
-
   return (
     <div className="p-5 md:p-10 md:ml-64 w-auto flex flex-col justify-center">
       {loading ? (
@@ -89,19 +76,23 @@ export default function KeyGenerator() {
                 </tr>
               </thead>
               <tbody>
-                {claves.map((clave, index) => (
-                  <tr key={index}>
-                    <th>{index + 1}</th>
-                    <td>{clave.clave}</td>
-                    <td>{clave.creador}</td>
-                    <td>{clave.fechaCreacion}</td>
-                    <td className="flex justify-center">
-                      <button onClick={(e) => showModal(e, clave.clave, index)}>
-                        <DeleteKeyICon />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {claves.map((clave, index) => {
+                  return (
+                    <tr key={index}>
+                      <th>{index + 1}</th>
+                      <td>{clave.clave}</td>
+                      <td>{clave.creador}</td>
+                      <td>{clave.fechaCreacion}</td>
+                      <td className="flex justify-center">
+                        <button
+                          onClick={(e) => showModal(e, clave.clave, index)}
+                        >
+                          <DeleteKeyICon />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           ) : (

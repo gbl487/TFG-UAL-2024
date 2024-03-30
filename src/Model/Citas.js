@@ -9,14 +9,16 @@ import {
   where,
 } from 'firebase/firestore'
 import { auth, db } from './Firebase'
+import { getIdUsuarioFromNIF, getNIFUsuarioFromId } from './Usuario'
 
 export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
   const uid = auth.currentUser.uid
   const citaRef = collection(db, 'Citas')
   let result
+  const idPaciente = await getIdUsuarioFromNIF({ nif: paciente })
   const nuevaData = {
     medico: uid,
-    paciente: paciente,
+    paciente: idPaciente,
     fechaCita: fechaCita,
     horaCita: horaCita,
     mensaje: mensaje,
@@ -25,42 +27,46 @@ export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
   // Utiliza setDoc para agregar el nuevo documento
   await setDoc(doc(citaRef), nuevaData)
     .then(() => {
-      result = 'VALID'
+      result = 'OK'
     })
     .catch(() => {
-      result = 'INVALID'
+      result = 'ERROR'
     })
-  console.log(result)
   return { result }
 }
 
 export async function getCitas() {
-  let citas = []
-  let horaCita = ''
-  let index = 0 // Declarar e inicializar el índice
+  const citas = []
   const uid = auth.currentUser.uid
   const q = query(collection(db, 'Citas'), where('medico', '==', uid))
   const querySnapshot = await getDocs(q)
-  querySnapshot.forEach((doc) => {
-    index++
-    const fechaCita = doc.data().fechaCita.toDate() // Convertir a objeto Date
-    horaCita = doc.data().horaCita
-    const anio = fechaCita.getFullYear()
-    const mes = fechaCita.getMonth()
-    const dia = fechaCita.getDate()
-    const horaInicio = parseInt(horaCita.substring(0, 2))
-    const horaFin = horaInicio + 1
-    const minuto = horaCita.substring(3, 5)
-    const cita = {
-      uid: doc.id,
-      id: index,
-      title: doc.data().paciente,
-      start: new Date(anio, mes, dia, horaInicio, minuto),
-      end: new Date(anio, mes, dia, horaFin, minuto),
-      mensaje: doc.data().mensaje,
-    }
-    citas.push(cita)
-  })
+
+  // Usar Promise.all para esperar a que todas las promesas se resuelvan
+  await Promise.all(
+    querySnapshot.docs.map(async (doc, index) => {
+      if (!doc.data().cancelada) {
+        console.log(doc.data())
+        const fechaCita = doc.data().fechaCita.toDate() // Convertir a objeto Date
+        const horaCita = doc.data().horaCita
+        const anio = fechaCita.getFullYear()
+        const mes = fechaCita.getMonth()
+        const dia = fechaCita.getDate()
+        const horaInicio = parseInt(horaCita.substring(0, 2))
+        const horaFin = horaInicio + 1
+        const minuto = horaCita.substring(3, 5)
+        const nif = await getNIFUsuarioFromId({ id: doc.data().paciente })
+        const cita = {
+          uid: doc.id,
+          id: index + 1, // Ajustar el índice aquí si lo necesitas
+          title: nif,
+          start: new Date(anio, mes, dia, horaInicio, minuto),
+          end: new Date(anio, mes, dia, horaFin, minuto),
+          mensaje: doc.data().mensaje,
+        }
+        citas.push(cita)
+      }
+    })
+  )
   return citas
 }
 
@@ -76,8 +82,27 @@ export async function modificarCita({ cita, fechaCita, horaCita, mensaje }) {
       fecha_actualizacion: today,
     }
     await updateDoc(citaRef, nuevosDatos)
-      .then(() => (result = 'VALID'))
-      .catch(() => (result = 'INVALID'))
+      .then(() => (result = 'OK'))
+      .catch(() => (result = 'ERROR'))
+  } catch (error) {
+    console.error('Error actualizando documento: ', error)
+  }
+  return { result }
+}
+
+export async function cancelarCita({ id }) {
+  let result = ''
+  const citaRef = doc(db, 'Citas', id)
+  const today = new Date()
+  const uid = auth.currentUser.uid
+  try {
+    await updateDoc(citaRef, {
+      cancelada: true,
+      fecha_actualizacion: today,
+      actualizado_por: uid,
+    })
+      .then(() => (result = 'OK'))
+      .catch(() => (result = 'ERROR'))
   } catch (error) {
     console.error('Error actualizando documento: ', error)
   }

@@ -5,8 +5,13 @@ import 'primereact/resources/themes/tailwind-light/theme.css'
 import { addLocale } from 'primereact/api'
 import AsisegLoader from '@components/Buttons/AsisegLoader'
 import { setCitaModModal } from 'src/Controllers/context/cita_modal_context'
-import { modificarCita } from 'src/Model/Citas'
-export default function ModificarCita({ onCitaModificada, cita }) {
+import { cancelarCita, modificarCita } from 'src/Model/Citas'
+import { AsisegButton } from '@components/Buttons/AddContentButton'
+export default function ModificarCita({
+  onCitaModificada,
+  onCitaCancelada,
+  cita,
+}) {
   const [fecha, setFecha] = useState()
   const [errorFecha, setErrorFecha] = useState()
   const [hora, setHora] = useState()
@@ -16,8 +21,8 @@ export default function ModificarCita({ onCitaModificada, cita }) {
   const [loading, setLoading] = useState(false)
   const [modCita, setModCita] = useState(false)
   const [noChange, setNoChange] = useState(false)
+  const [cancelar, setCancelar] = useState(false)
   useEffect(() => {
-    console.log(modCita)
     if (!modCita) {
       const horaCita = cita.fecha_cita.getHours().toString().padStart(2, '0')
       const minutoCita = cita.fecha_cita
@@ -49,57 +54,6 @@ export default function ModificarCita({ onCitaModificada, cita }) {
     const hora = newHora.substring(0, 2)
     const minuto = newHora.substring(3, 5)
     setHora(`${hora}:${minuto}`)
-  }
-
-  const consultarModificacion = (e) => {
-    e.preventDefault()
-    const fechaHTML = document.getElementById('hora_cita')
-    if (!fechaHTML.checkValidity()) {
-      setErrorHora(true)
-      return
-    }
-    setErrorHora(false)
-    if (mensaje === '') {
-      setErrorMensaje(true)
-      return
-    }
-    setErrorMensaje(false)
-    const horaCita = cita.fecha_cita.getHours().toString().padStart(2, '0')
-    const minutoCita = cita.fecha_cita.getMinutes().toString().padStart(2, '0')
-    const horaOld = `${horaCita}:${minutoCita}`
-
-    if (
-      cita.fecha_cita !== fecha ||
-      hora !== horaOld ||
-      mensaje !== cita.mensaje
-    ) {
-      setNoChange(false)
-      showModal(e)
-    } else {
-      setNoChange(true)
-    }
-  }
-
-  const enviarModificacion = async (e) => {
-    e.preventDefault()
-    document.getElementById('my_modal').close()
-    setLoading(true)
-    const { result } = await modificarCita({
-      cita,
-      fechaCita: fecha,
-      horaCita: hora,
-      mensaje,
-    })
-    setLoading(false)
-    setCitaModModal({ value: false })
-    if (result === 'VALID') {
-      onCitaModificada()
-    }
-    console.log(result)
-  }
-
-  const showModal = () => {
-    document.getElementById('my_modal').showModal()
   }
 
   addLocale('es', {
@@ -161,6 +115,65 @@ export default function ModificarCita({ onCitaModificada, cita }) {
       )
     }
     return date.day
+  }
+
+  const consultarModificacion = (e) => {
+    const fechaHTML = document.getElementById('hora_cita')
+    if (!fechaHTML.checkValidity()) {
+      setErrorHora(true)
+      return
+    }
+    setErrorHora(false)
+    if (mensaje === '') {
+      setErrorMensaje(true)
+      return
+    }
+    setErrorMensaje(false)
+    const horaCita = cita.fecha_cita.getHours().toString().padStart(2, '0')
+    const minutoCita = cita.fecha_cita.getMinutes().toString().padStart(2, '0')
+    const horaOld = `${horaCita}:${minutoCita}`
+
+    if (
+      cita.fecha_cita !== fecha ||
+      hora !== horaOld ||
+      mensaje !== cita.mensaje
+    ) {
+      setNoChange(false)
+      showModal(e)
+    } else {
+      setNoChange(true)
+    }
+  }
+
+  const enviarModificacion = async (e) => {
+    e.preventDefault()
+    document.getElementById('my_modal').close()
+    setLoading(true)
+    const { result } = await modificarCita({
+      cita,
+      fechaCita: fecha,
+      horaCita: hora,
+      mensaje,
+    })
+    setLoading(false)
+    setCitaModModal({ value: false })
+    if (result === 'OK') {
+      onCitaModificada()
+    }
+  }
+
+  const showModal = () => {
+    document.getElementById('my_modal').showModal()
+  }
+
+  const handleCancelacion = async () => {
+    setLoading(true)
+    const { result } = await cancelarCita({ id: cita.id })
+    setCitaModModal({ value: false })
+    setLoading(true)
+    if (result === 'OK') {
+      onCitaCancelada()
+    }
   }
 
   return (
@@ -239,7 +252,7 @@ export default function ModificarCita({ onCitaModificada, cita }) {
             )}
           </span>
         </div>
-        {noChange && (
+        {modCita && noChange && (
           <small className="text-red-400 text-xs" role="alert">
             No se han realizado cambios
           </small>
@@ -250,32 +263,41 @@ export default function ModificarCita({ onCitaModificada, cita }) {
             <AsisegLoader showLogo={false} />
           ) : (
             <>
-              <input
-                type="button"
+              <button
                 id="mod_vis_cita"
-                value={modCita ? 'Volver a visualizar' : 'Modificar cita'}
+                className="mr-4"
                 onClick={() => {
                   setModCita(!modCita)
                 }}
-                className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer mr-4"
-              />
+              >
+                <AsisegButton
+                  text={modCita ? 'Volver a visualizar' : 'Modificar cita'}
+                />
+              </button>
+
               {modCita && (
                 <>
-                  <input
-                    type="submit"
+                  <button
                     id="modificar_cita"
-                    value={'Enviar modificación'}
+                    className="mr-4"
                     onClick={(e) => {
+                      e.preventDefault()
                       consultarModificacion(e)
                     }}
-                    className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer mr-4"
-                  />
-                  <input
-                    type="button"
-                    id="eliminar"
-                    value={'Cancelar cita'}
-                    className=" text-white bg-secondary opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer mr-4"
-                  />
+                  >
+                    <AsisegButton text="Enviar modificación" />
+                  </button>
+                  <button
+                    id="cancelar_cita"
+                    className="mr-4"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setCancelar(true)
+                      showModal()
+                    }}
+                  >
+                    <AsisegButton tipo={'ERROR'} text="Cancelar cita" />
+                  </button>
                 </>
               )}
             </>
@@ -291,12 +313,17 @@ export default function ModificarCita({ onCitaModificada, cita }) {
           </form>
           <h3 className="font-bold text-lg text-orange-500">¡Advertencia!</h3>
           <p className="py-5">
-            Está a punto de modificar esta cita, ¿está seguro?
+            {cancelar
+              ? 'Está a punto de cancelar esta cita, ¿está seguro?'
+              : 'Está a punto de modificar esta cita, ¿está seguro?'}
           </p>
           <form method="dialog" className="flex justify-end gap-x-2">
             <button
-              onClick={(e) => enviarModificacion(e)}
-              className="btn btn-success text-white p-2 rounded-md"
+              onClick={(e) => {
+                e.preventDefault()
+                cancelar ? handleCancelacion() : enviarModificacion(e)
+              }}
+              className="btn btn-primary text-white p-2 rounded-md"
             >
               Aceptar
             </button>

@@ -1,31 +1,26 @@
 import 'primeicons/primeicons.css'
 import { useState } from 'react'
-import { CloseIcon, SeeMoreIcon } from '@icons/Icons.jsx'
+import { CloseIcon } from '@icons/Icons.jsx'
 import { Drawer } from 'vaul'
 import Card from './core/Card.jsx'
+import TagArray from './core/TagArray.jsx'
 import 'quill/dist/quill.core.css'
 import './quill.css'
-import TagArray from './core/TagArray.jsx'
+
 export default function InfoCard({
   titulo,
   imagen,
   tags,
   descripcion,
   contenido,
+  Footer,
 }) {
   const [visible, setVisible] = useState(false)
 
   const ocultar = () => {
     setVisible(false)
   }
-  const Footer = () => {
-    return (
-      <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-asiseg-blue rounded-lg opacity-65 hover:opacity-100 transition-opacity ">
-        Ver más
-        <SeeMoreIcon />
-      </div>
-    )
-  }
+
   return (
     <>
       <Drawer.Root open={visible} direction="bottom" onClose={() => ocultar()}>

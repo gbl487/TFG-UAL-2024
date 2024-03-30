@@ -41,10 +41,12 @@ export function PanelContent() {
           </Link>
         </li>
         <li>
-          <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">
-            <ChatIcon />
-            <span className="ms-3">Chat</span>
-          </div>
+          <Link to="/chat" onClick={() => setSidebar({ value: false })}>
+            <div className="flex items-center p-2  rounded-lg hover:bg-gray-200 group cursor-pointer">
+              <ChatIcon />
+              <span className="ms-3">Chat</span>
+            </div>
+          </Link>
         </li>
         <li>
           <Link to="/claves" onClick={() => setSidebar({ value: false })}>

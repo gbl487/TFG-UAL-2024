@@ -1,14 +1,15 @@
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './Home/HomePage.jsx'
 import MisDatos from './UserPanel/MisDatos.jsx'
-import AdminContent from './UserPanel/AdminContent.jsx'
-import CrearTarjeta from './UserPanel/CrearTarjeta.jsx'
+import AdminContent from './UserPanel/Contenido/AdminContent.jsx'
+import CrearTarjeta from './UserPanel/Contenido/CrearTarjeta.jsx'
 import ProtectedRoute from './core/ProtectedRoute.jsx'
 import UserPanel from './UserPanel/UserPanel.jsx'
 import KeyGenerator from './UserPanel/KeyGenerator.jsx'
-import MisCitas from './UserPanel/MisCitas/MisCitas.jsx'
-import ModificarTarjeta from './UserPanel/ModificarTarjeta.jsx'
+import MisCitas from './UserPanel/Citas/MisCitas.jsx'
+import ModificarTarjeta from './UserPanel/Contenido/ModificarTarjeta.jsx'
 import Modificar from 'src/pages/contenido/modificar.astro'
+import Chat from './UserPanel/Chat/Chat.jsx'
 
 export default function App() {
   return (
@@ -66,6 +67,15 @@ export default function App() {
             <>
               <UserPanel />
               <ModificarTarjeta />
+            </>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <>
+              <UserPanel />
+              <Chat />
             </>
           }
         />

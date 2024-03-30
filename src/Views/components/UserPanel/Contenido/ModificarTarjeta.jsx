@@ -2,24 +2,27 @@ import { useEffect, useRef, useState } from 'react'
 import { Editor } from 'primereact/editor'
 import { FILTROS, ALLOWEDFILETYPES } from 'src/constants'
 import { useForm } from 'react-hook-form'
-import InfoCard from './InfoCard'
+import InfoCard from '../../InfoCard'
 import { getDelta } from 'src/Controllers/utils/delta'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
-import { crearTarjeta, getTarjetaFromId } from 'src/Model/Tarjetas'
+import { getTarjetaFromId, modificarTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
-import AsisegLoader from './Buttons/AsisegLoader'
-import { useNavigate } from 'react-router'
-export default function FormularioTarjeta({ id }) {
+import AsisegLoader from './../../Buttons/AsisegLoader'
+import { useNavigate, useParams } from 'react-router'
+import Toast from '@components/core/Toast'
+import checkDatosTarjeta from 'src/Controllers/utils/checkDatosTarjeta'
+export default function ModificarTarjeta() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
+  const { id } = useParams()
   const [titulo, setTitulo] = useState('')
   const [text, setText] = useState('')
-  const [content, setContent] = useState('Hola')
+  const [content, setContent] = useState('')
   const [errorContent, setErrorContent] = useState(false)
   const [imagen, setImagen] = useState('')
   const [errorImagen, setErrorImagen] = useState(false)
@@ -43,16 +46,12 @@ export default function FormularioTarjeta({ id }) {
     }
     obtenerTarjeta().then((result) => {
       setTarjeta(result)
-
       const { delta } = getDelta(result.contenido)
-      var converter = new QuillDeltaToHtmlConverter(delta.ops, {})
-      var contenido = converter.convert()
+      var contenido = new QuillDeltaToHtmlConverter(delta.ops, {}).convert()
 
       setContent(contenido)
       setDesc(contenido.replace(/<[^>]+>/g, ''))
       setText(contenido)
-
-      // Actualiza el título y las etiquetas
       setTitulo(result.titulo)
       setTags(result.categorias)
       setImagen(result.imagen)
@@ -120,8 +119,13 @@ export default function FormularioTarjeta({ id }) {
     )
   }
   const cabecera = CabeceraEditor()
+  function getHtml(delta) {
+    setContent(delta)
+    var contenido = new QuillDeltaToHtmlConverter(delta.ops, {}).convert()
+    setText(contenido)
+    setDesc(contenido.replace(/<[^>]+>/g, ''))
+  }
   function handleTagChange(e) {
-    console.log(e.id)
     const checkboxID = e.id
     const isChecked = e.checked
 
@@ -134,7 +138,6 @@ export default function FormularioTarjeta({ id }) {
       // Si el checkbox está desmarcado, eliminamos el ID de la lista de tags
       setTags((prevTags) => prevTags.filter((tag) => tag !== checkboxID))
     }
-    console.log(tags)
   }
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -144,29 +147,51 @@ export default function FormularioTarjeta({ id }) {
       reader.onerror = reject
     })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     setErrorTag(isEmptyArray(tags))
     setErrorContent(isEmptyArray(content))
-    !ALLOWEDFILETYPES.includes(data.imagen[0].type)
-      ? setErrorImagen(true)
-      : setErrorImagen(false)
     if (!errorContent && !errorTag && !errorImagen) {
-      setLoading(true)
-      const { result } = await crearTarjeta({
+      const datosOld = {
+        titulo: tarjeta.titulo,
+        imagen: tarjeta.imagen,
+        categorias: tarjeta.categorias,
+        contenido: tarjeta.contenido,
+      }
+      const datosNew = {
         titulo: titulo,
         imagen: imagen,
         categorias: tags,
         contenido: content.ops,
+      }
+      const { resultado: resultadoCheck } = checkDatosTarjeta({
+        datosOld,
+        datosNew,
       })
-      if (result === 'VALID') {
-        setToast({ value: true, text: 'Contenido modificado correctamente' })
-        setLoading(false)
-        navigate('/contenido')
+
+      if (resultadoCheck === 'OK') {
+        setLoading(true)
+        const { result } = await modificarTarjeta({
+          idTarjeta: id,
+          titulo: titulo,
+          imagen: imagen,
+          categorias: tags,
+          contenido: content.ops,
+        })
+        if (result === 'OK') {
+          setToast({ value: true, text: 'Contenido modificado correctamente' })
+          setLoading(false)
+          navigate('/contenido')
+        }
+      } else {
+        setToast({ value: true, text: 'No se han detectado cambios' })
       }
     }
   }
   const handleFileChange = (event) => {
     const file = event.target.files[0]
+    !ALLOWEDFILETYPES.includes(file.type)
+      ? setErrorImagen(true)
+      : setErrorImagen(false)
     toBase64(file).then((data) => {
       setImagen(data)
     })
@@ -175,7 +200,7 @@ export default function FormularioTarjeta({ id }) {
     <>
       <div className="p-10 md:ml-64 w-auto flex flex-col xl:flex-row justify-between gap-10">
         {loading ? (
-          <div className="flex w-full justify-center items-center">
+          <div className="flex w-full h-screen justify-center items-center">
             <AsisegLoader showLogo={true} />
           </div>
         ) : (
@@ -221,7 +246,6 @@ export default function FormularioTarjeta({ id }) {
                   <input
                     type="file"
                     id="imagen"
-                    {...register('imagen', { required: true })}
                     onChange={handleFileChange}
                     className="file-input bg-asiseg-gray/10 w-full max-w-md"
                   />
@@ -305,10 +329,8 @@ export default function FormularioTarjeta({ id }) {
                   <Editor
                     id="contenido"
                     ref={quillRef}
-                    // defaultValue={content}
-                    onTextChange={(e) => {
-                      setContent(e.htmlValue)
-                      console.log(e)
+                    onTextChange={() => {
+                      getHtml(quillRef.current.getQuill().editor.delta)
                     }}
                     className="max-w-4xl"
                     headerTemplate={cabecera}
@@ -322,6 +344,7 @@ export default function FormularioTarjeta({ id }) {
                 </div>
                 <div className="flex flex-1 justify-center mt-10">
                   <input
+                    disabled={loadingEditor ? true : false}
                     type="submit"
                     className="btn btn-primary text-white opacity-65 transition-opacity p-4 rounded-md mb-4"
                   />
@@ -331,16 +354,25 @@ export default function FormularioTarjeta({ id }) {
 
             <div className="flex flex-col w-full basis-1/3 gap-y-5">
               <h1>Ejemplo</h1>
-              <div className="flex justify-center">
-                <InfoCard
-                  titulo={titulo}
-                  imagen={imagen}
-                  descripcion={desc}
-                  tags={tags}
-                  contenido={text}
-                />
-              </div>
+
+              {loadingEditor ? (
+                <div className="flex flex-col justify-center my-5 pt-2 border-2 rounded-lg max-w-4xl">
+                  <p className="flex w-full justify-center">Cargando ejemplo</p>
+                  <AsisegLoader showLogo={false} />
+                </div>
+              ) : (
+                <div className="flex justify-center">
+                  <InfoCard
+                    titulo={titulo}
+                    imagen={imagen}
+                    descripcion={desc}
+                    tags={tags}
+                    contenido={text}
+                  />
+                </div>
+              )}
             </div>
+            <Toast />
           </>
         )}
       </div>

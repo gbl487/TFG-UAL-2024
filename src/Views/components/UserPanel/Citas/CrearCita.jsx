@@ -38,10 +38,9 @@ export default function CrearCita({ onCitaCreada }) {
     })
     setLoading(false)
     setCitaModal({ value: false })
-    if (result === 'VALID') {
+    if (result === 'OK') {
       onCitaCreada()
     }
-    console.log(result)
   }
 
   const handleFechaSelect = (e) => {
@@ -210,7 +209,7 @@ export default function CrearCita({ onCitaCreada }) {
           </span>
         </div>
 
-        <div className="flex justify-center">
+        <div className={`flex ${loading ? 'justify-center' : 'justify-end'}`}>
           {loading ? (
             <AsisegLoader showLogo={false} />
           ) : (

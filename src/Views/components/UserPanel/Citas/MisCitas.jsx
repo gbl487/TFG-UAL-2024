@@ -18,6 +18,8 @@ import {
   setCitaModal,
 } from 'src/Controllers/context/cita_modal_context'
 import ModificarCita from './ModificarCita'
+import Toast from '@components/core/Toast'
+import { setToast } from 'src/Controllers/context/toast_context'
 
 dayjs.locale('es')
 const localizer = dayjsLocalizer(dayjs)
@@ -29,6 +31,7 @@ export default function MisCitas() {
   const [cita, setCita] = useState(false)
   const [citaCreada, setCitaCreada] = useState(false)
   const [citaModificada, setCitaModificada] = useState(false)
+  const [citaCancelada, setCitaCancelada] = useState(false)
   const onDoubleClickEvent = (calEvent) => {
     setCita({
       id: calEvent.uid,
@@ -43,32 +46,36 @@ export default function MisCitas() {
     e.preventDefault()
     setCitaModal({ value: true })
   }
-
+  const obtenerCitas = async () => {
+    const citas = await getCitas()
+    console.log(citas)
+    return citas
+  }
   useEffect(() => {
-    const obtenerCitas = async () => {
-      const citas = await getCitas()
-      return citas
-    }
     setLoading(true)
     obtenerCitas().then((result) => {
+      console.log(result)
       setEvents(result)
       setLoading(false)
     })
 
     // Si se crea una cita, actualizar el estado para forzar el re-renderizado del componente
-    if (citaCreada) {
+    if (citaCreada || citaModificada || citaCancelada) {
+      if (citaCreada)
+        setToast({ value: true, text: 'Cita creada correctamente' })
+      if (citaModificada)
+        setToast({ value: true, text: 'Cita modificada correctamente' })
+      if (citaCancelada)
+        setToast({ value: true, text: 'Cita cancelada correctamente' })
       obtenerCitas().then((result) => {
         setEvents(result)
         setCitaCreada(false) // Restaurar el estado
-      })
-    }
-    if (citaModificada) {
-      obtenerCitas().then((result) => {
-        setEvents(result)
         setCitaModificada(false) // Restaurar el estado
+        setCitaCancelada(false) // Restaurar el estado
+        setLoading(false)
       })
     }
-  }, [citaCreada, citaModificada])
+  }, [citaCreada, citaModificada, citaCancelada])
 
   return (
     <>
@@ -111,6 +118,7 @@ export default function MisCitas() {
           </>
         )}
       </div>
+      <Toast />
       <Dialog
         id="crear_Cita"
         header={'Añadir una cita'}
@@ -140,6 +148,7 @@ export default function MisCitas() {
         <ModificarCita
           cita={cita}
           onCitaModificada={() => setCitaModificada(true)}
+          onCitaCancelada={() => setCitaCancelada(true)}
         />
       </Dialog>
     </>

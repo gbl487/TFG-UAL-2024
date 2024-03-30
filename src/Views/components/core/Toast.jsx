@@ -21,7 +21,7 @@ export default function Toast() {
     <>
       {$toast && (
         <div className="toast ">
-          <div className="alert flex flex-row bg-white max-w-xs p-4 mb-4 rounded-lg shadow ">
+          <div className="alert flex flex-row bg-white max-w-sm p-4 mb-4 rounded-lg shadow ">
             <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg ">
               <svg
                 className="w-5 h-5"

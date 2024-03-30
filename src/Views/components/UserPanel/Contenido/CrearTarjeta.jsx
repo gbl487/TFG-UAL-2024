@@ -2,14 +2,14 @@ import { useRef, useState } from 'react'
 import { Editor } from 'primereact/editor'
 import { FILTROS, ALLOWEDFILETYPES } from 'src/constants'
 import { useForm } from 'react-hook-form'
-import InfoCard from '../InfoCard'
+import InfoCard from '../../InfoCard'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
 import { crearTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
-import Toast from '../core/Toast'
-import AsisegLoader from '../Buttons/AsisegLoader'
+import Toast from '../../core/Toast'
+import AsisegLoader from '../../Buttons/AsisegLoader'
 import { useNavigate } from 'react-router'
 export default function CrearTarjeta() {
   const {
@@ -122,7 +122,7 @@ export default function CrearTarjeta() {
         categorias: tags,
         contenido: content.ops,
       })
-      if (result === 'VALID') {
+      if (result === 'OK') {
         setToast({ value: true, text: 'Contenido creado con éxito' })
         const timer = setTimeout(() => {
           setLoading(false)

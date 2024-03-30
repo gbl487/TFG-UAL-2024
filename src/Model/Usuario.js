@@ -1,5 +1,13 @@
 // import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore'
 import { auth, db } from './Firebase'
 import {
   browserLocalPersistence,
@@ -7,6 +15,7 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
 } from 'firebase/auth'
+import { ROLES } from 'src/constants'
 
 export function cerrarSesionUsuario() {
   auth.signOut()
@@ -60,7 +69,7 @@ export async function crearUsuario({ uid, username, remember }) {
   const usuarioRef = collection(db, 'Usuarios')
   const nuevaData = {
     nif: username,
-    rol: 'usuario',
+    rol: ROLES.USUARIO,
     persistencia_sesion: remember,
     fecha_creacion: new Date(),
   }
@@ -89,4 +98,28 @@ export async function getAllNifs() {
 
 export async function getIdUsuario() {
   return auth.currentUser.uid
+}
+
+export async function getIdUsuarioFromNIF({ nif }) {
+  const q = query(collection(db, 'Usuarios'), where('nif', '==', nif))
+  const querySnapshot = await getDocs(q)
+  return querySnapshot.docs[0].id
+}
+
+export async function getNIFUsuarioFromId({ id }) {
+  try {
+    const docRef = await doc(db, 'Usuarios', id)
+    const documentSnapshot = await getDoc(docRef)
+
+    if (documentSnapshot.exists()) {
+      // Accede a los datos del documento
+      const documentData = documentSnapshot.data()
+      return documentData.nif
+    } else {
+      console.log('El documento no existe')
+      return null
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }

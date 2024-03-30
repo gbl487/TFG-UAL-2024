@@ -1,55 +1,47 @@
-import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import firebaseApp from 'src/Model/Firebase'
 import InfoCard from '../InfoCard'
 import AsisegLoader from '../Buttons/AsisegLoader'
 import { useFilters } from '@hooks/useFilters'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import { SeeMoreIcon } from '@icons/Icons'
+import { obtenerTarjetas } from 'src/Model/Tarjetas'
 export default function ALlTarjetas() {
-  const db = getFirestore(firebaseApp)
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(true)
   const { getTarjetasFiltradas } = useFilters()
   useEffect(() => {
-    const obtenerTarjetas = async () => {
-      try {
-        // Obtén una referencia a la colección 'Tarjetas'
-        const tarjetasRef = collection(db, 'Tarjetas')
-
-        // Obtiene todos los documentos de la colección 'Tarjetas'
-        const querySnapshot = await getDocs(tarjetasRef)
-
-        return querySnapshot.docs
-      } catch (error) {
-        console.error('Error al obtener las tarjetas:', error)
-      }
-    }
     obtenerTarjetas().then((result) => {
       setDocs(result)
       setLoading(false)
     })
-  }, [db])
+  }, [])
 
   const tarjetas = getTarjetasFiltradas(docs)
-
+  const Footer = () => {
+    return (
+      <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-asiseg-blue rounded-lg opacity-65 hover:opacity-100 transition-opacity ">
+        Ver más
+        <SeeMoreIcon />
+      </div>
+    )
+  }
   return (
     <>
       {!loading && tarjetas.length !== 0 && (
         <section className="grid grid-cols-1 sm:grid-cols-2 lg+:grid-cols-3 xl:grid-cols-4 gap-5">
-          {tarjetas.map((tarjeta) => {
-            const data = tarjeta.data()
-            var cfg = {}
-            var converter = new QuillDeltaToHtmlConverter(data.contenido, cfg)
+          {tarjetas.map((tarjeta, index) => {
+            var converter = new QuillDeltaToHtmlConverter(tarjeta.contenido, {})
             var contenido = converter.convert()
             const desc = contenido.replace(/<[^>]+>/g, '')
             return (
               <InfoCard
-                key={tarjeta.id}
-                titulo={data.titulo}
-                imagen={data.imagen}
+                key={index}
+                titulo={tarjeta.titulo}
+                imagen={tarjeta.imagen}
                 descripcion={desc}
-                tags={data.categorias}
+                tags={tarjeta.categorias}
                 contenido={contenido}
+                Footer={Footer}
               />
             )
           })}

@@ -7,9 +7,17 @@ import { setSidebar, sidebar } from 'src/Controllers/context/sidebar_context'
 export default function SideUserPanel() {
   const $sidebar = useStore(sidebar)
   return (
-    <div className="flex justify-content-center min-w-md">
+    <div className="bg-asiseg-blue">
+      <button
+        className="mt-5 ml-5 "
+        onClick={() => {
+          setSidebar({ value: true })
+        }}
+      >
+        <PanelIcon />
+      </button>
       <Sidebar
-        className="w-2/3 flex justify-center bg-gray-50"
+        className="w-80 flex justify-center bg-gray-50"
         visible={$sidebar}
         onHide={() => {
           setSidebar({ value: false })
@@ -18,14 +26,6 @@ export default function SideUserPanel() {
       >
         <PanelContent />
       </Sidebar>
-      <button
-        className="mt-5 mx-5"
-        onClick={() => {
-          setSidebar({ value: true })
-        }}
-      >
-        <PanelIcon />
-      </button>
     </div>
   )
 }

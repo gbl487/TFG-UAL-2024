@@ -48,13 +48,11 @@ export default function MisCitas() {
   }
   const obtenerCitas = async () => {
     const citas = await getCitas()
-    console.log(citas)
     return citas
   }
   useEffect(() => {
     setLoading(true)
     obtenerCitas().then((result) => {
-      console.log(result)
       setEvents(result)
       setLoading(false)
     })
@@ -86,7 +84,7 @@ export default function MisCitas() {
           </div>
         ) : (
           <>
-            <div className="flex justify-center">
+            <div className="flex justify-start mb-5">
               <button onClick={handleClick}>
                 <AsisegButton text={'Añadir cita'} />
               </button>

@@ -1,3 +1,5 @@
+import { CheckIcon } from '@icons/Icons'
+
 export default function ChatEnd({ username, fechaMensaje, contenido }) {
   return (
     <div className="flex justify-end">
@@ -10,13 +12,15 @@ export default function ChatEnd({ username, fechaMensaje, contenido }) {
             />
           </div>
         </div>
-        <div className="chat-header">
-          {username}
+        <div className="chat-header flex w-auto flex-row items-center gap-x-5">
           <time className="text-xs opacity-50">{fechaMensaje}</time>
+          <p className="mr-2">{username}</p>
         </div>
         <div className="chat-bubble bg-asiseg-blue/80">{contenido}</div>
         {/* Poner check de enviado */}
-        <div className="chat-footer opacity-50">Seen at 12:46</div>
+        <div className="chat-footer opacity-50">
+          <CheckIcon></CheckIcon>
+        </div>
       </div>
     </div>
   )

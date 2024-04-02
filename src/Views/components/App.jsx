@@ -10,6 +10,7 @@ import MisCitas from './UserPanel/Citas/MisCitas.jsx'
 import ModificarTarjeta from './UserPanel/Contenido/ModificarTarjeta.jsx'
 import Modificar from 'src/pages/contenido/modificar.astro'
 import Chat from './UserPanel/Chat/Chat.jsx'
+import UserHeader from './UserPanel/UserHeader.jsx'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <MisDatos />
             </>
           }
@@ -30,6 +32,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <MisCitas />
             </>
           }
@@ -39,6 +42,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <AdminContent />
             </>
           }
@@ -48,6 +52,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <CrearTarjeta />
             </>
           }
@@ -57,6 +62,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <Modificar />
             </>
           }
@@ -66,6 +72,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <ModificarTarjeta />
             </>
           }
@@ -74,7 +81,6 @@ export default function App() {
           path="/chat"
           element={
             <>
-              <UserPanel />
               <Chat />
             </>
           }
@@ -84,6 +90,7 @@ export default function App() {
           element={
             <>
               <UserPanel />
+              <UserHeader />
               <KeyGenerator />
             </>
           }

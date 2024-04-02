@@ -10,13 +10,11 @@ export default function ChatStart({ username, fechaMensaje, contenido }) {
             />
           </div>
         </div>
-        <div className="chat-header flex flex-row w-full">
-          <p className="flex justify-start">{username}</p>
-          <time className="text-xs opacity-50 flex justify-end">
-            {fechaMensaje}
-          </time>
-        </div>
-        <div className="chat-bubble bg-asiseg-gray/80">{contenido}</div>
+        <div className="chat-header">{username}</div>
+        <div className="chat-bubble bg-asiseg-gray">{contenido}</div>
+        <time className="chat chat-footer text-xs opacity-50 ml-1">
+          {fechaMensaje}
+        </time>
       </div>
     </div>
   )

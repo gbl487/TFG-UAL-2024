@@ -64,7 +64,7 @@ export default function AdminContent() {
   return (
     <>
       <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
-        <div className="flex justify-center my-5">
+        <div className="flex justify-start my-5">
           <Link to="/contenido/crear">
             <AsisegButton text={'Añadir contenido'} />
           </Link>

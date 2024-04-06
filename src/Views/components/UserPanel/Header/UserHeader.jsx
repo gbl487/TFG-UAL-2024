@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 
 export default function UserHeader() {
   const [headerName, setHeaderName] = useState()
   const location = useLocation().pathname
-
+  const { id } = useParams()
   useEffect(() => {
     switch (location) {
       case '/misdatos':
@@ -16,6 +16,12 @@ export default function UserHeader() {
       case '/contenido':
         setHeaderName('Administrar contenido')
         break
+      case '/contenido/crear':
+        setHeaderName('Añadir contenido')
+        break
+      case `/contenido/modificar/${id}`:
+        setHeaderName('Modificar contenido')
+        break
       case '/chat':
         setHeaderName('Mis mensajes')
         break
@@ -23,7 +29,7 @@ export default function UserHeader() {
         setHeaderName('Claves de registro')
         break
     }
-  }, [location])
+  }, [location, id])
 
   return (
     <div className="h-20 -z-10 bg-asiseg-blue w-full flex justify-center items-center">

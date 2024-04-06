@@ -8,17 +8,29 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useStore } from '@nanostores/react'
-import { crearUsuario, registrarUsuarioFirebase } from 'src/Model/Usuario'
+import {
+  crearUsuario,
+  getRol,
+  registrarUsuarioFirebase,
+} from 'src/Model/Usuario'
 
 // export const FirebaseUser = atom(new Usuario({ authState: auth }))
 export const usuarioAtom = atom()
+
+export const rolAtom = atom()
 
 export const useAuth = () => {
   // Usar useStore para acceder al estado y acciones relacionadas con la autenticación
   const usuario = useStore(usuarioAtom)
 
+  const rolUsuario = useStore(rolAtom)
+
   const setUser = ({ value }) => {
     usuarioAtom.set(value)
+  }
+
+  const setRol = ({ value }) => {
+    rolAtom.set(value)
   }
 
   const registrarUsuario = async (username, password, remember) => {
@@ -53,10 +65,8 @@ export const useAuth = () => {
       ? await setPersistence(auth, browserLocalPersistence)
       : await setPersistence(auth, browserSessionPersistence)
     await signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+      .then(() => {
         usuarioValido = true
-        console.log(result)
-        // setUser({ value: result.user })
       })
       .catch((error) => {
         if (error.code === 'auth/invalid-login-credentials')
@@ -65,7 +75,6 @@ export const useAuth = () => {
           errorUsuario = 'TOO_MANY_REQUESTS'
         usuarioValido = false
       })
-
     return { usuarioValido, errorUsuario }
   }
 
@@ -114,10 +123,12 @@ export const useAuth = () => {
   // }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         // El usuario está autenticado
         setUser({ value: authUser })
+        const rol = await getRol({ id: authUser.uid })
+        setRol({ value: rol })
       } else {
         // El usuario no está autenticado
         setUser({ value: null })
@@ -131,6 +142,7 @@ export const useAuth = () => {
 
   return {
     usuario,
+    rolUsuario,
     registrarUsuario,
     // confirmOtp,
     iniciarSesion,

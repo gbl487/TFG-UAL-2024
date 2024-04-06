@@ -8,6 +8,7 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import Toast from '@components/core/Toast'
 import { setToast } from 'src/Controllers/context/toast_context'
 import { eliminarTarjeta, obtenerTarjetas } from 'src/Model/Tarjetas'
+import PanelHeader from '../PanelHeader'
 
 export default function AdminContent() {
   const [docs, setDocs] = useState([])
@@ -63,14 +64,16 @@ export default function AdminContent() {
 
   return (
     <>
-      <div className="p-4 md:ml-64 w-auto h-full flex flex-col">
-        <div className="flex justify-start my-5">
+      <div className="h-screen flex flex-col">
+        {/* Header */}
+        <PanelHeader />
+        <div className="flex justify-center mt-28">
           <Link to="/contenido/crear">
             <AsisegButton text={'Añadir contenido'} />
           </Link>
         </div>
         {!loading && docs.length !== 0 && (
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center mt-8">
             <section className="grid grid-cols-1 lg+:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-5">
               {docs.map((tarjeta, index) => {
                 var converter = new QuillDeltaToHtmlConverter(

@@ -10,19 +10,23 @@ import {
 } from 'firebase/firestore'
 import { auth, db } from './Firebase'
 import { getIdUsuarioFromNIF, getNIFUsuarioFromId } from './Usuario'
+import { añadirMensaje } from './Chats'
+import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
 
 export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
   const uid = auth.currentUser.uid
   const citaRef = collection(db, 'Citas')
   let result
   const idPaciente = await getIdUsuarioFromNIF({ nif: paciente })
+  const idCita = await crearIdUnicoCita()
   const nuevaData = {
+    idCita,
     medico: uid,
     paciente: idPaciente,
     fechaCita: fechaCita,
     horaCita: horaCita,
     mensaje: mensaje,
-    fecha_creacion: new Date(),
+    fechaCreacion: new Date(),
   }
   // Utiliza setDoc para agregar el nuevo documento
   await setDoc(doc(citaRef), nuevaData)
@@ -32,7 +36,47 @@ export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
     .catch(() => {
       result = 'ERROR'
     })
+  if (result === 'OK') {
+    console.log()
+    const fecha = fechaCita.toLocaleDateString('es-ES')
+    // Creamos el chat
+    const { resultadoChat } = await añadirMensaje({
+      idCita,
+      idPaciente,
+      fecha,
+      hora: horaCita,
+      mensaje,
+    })
+    console.log(resultadoChat)
+  }
   return { result }
+}
+
+export async function crearIdUnicoCita() {
+  let idCita
+  const arraysIds = await obtenerIdsCitas()
+  do {
+    let seccion1 = generarCodigo(6)
+    let seccion2 = generarCodigo(4)
+    let seccion3 = generarCodigo(4)
+    let seccion4 = generarCodigo(6)
+    idCita = `${seccion1}-${seccion2}-${seccion3}-${seccion4}`
+  } while (arraysIds.includes(idCita))
+  return idCita
+}
+
+export async function obtenerIdsCitas() {
+  try {
+    // Utiliza setDoc para agregar el nuevo documento
+    const querySnapshot = await getDocs(collection(db, 'Citas'))
+    const arrayCitas = []
+    querySnapshot.forEach((doc) => {
+      arrayCitas.push(doc.data().idCita)
+    })
+    return arrayCitas
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function getCitas() {
@@ -45,7 +89,6 @@ export async function getCitas() {
   await Promise.all(
     querySnapshot.docs.map(async (doc, index) => {
       if (!doc.data().cancelada) {
-        console.log(doc.data())
         const fechaCita = doc.data().fechaCita.toDate() // Convertir a objeto Date
         const horaCita = doc.data().horaCita
         const anio = fechaCita.getFullYear()
@@ -57,7 +100,7 @@ export async function getCitas() {
         const nif = await getNIFUsuarioFromId({ id: doc.data().paciente })
         const cita = {
           uid: doc.id,
-          id: index + 1, // Ajustar el índice aquí si lo necesitas
+          id: index + 1,
           title: nif,
           start: new Date(anio, mes, dia, horaInicio, minuto),
           end: new Date(anio, mes, dia, horaFin, minuto),

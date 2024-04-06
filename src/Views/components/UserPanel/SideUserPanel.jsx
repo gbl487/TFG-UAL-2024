@@ -9,7 +9,7 @@ export default function SideUserPanel() {
   return (
     <div className="bg-asiseg-blue">
       <button
-        className="mt-5 ml-5 "
+        className="mt-5 ml-5"
         onClick={() => {
           setSidebar({ value: true })
         }}
@@ -22,7 +22,7 @@ export default function SideUserPanel() {
         onHide={() => {
           setSidebar({ value: false })
         }}
-        header={Logo}
+        header={<Logo />}
       >
         <PanelContent />
       </Sidebar>

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './Home/HomePage.jsx'
-import MisDatos from './UserPanel/MisDatos.jsx'
+import MisDatos from './UserPanel/Mis datos/MisDatos.jsx'
 import AdminContent from './UserPanel/Contenido/AdminContent.jsx'
 import CrearTarjeta from './UserPanel/Contenido/CrearTarjeta.jsx'
 import ProtectedRoute from './core/ProtectedRoute.jsx'
@@ -10,7 +10,7 @@ import MisCitas from './UserPanel/Citas/MisCitas.jsx'
 import ModificarTarjeta from './UserPanel/Contenido/ModificarTarjeta.jsx'
 import Modificar from 'src/pages/contenido/modificar.astro'
 import Chat from './UserPanel/Chat/Chat.jsx'
-import UserHeader from './UserPanel/UserHeader.jsx'
+import UserHeader from './UserPanel/Header/UserHeader.jsx'
 
 export default function App() {
   return (
@@ -21,8 +21,6 @@ export default function App() {
           path="/misdatos"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <MisDatos />
             </>
           }
@@ -31,8 +29,6 @@ export default function App() {
           path="/citas"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <MisCitas />
             </>
           }
@@ -41,8 +37,6 @@ export default function App() {
           path="/contenido"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <AdminContent />
             </>
           }
@@ -51,8 +45,6 @@ export default function App() {
           path="/contenido/crear"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <CrearTarjeta />
             </>
           }
@@ -71,8 +63,6 @@ export default function App() {
           path="/contenido/modificar/:id"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <ModificarTarjeta />
             </>
           }
@@ -89,8 +79,6 @@ export default function App() {
           path="/claves"
           element={
             <>
-              <UserPanel />
-              <UserHeader />
               <KeyGenerator />
             </>
           }

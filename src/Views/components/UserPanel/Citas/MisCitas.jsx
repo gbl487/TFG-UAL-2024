@@ -20,6 +20,7 @@ import {
 import ModificarCita from './ModificarCita'
 import Toast from '@components/core/Toast'
 import { setToast } from 'src/Controllers/context/toast_context'
+import PanelHeader from '../PanelHeader'
 
 dayjs.locale('es')
 const localizer = dayjsLocalizer(dayjs)
@@ -77,19 +78,21 @@ export default function MisCitas() {
 
   return (
     <>
-      <div className="p-4 md:ml-64 w-auto h-screen">
+      <div className="h-screen flex flex-col">
+        {/* Header */}
+        <PanelHeader />
         {loading ? (
-          <div className="flex w-full h-full justify-center items-center">
+          <div className="flex w-full h-full justify-center items-center ">
             <AsisegLoader showLogo={false} />
           </div>
         ) : (
           <>
-            <div className="flex justify-start mb-5">
+            <div className="flex justify-center mb-5 mt-28">
               <button onClick={handleClick}>
                 <AsisegButton text={'Añadir cita'} />
               </button>
             </div>
-            <div className="h-[768px]">
+            <div className="h-[768px] mt-8 mx-2 md:mx-10">
               <Calendar
                 culture={'es'}
                 localizer={localizer}

@@ -91,12 +91,11 @@ export async function getAllNifs() {
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     pacientes.push(doc.data().nif)
-    console.log(doc.id, ' => ', doc.data().nif)
   })
   return pacientes
 }
 
-export async function getIdUsuario() {
+export function getIdUsuario() {
   return auth.currentUser.uid
 }
 
@@ -115,6 +114,24 @@ export async function getNIFUsuarioFromId({ id }) {
       // Accede a los datos del documento
       const documentData = documentSnapshot.data()
       return documentData.nif
+    } else {
+      console.log('El documento no existe')
+      return null
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getRol({ id }) {
+  try {
+    const docRef = await doc(db, 'Usuarios', id)
+    const documentSnapshot = await getDoc(docRef)
+
+    if (documentSnapshot.exists()) {
+      // Accede a los datos del documento
+      const documentData = documentSnapshot.data()
+      return documentData.rol
     } else {
       console.log('El documento no existe')
       return null

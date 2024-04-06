@@ -11,6 +11,7 @@ import { setToast } from 'src/Controllers/context/toast_context'
 import Toast from '../../core/Toast'
 import AsisegLoader from '../../Buttons/AsisegLoader'
 import { useNavigate } from 'react-router'
+import PanelHeader from '../PanelHeader'
 export default function CrearTarjeta() {
   const {
     register,
@@ -140,9 +141,12 @@ export default function CrearTarjeta() {
   }
   return (
     <>
-      <div className="p-10 md:ml-64 w-auto flex flex-col xl:flex-row justify-between gap-10">
-        <>
-          <div className="flex flex-col basis-2/3 justify-center md:justify-start gap-y-5">
+      <div className="h-screen flex flex-col">
+        {/* Header */}
+        <PanelHeader />
+
+        <div className="flex flex-col lg:flex-row px-10">
+          <div className="flex flex-col basis-2/3 justify-center md:justify-start gap-y-5 mt-28">
             <h1>
               Por favor, introduzca todos los valores de todos los siguientes
               campos:
@@ -157,7 +161,6 @@ export default function CrearTarjeta() {
                   id="titulo"
                   {...register('titulo', { required: true, minLength: 5 })}
                   placeholder="Cura..."
-                  // value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
                   className="input bg-asiseg-gray/10 input-bordered w-full max-w-md"
                 />
@@ -254,7 +257,7 @@ export default function CrearTarjeta() {
                   onTextChange={() =>
                     getHtml(quillRef.current.getQuill().editor.delta)
                   }
-                  className="max-w-4xl"
+                  className="max-w-full"
                   headerTemplate={cabecera}
                   style={{ height: '600px' }}
                 />
@@ -279,7 +282,7 @@ export default function CrearTarjeta() {
             </form>
           </div>
 
-          <div className="flex flex-col w-full basis-1/3 gap-y-5">
+          <div className="flex flex-col w-full basis-1/3 gap-y-5 lg:mt-28">
             <h1>Ejemplo</h1>
             <div className="flex justify-center">
               <InfoCard
@@ -291,8 +294,7 @@ export default function CrearTarjeta() {
               />
             </div>
           </div>
-        </>
-
+        </div>
         <Toast />
       </div>
     </>

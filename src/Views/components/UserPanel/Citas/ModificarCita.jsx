@@ -274,7 +274,6 @@ export default function ModificarCita({
                   text={modCita ? 'Volver a visualizar' : 'Modificar cita'}
                 />
               </button>
-
               {modCita && (
                 <>
                   <button
@@ -287,19 +286,19 @@ export default function ModificarCita({
                   >
                     <AsisegButton text="Enviar modificación" />
                   </button>
-                  <button
-                    id="cancelar_cita"
-                    className="mr-4"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setCancelar(true)
-                      showModal()
-                    }}
-                  >
-                    <AsisegButton tipo={'ERROR'} text="Cancelar cita" />
-                  </button>
                 </>
               )}
+              <button
+                id="cancelar_cita"
+                className="mr-4"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setCancelar(true)
+                  showModal()
+                }}
+              >
+                <AsisegButton tipo={'ERROR'} text="Cancelar cita" />
+              </button>
             </>
           )}
         </div>

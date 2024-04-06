@@ -6,6 +6,7 @@ import { deleteDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { setToast } from 'src/Controllers/context/toast_context'
 import { crearClave, getAllClaves, getClaveDoc } from 'src/Model/Claves'
+import PanelHeader from './PanelHeader'
 
 export default function KeyGenerator() {
   const [claves, setClaves] = useState([])
@@ -53,19 +54,21 @@ export default function KeyGenerator() {
     }
   }
   return (
-    <div className="p-5 md:p-10 md:ml-64 w-auto flex flex-col justify-center">
+    <div className="h-screen flex flex-col">
+      {/* Header */}
+      <PanelHeader />
       {loading ? (
         <div className="flex w-full flex-col h-screen justify-center content-center">
           <AsisegLoader showLogo={true} />
         </div>
       ) : (
-        <div className="flex flex-col overflow-x-auto">
+        <div className="flex flex-col overflow-x-auto mt-8 px-20">
           <div className="flex justify-center" onClick={handleClick}>
             <AsisegButton text={'Generar clave aleatoria'} />
           </div>
 
           {claves.length !== 0 ? (
-            <table className="table table-xs lg:table-lg">
+            <table className="table table-xs lg:table-lg mt-8">
               <thead>
                 <tr className="text-black ">
                   <th></th>

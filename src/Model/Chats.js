@@ -8,11 +8,7 @@ import {
   where,
 } from 'firebase/firestore'
 import { db } from './Firebase'
-import {
-  getIdUsuario,
-  getIdUsuarioFromNIF,
-  getNIFUsuarioFromId,
-} from './Usuario'
+import { getIdUsuario, getNIFUsuarioFromId } from './Usuario'
 
 export async function crearChat({ idPaciente }) {
   const chatRef = collection(db, 'Chats')
@@ -48,9 +44,9 @@ export async function comprobarChatExistente({ idPaciente }) {
   return querySnapshot.empty ? false : true
 }
 
-export async function añadirMensaje({ idPaciente, fecha, hora, mensaje }) {
+export async function añadirMensajeCita({ idPaciente, fecha, hora, mensaje }) {
   let resultadoChat
-  const emisor = await getIdUsuario()
+  const emisor = getIdUsuario()
   const mensajeChat = `Buenas, se ha planificado una cita programada para el día ${fecha} a las ${hora}. Se ha agreado el siguiente mensaje: ${mensaje}`
   const chatRef = collection(db, 'Chats')
   const nuevaData = {
@@ -70,17 +66,37 @@ export async function añadirMensaje({ idPaciente, fecha, hora, mensaje }) {
   return { resultadoChat }
 }
 
-export async function getChatPaciente({ paciente, nif }) {
-  const idPaciente = nif
-    ? await getIdUsuarioFromNIF({ nif: paciente })
-    : paciente
+export async function añadirMensaje({ idPaciente, mensaje }) {
+  let resultadoChat
+  const emisor = getIdUsuario()
+  const chatRef = collection(db, 'Chats')
+  const nuevaData = {
+    idPaciente,
+    fechaCreacion: new Date(),
+    mensaje,
+    emisor,
+  }
+  // Utiliza setDoc para agregar el nuevo documento
+  await setDoc(doc(chatRef), nuevaData)
+    .then(() => {
+      resultadoChat = 'OK'
+    })
+    .catch(() => {
+      resultadoChat = 'ERROR'
+    })
+  return { resultadoChat }
+}
+
+export async function getChatPaciente({ paciente }) {
   let mensajes = []
   const q = query(
     collection(db, 'Chats'),
-    where('idPaciente', '==', idPaciente),
-    orderBy('fechaCreacion')
+    where('idPaciente', '==', paciente),
+    orderBy('fechaCreacion', 'asc') // Ensure proper ordering here
   )
   const querySnapshot = await getDocs(q)
+  // const [chats, loading, error] = useCollectionData(q, { idField: 'id' })
+  // console.log(chats)
   await Promise.all(
     querySnapshot.docs.map(async (doc) => {
       const fechaObj = new Date(doc.data().fechaCreacion.seconds * 1000)
@@ -90,15 +106,16 @@ export async function getChatPaciente({ paciente, nif }) {
         minute: 'numeric',
       })
       const fechaMensaje = `${fecha} ${hora}`
-      const emisor = await getNIFUsuarioFromId({ id: doc.data().emisor })
+      const nombreEmisor = await getNIFUsuarioFromId({ id: doc.data().emisor })
       const mensaje = {
-        emisor,
+        emisor: doc.data().emisor,
         mensaje: doc.data().mensaje,
         fechaMensaje,
+        nombreEmisor,
       }
-
       mensajes.push(mensaje)
     })
   )
-  return { mensajes, idPaciente }
+  // Now mensajes array should be ordered correctly
+  return { mensajes }
 }

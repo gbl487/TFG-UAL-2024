@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 import { auth, db } from './Firebase'
 import { getIdUsuarioFromNIF, getNIFUsuarioFromId } from './Usuario'
-import { añadirMensaje } from './Chats'
+import { añadirMensajeCita } from './Chats'
 import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
 
 export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
@@ -40,7 +40,7 @@ export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
     console.log()
     const fecha = fechaCita.toLocaleDateString('es-ES')
     // Creamos el chat
-    const { resultadoChat } = await añadirMensaje({
+    const { resultadoChat } = await añadirMensajeCita({
       idCita,
       idPaciente,
       fecha,

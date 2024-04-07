@@ -17,38 +17,10 @@ export default function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route element={<ProtectedRoute />}>
-        <Route
-          path="/misdatos"
-          element={
-            <>
-              <MisDatos />
-            </>
-          }
-        />
-        <Route
-          path="/citas"
-          element={
-            <>
-              <MisCitas />
-            </>
-          }
-        />
-        <Route
-          path="/contenido"
-          element={
-            <>
-              <AdminContent />
-            </>
-          }
-        />
-        <Route
-          path="/contenido/crear"
-          element={
-            <>
-              <CrearTarjeta />
-            </>
-          }
-        />
+        <Route path="/misdatos" element={<MisDatos />} />
+        <Route path="/citas" element={<MisCitas />} />
+        <Route path="/contenido" element={<AdminContent />} />
+        <Route path="/contenido/crear" element={<CrearTarjeta />} />
         <Route
           path="/contenido/modificar"
           element={
@@ -59,30 +31,9 @@ export default function App() {
             </>
           }
         />
-        <Route
-          path="/contenido/modificar/:id"
-          element={
-            <>
-              <ModificarTarjeta />
-            </>
-          }
-        />
-        <Route
-          path="/chat"
-          element={
-            <>
-              <Chat />
-            </>
-          }
-        />
-        <Route
-          path="/claves"
-          element={
-            <>
-              <KeyGenerator />
-            </>
-          }
-        />
+        <Route path="/contenido/modificar/:id" element={<ModificarTarjeta />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/claves" element={<KeyGenerator />} />
       </Route>
     </Routes>
   )

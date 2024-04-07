@@ -14,6 +14,7 @@ export function PanelContent() {
   const handleLogout = () => {
     cerrarSesion()
     navigate('/')
+    setSidebar({ value: false })
   }
   const { rolUsuario } = useAuth()
   return (

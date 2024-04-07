@@ -91,6 +91,7 @@ export async function getAllNifs() {
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     pacientes.push(doc.data().nif)
+    // data().nif
   })
   return pacientes
 }

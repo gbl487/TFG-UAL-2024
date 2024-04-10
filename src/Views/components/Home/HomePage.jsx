@@ -13,7 +13,7 @@ export default function HomePage() {
         <SearchBar />
       </div>
 
-      <main className="body pt-40 h-screen">
+      <main className="body pt-40 pb-20">
         <ALlTarjetas />
       </main>
       <Toast />

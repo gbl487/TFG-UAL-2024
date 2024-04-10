@@ -62,7 +62,7 @@ export default function PasswordInput({ id, register, errors }) {
         {errorPassword && (
           <small className="text-red-400 text-xs">{errorPassword}</small>
         )}
-        {errorPassword && (
+        {/* {errorPassword && (
           <ul className="text-red-400 text-sm list-disc">
             <li className={`${errorMayus ? 'text-green-500' : ''}`}>
               Al menos una mayúscula
@@ -74,7 +74,7 @@ export default function PasswordInput({ id, register, errors }) {
               Al menos un carácter especial
             </li>
           </ul>
-        )}
+        )} */}
       </div>
     </div>
   )

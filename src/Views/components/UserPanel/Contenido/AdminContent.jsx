@@ -74,7 +74,7 @@ export default function AdminContent() {
         </div>
         {!loading && docs.length !== 0 && (
           <div className="w-full flex justify-center mt-8">
-            <section className="grid grid-cols-1 lg+:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-5">
+            <section className="grid grid-cols-1 md:grid-cols-2 lg+:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5">
               {docs.map((tarjeta, index) => {
                 var converter = new QuillDeltaToHtmlConverter(
                   tarjeta.contenido,

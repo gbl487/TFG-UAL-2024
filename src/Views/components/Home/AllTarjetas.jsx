@@ -28,7 +28,7 @@ export default function ALlTarjetas() {
   return (
     <>
       {!loading && tarjetas.length !== 0 && (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg+:grid-cols-3 xl:grid-cols-4 gap-5">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg+:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5">
           {tarjetas.map((tarjeta, index) => {
             var converter = new QuillDeltaToHtmlConverter(tarjeta.contenido, {})
             var contenido = converter.convert()

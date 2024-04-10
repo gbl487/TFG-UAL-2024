@@ -14,6 +14,10 @@ import { añadirMensaje } from 'src/Model/Chats'
 import { useAuth } from 'src/Controllers/context/userContext'
 import { AsisegButton } from '@components/Buttons/AddContentButton'
 import { useChat } from '@hooks/useChat'
+import { ROLES } from 'src/constants'
+import { setBusquedaPaciente } from 'src/Controllers/context/searchPacient_context'
+import { usePacientFilters } from '@hooks/usePacientFilters'
+import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
 export default function Chat() {
   const usuario = getIdUsuario()
   const { rolUsuario } = useAuth()
@@ -27,11 +31,12 @@ export default function Chat() {
   const [convMovil, setConvMovil] = useState(false)
   const [mensajeCreado, setMensajeCreado] = useState(false)
   const dummy = useRef()
+  const { getPacientesFiltrados } = usePacientFilters()
   const obtenerNifs = async () => {
     const pacientes = await getAllNifs()
     return pacientes
   }
-
+  const pacientesFiltrados = getPacientesFiltrados(pacientes)
   const { chats, loading } = useChat({ id: conversacion })
 
   useEffect(() => {
@@ -43,7 +48,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (chats || conversacion || mensajeCreado) {
-      if (chats && chats.length !== 0 && rolUsuario === 'USUARIO') {
+      if (chats && chats.length !== 0 && rolUsuario === ROLES.USUARIO) {
         chats.at(-1).emisor !== usuario
           ? setInputMensaje(true)
           : setInputMensaje(false)
@@ -54,11 +59,13 @@ export default function Chat() {
     }
   }, [conversacion, usuario, rolUsuario, mensajeCreado, chats])
 
-  const handleClick = useCallback(
+  const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault()
       if (!inputMensaje) return
-      const nuevoMensaje = document.getElementById('nuevo_mensaje').value
+      const nuevoMensajeInput = document.getElementById('nuevo_mensaje')
+      if (!nuevoMensajeInput) return // Verifica si el elemento existe
+      const nuevoMensaje = nuevoMensajeInput.value
       if (nuevoMensaje.length === 0) return
       const { resultadoChat } = await añadirMensaje({
         idPaciente: chats[0].idPaciente,
@@ -66,9 +73,12 @@ export default function Chat() {
       })
       if (resultadoChat === 'OK') {
         setMensajeCreado(true)
-        document.getElementById('nuevo_mensaje').value = ''
+        nuevoMensajeInput.value = ''
       }
-      dummy.current.scrollIntoView({ behavior: 'smooth' })
+      if (dummy.current) {
+        // Asegúrate de que dummy.current exista antes de usarlo
+        dummy.current.scrollIntoView({ behavior: 'smooth' })
+      }
     },
     [inputMensaje, chats]
   )
@@ -80,40 +90,62 @@ export default function Chat() {
       </header>
 
       {/* Contenedor principal */}
-      <div className="flex flex-1  overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
         {/* Lista de chats */}
-        {rolUsuario === 'MEDICO' && (desktop || convMovil || !conversacion) && (
-          <div className="w-full md:w-1/5 lg:w-1/6 border-r overflow-y-auto max-h-full">
-            {loadPacientes ? (
-              <div className="flex flex-1 h-full justify-center items-center">
-                <AsisegLoader showLogo={false} />
+        {rolUsuario === ROLES.MEDICO &&
+          (desktop || convMovil || !conversacion) && (
+            <div className="flex flex-col w-full bg-asiseg-blue/70 lg:w-1/5 xl:w-1/6 border-r min-w-fit max-h-full">
+              <div className="p-2 sticky">
+                <input
+                  id="busqueda_paciente"
+                  type="text"
+                  autoComplete="off"
+                  onChange={(e) => {
+                    e.preventDefault()
+                    setBusquedaPaciente({ value: e.target.value })
+                  }}
+                  className="asiseg_input h-10 ps-2 w-full rounded-md"
+                  placeholder="Buscar un chat"
+                />
               </div>
-            ) : (
-              <div className=" bg-asiseg-blue/70">
-                {pacientes.map((paciente, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="h-20 min-w-auto flex flex-row justify-center gap-x-2 items-center hover:border hover:rounded-lg  cursor-pointer"
-                      onClick={async () => {
-                        const idPaciente = await getIdUsuarioFromNIF({
-                          nif: paciente,
-                        })
-                        setConversacion(idPaciente)
-                        setConvMovil(false)
-                      }}
-                    >
-                      <p className="text-white font-semibold text-xl">
-                        {paciente}
-                      </p>
-                      <SeeChatIcon />
-                    </div>
-                  )
-                })}
+              <div className="min-w-fit overflow-y-auto max-h-full">
+                {loadPacientes ? (
+                  <div className="flex flex-1 h-full justify-center items-center">
+                    <AsisegLoader showLogo={false} />
+                  </div>
+                ) : (
+                  <div>
+                    {isEmptyArray(pacientesFiltrados) ? (
+                      <div className="h-20 min-w-auto flex flex-row justify-center gap-x-2 items-center">
+                        <p className="text-white font-semibold text-xl">
+                          No hay resultados
+                        </p>
+                      </div>
+                    ) : (
+                      pacientesFiltrados.map((paciente, index) => (
+                        <div
+                          key={index}
+                          className="h-20 min-w-auto flex flex-row justify-center gap-x-2 items-center hover:border hover:rounded-lg  cursor-pointer"
+                          onClick={async () => {
+                            const idPaciente = await getIdUsuarioFromNIF({
+                              nif: paciente,
+                            })
+                            setConversacion(idPaciente)
+                            setConvMovil(false)
+                          }}
+                        >
+                          <p className="text-white font-semibold text-xl">
+                            {paciente}
+                          </p>
+                          <SeeChatIcon />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
         {/* Conversación */}
         {loading && (
@@ -123,16 +155,15 @@ export default function Chat() {
         )}
 
         {chats && (
-          <div className="flex w-full justify-center pl-2">
-            <div className="flex flex-col antialiased ">
-              <div className="flex basis-[99%] items-start overflow-y-auto max-h-full mt-2 ">
-                <div className="flex flex-col w-full justify-center">
-                  {!convMovil && !desktop && rolUsuario !== 'USUARIO' && (
+          <div className="flex w-full antialiased justify-center">
+            <div className="flex flex-col w-full">
+              <div className="flex basis-[99%] items-start overflow-y-auto max-h-full">
+                <div className="flex flex-col w-full justify-center px-1 md:px-5">
+                  {!convMovil && !desktop && rolUsuario !== ROLES.USUARIO && (
                     <button
                       onClick={(e) => {
                         e.preventDefault()
                         setConvMovil(true)
-                        setConversacion()
                       }}
                       className="flex w-full h-20 justify-center items-center bg-white sticky z-10 top-0"
                     >
@@ -180,7 +211,10 @@ export default function Chat() {
                   <span ref={dummy}></span>
                 </div>
               </div>
-              <div className="flex basis-basis-[1%] mb-5 h-10 border-none rounded text-md flex-row">
+              <form
+                onSubmit={handleSubmit}
+                className="flex basis-basis-[1%] mb-5 h-10 border-none rounded text-md flex-row px-1 md:px-5"
+              >
                 <input
                   id="nuevo_mensaje"
                   type="text"
@@ -189,13 +223,10 @@ export default function Chat() {
                   className="asiseg_input h-10 ps-2 w-full rounded-md"
                   placeholder="Escribe un mensaje"
                 />
-                <button
-                  onClick={handleClick}
-                  className="ml-2 bg-asiseg-blue h-10 p-2 rounded-lg"
-                >
+                <button className="ml-2 bg-asiseg-blue h-10 p-2 rounded-lg">
                   <SendMessageIcon />
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         )}

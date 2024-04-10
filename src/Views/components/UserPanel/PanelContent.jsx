@@ -8,6 +8,7 @@ import {
 import { useAuth } from 'src/Controllers/context/userContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { setSidebar } from 'src/Controllers/context/sidebar_context'
+import { ROLES } from 'src/constants'
 export function PanelContent() {
   const { cerrarSesion } = useAuth()
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ export function PanelContent() {
             </div>
           </Link>
         </li>
-        {rolUsuario === 'MEDICO' && (
+        {rolUsuario === ROLES.MEDICO && (
           <>
             <li>
               <Link to="/citas" onClick={() => setSidebar({ value: false })}>

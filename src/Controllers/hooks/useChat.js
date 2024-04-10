@@ -9,8 +9,8 @@ export function useChat({ id }) {
       where('idPaciente', '==', id),
       orderBy('fechaCreacion', 'asc') // Ensure proper ordering here
     )
+  console.log(q)
   console.log(id)
   const [chats, loading, error] = useCollectionData(q, { idField: 'id' })
-  console.log(chats)
   return { chats, loading, error }
 }

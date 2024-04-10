@@ -14,7 +14,7 @@ export async function crearChat({ idPaciente }) {
   const chatRef = collection(db, 'Chats')
   let resultadoChat
   const chatExistente = await comprobarChatExistente({ idPaciente })
-  console.log(chatExistente)
+
   if (!chatExistente) {
     const nuevaData = {
       idPaciente: idPaciente,

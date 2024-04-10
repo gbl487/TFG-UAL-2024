@@ -3,7 +3,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
   query,
   setDoc,
   updateDoc,
@@ -15,7 +14,6 @@ import { generarCodigo } from 'src/Controllers/utils/generarCodigoAleatorio'
 export async function crearTarjeta({ titulo, imagen, categorias, contenido }) {
   let result = ''
   const { idTarjeta } = await crearIdUnicoTarjeta()
-  console.log(idTarjeta)
   const tarjetasRef = collection(db, 'Tarjetas')
   const nuevaData = {
     idTarjeta: idTarjeta,
@@ -51,7 +49,6 @@ export async function getAllTarjetasUids() {
 export async function crearIdUnicoTarjeta() {
   let idTarjeta
   const arraysIds = await obtenerIdsTarjetas()
-  console.log(arraysIds)
   do {
     let seccion1 = generarCodigo(6)
     let seccion2 = generarCodigo(4)
@@ -126,8 +123,7 @@ export async function getTarjetaFromId({ idTarjeta }) {
 export async function getUIdTarjeta({ idTarjeta }) {
   const tarjetaQuery = query(
     collection(db, 'Tarjetas'),
-    where('idTarjeta', '==', idTarjeta),
-    orderBy('fecha_actualizacion')
+    where('idTarjeta', '==', idTarjeta)
   )
   const querySnapshot = await getDocs(tarjetaQuery)
 

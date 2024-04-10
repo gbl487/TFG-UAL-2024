@@ -11,7 +11,6 @@ import { getTarjetaFromId, modificarTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
 import AsisegLoader from './../../Buttons/AsisegLoader'
 import { useNavigate, useParams } from 'react-router'
-import Toast from '@components/core/Toast'
 import checkDatosTarjeta from 'src/Controllers/utils/checkDatosTarjeta'
 import PanelHeader from '../PanelHeader'
 export default function ModificarTarjeta() {
@@ -31,6 +30,7 @@ export default function ModificarTarjeta() {
   const [errorTag, setErrorTag] = useState(false)
   const [desc, setDesc] = useState('')
   const [loading, setLoading] = useState(true)
+  const [loadingInput, setLoadingInput] = useState(false)
   const [loadingEditor, setLoadingEditor] = useState(true)
   const quillRef = useRef()
   const [tarjeta, setTarjeta] = useState()
@@ -168,9 +168,8 @@ export default function ModificarTarjeta() {
         datosOld,
         datosNew,
       })
-
       if (resultadoCheck === 'OK') {
-        setLoading(true)
+        setLoadingInput(true)
         const { result } = await modificarTarjeta({
           idTarjeta: id,
           titulo: titulo,
@@ -180,11 +179,15 @@ export default function ModificarTarjeta() {
         })
         if (result === 'OK') {
           setToast({ value: true, text: 'Contenido modificado correctamente' })
-          setLoading(false)
-          navigate('/contenido')
+          const timer = setTimeout(() => {
+            setLoadingInput(false)
+            navigate('/contenido')
+          }, 800)
+          timer
         }
       } else {
         setToast({ value: true, text: 'No se han detectado cambios' })
+        setLoadingInput(true)
       }
     }
   }
@@ -349,6 +352,7 @@ export default function ModificarTarjeta() {
                   <input
                     disabled={loadingEditor ? true : false}
                     type="submit"
+                    value={`${loadingInput ? 'Modificando...' : 'Modificar'}`}
                     className="btn btn-primary text-white opacity-65 transition-opacity p-4 rounded-md mb-4"
                   />
                 </div>
@@ -374,7 +378,6 @@ export default function ModificarTarjeta() {
                 </div>
               )}
             </div>
-            <Toast />
           </div>
         )}
       </div>

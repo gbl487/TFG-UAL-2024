@@ -3,7 +3,6 @@ import 'primereact/resources/themes/tailwind-light/theme.css'
 import { Calendar } from 'primereact/calendar'
 import 'primereact/resources/themes/tailwind-light/theme.css'
 import { addLocale } from 'primereact/api'
-import AsisegLoader from '@components/Buttons/AsisegLoader'
 import { setCitaModModal } from 'src/Controllers/context/cita_modal_context'
 import { cancelarCita, modificarCita } from 'src/Model/Citas'
 import { AsisegButton } from '@components/Buttons/AddContentButton'
@@ -18,7 +17,8 @@ export default function ModificarCita({
   const [errorHora, setErrorHora] = useState(false)
   const [mensaje, setMensaje] = useState('')
   const [errorMensaje, setErrorMensaje] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loadingMod, setLoadingMod] = useState(false)
+  const [loadingCanc, setLoadingCanc] = useState(false)
   const [modCita, setModCita] = useState(false)
   const [noChange, setNoChange] = useState(false)
   const [cancelar, setCancelar] = useState(false)
@@ -37,7 +37,6 @@ export default function ModificarCita({
 
   const handleFechaSelect = (e) => {
     const selectedDate = e.value
-    console.log(selectedDate)
     const hoy = new Date()
     // Verificar si la fecha seleccionada es mayor o igual a hoy
     setFecha(selectedDate)
@@ -50,7 +49,6 @@ export default function ModificarCita({
 
   const handleHoraChange = (e) => {
     const newHora = e.target.value
-    if (newHora === '') console.log('hora invalida')
     const hora = newHora.substring(0, 2)
     const minuto = newHora.substring(3, 5)
     setHora(`${hora}:${minuto}`)
@@ -148,14 +146,14 @@ export default function ModificarCita({
   const enviarModificacion = async (e) => {
     e.preventDefault()
     document.getElementById('my_modal').close()
-    setLoading(true)
+    setLoadingMod(true)
     const { result } = await modificarCita({
       cita,
       fechaCita: fecha,
       horaCita: hora,
       mensaje,
     })
-    setLoading(false)
+    setLoadingMod(false)
     setCitaModModal({ value: false })
     if (result === 'OK') {
       onCitaModificada()
@@ -167,10 +165,10 @@ export default function ModificarCita({
   }
 
   const handleCancelacion = async () => {
-    setLoading(true)
+    setLoadingCanc(true)
     const { result } = await cancelarCita({ id: cita.id })
     setCitaModModal({ value: false })
-    setLoading(true)
+    setLoadingCanc(false)
     if (result === 'OK') {
       onCitaCancelada()
     }
@@ -258,49 +256,48 @@ export default function ModificarCita({
           </small>
         )}
 
-        <div className={`flex ${loading ? 'justify-center' : 'justify-end'}`}>
-          {loading ? (
-            <AsisegLoader showLogo={false} />
-          ) : (
+        <div className="flex justify-end">
+          <button
+            id="mod_vis_cita"
+            className="mr-4"
+            onClick={() => {
+              setModCita(!modCita)
+            }}
+          >
+            <AsisegButton
+              text={modCita ? 'Volver a visualizar' : 'Modificar cita'}
+            />
+          </button>
+          {modCita && (
             <>
               <button
-                id="mod_vis_cita"
-                className="mr-4"
-                onClick={() => {
-                  setModCita(!modCita)
-                }}
-              >
-                <AsisegButton
-                  text={modCita ? 'Volver a visualizar' : 'Modificar cita'}
-                />
-              </button>
-              {modCita && (
-                <>
-                  <button
-                    id="modificar_cita"
-                    className="mr-4"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      consultarModificacion(e)
-                    }}
-                  >
-                    <AsisegButton text="Enviar modificación" />
-                  </button>
-                </>
-              )}
-              <button
-                id="cancelar_cita"
+                id="modificar_cita"
                 className="mr-4"
                 onClick={(e) => {
                   e.preventDefault()
-                  setCancelar(true)
-                  showModal()
+                  consultarModificacion(e)
                 }}
               >
-                <AsisegButton tipo={'ERROR'} text="Cancelar cita" />
+                <AsisegButton
+                  text={loadingMod ? 'Modificando' : 'Enviar modificación'}
+                />
               </button>
             </>
           )}
+          <button
+            id="cancelar_cita"
+            className="mr-4"
+            onClick={(e) => {
+              e.preventDefault()
+              setCancelar(true)
+              showModal()
+            }}
+          >
+            <AsisegButton
+              tipo={'ERROR'}
+              text={loadingCanc ? 'Cancelando' : 'Cancelar cita'}
+            />
+          </button>
         </div>
       </div>
       <dialog id="my_modal" className="modal">

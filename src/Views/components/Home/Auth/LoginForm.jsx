@@ -23,7 +23,6 @@ export default function LoginForm() {
   const onSubmit = async (data) => {
     if (!$validNIF) return
     setLoading(true)
-    console.log(data)
     const { usuarioValido, errorUsuario } = await iniciarSesion(
       data.dni_nie + '@asiseg.com',
       data.password,

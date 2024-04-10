@@ -32,7 +32,6 @@ export async function getNIFUsuario() {
       const documentData = documentSnapshot.data()
       return documentData.nif
     } else {
-      console.log('El documento no existe')
       return null
     }
   } catch (error) {
@@ -116,7 +115,6 @@ export async function getNIFUsuarioFromId({ id }) {
       const documentData = documentSnapshot.data()
       return documentData.nif
     } else {
-      console.log('El documento no existe')
       return null
     }
   } catch (error) {
@@ -134,7 +132,6 @@ export async function getRol({ id }) {
       const documentData = documentSnapshot.data()
       return documentData.rol
     } else {
-      console.log('El documento no existe')
       return null
     }
   } catch (error) {

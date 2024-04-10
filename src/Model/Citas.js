@@ -37,17 +37,15 @@ export async function crearCita({ paciente, fechaCita, horaCita, mensaje }) {
       result = 'ERROR'
     })
   if (result === 'OK') {
-    console.log()
     const fecha = fechaCita.toLocaleDateString('es-ES')
     // Creamos el chat
-    const { resultadoChat } = await añadirMensajeCita({
+    await añadirMensajeCita({
       idCita,
       idPaciente,
       fecha,
       hora: horaCita,
       mensaje,
     })
-    console.log(resultadoChat)
   }
   return { result }
 }

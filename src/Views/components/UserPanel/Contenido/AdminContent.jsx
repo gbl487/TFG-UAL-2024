@@ -13,13 +13,20 @@ import PanelHeader from '../PanelHeader'
 export default function AdminContent() {
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(true)
+  const [tarjetaEliminada, setTarjetaEliminada] = useState()
   const [idTarjeta, setIdTarjeta] = useState(null)
   useEffect(() => {
     obtenerTarjetas().then((result) => {
       setDocs(result)
       setLoading(false)
     })
-  }, [])
+    if (tarjetaEliminada) {
+      obtenerTarjetas().then((result) => {
+        setDocs(result)
+        setLoading(false)
+      })
+    }
+  }, [tarjetaEliminada])
 
   const Footer = ({ id, showCancelacion }) => {
     const modHref = `/contenido/modificar/${id}`
@@ -58,6 +65,7 @@ export default function AdminContent() {
     document.getElementById('my_modal').close()
     setLoading(false)
     if (result === 'OK') {
+      setTarjetaEliminada(true)
       setToast({ value: true, text: 'Contenido eliminado correctamente' })
     }
   }
@@ -74,7 +82,7 @@ export default function AdminContent() {
         </div>
         {!loading && docs.length !== 0 && (
           <div className="w-full flex justify-center mt-8">
-            <section className="grid grid-cols-1 md:grid-cols-2 lg+:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5">
+            <section className="grid grid-cols-1 md:grid-cols-2 lg+:grid-cols-3 2xl:grid-cols-4 gap-5 px-5">
               {docs.map((tarjeta, index) => {
                 var converter = new QuillDeltaToHtmlConverter(
                   tarjeta.contenido,

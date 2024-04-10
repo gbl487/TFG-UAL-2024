@@ -54,27 +54,20 @@ export default function ConfirmarOtp() {
   }, [captcha, $userData.telefono])
   const verifyOtp = async (e) => {
     e.preventDefault()
-    console.log(user)
-    console.log(otp)
-    console.log($userData.dni_nie)
     await registrarUsuario({
       confirmation: user,
       otp,
       dni_nie: $userData.dni_nie,
     })
-      .then((resultado) => {
-        console.log(resultado)
-        console.log(auth)
-      })
+      .then(() => {})
       .catch((error) => console.log(error))
 
     setModal({ value: false })
   }
 
-  const onVerificationCompleted = (response) => {
+  const onVerificationCompleted = () => {
     // Lógica adicional después de completar la verificación
     setIngresarOtp(true)
-    console.log('Verificación completada:', response)
   }
 
   return (

@@ -35,7 +35,7 @@ export const useAuth = () => {
 
   const registrarUsuario = async (username, password, remember) => {
     let email = username + '@asiseg.com'
-    console.log(email, password)
+
     let result
     const { uid_usuario, usuarioValido, errorUsuario } =
       await registrarUsuarioFirebase({
@@ -43,14 +43,12 @@ export const useAuth = () => {
         password: password,
         remember: remember,
       })
-    console.log(uid_usuario, usuarioValido, errorUsuario)
     if (usuarioValido) {
       const { result } = await crearUsuario({
         uid: uid_usuario,
         username: username,
         remember,
       })
-      console.log(result)
       return { result }
     } else {
       result = errorUsuario

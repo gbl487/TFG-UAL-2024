@@ -7,7 +7,6 @@ import 'primereact/resources/themes/tailwind-light/theme.css'
 import { addLocale } from 'primereact/api'
 import { crearCita } from 'src/Model/Citas'
 import { setCitaModal } from 'src/Controllers/context/cita_modal_context'
-import AsisegLoader from '@components/Buttons/AsisegLoader'
 export default function CrearCita({ onCitaCreada }) {
   const {
     register,
@@ -209,17 +208,13 @@ export default function CrearCita({ onCitaCreada }) {
           </span>
         </div>
 
-        <div className={`flex ${loading ? 'justify-center' : 'justify-end'}`}>
-          {loading ? (
-            <AsisegLoader showLogo={false} />
-          ) : (
-            <input
-              type="submit"
-              id="crear_cita"
-              value={'Crear'}
-              className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer"
-            />
-          )}
+        <div className="flex justify-center">
+          <input
+            id="crear_cita"
+            type="submit"
+            value={`${loading ? 'Creando cita...' : 'Crear'}`}
+            className=" text-white bg-asiseg-blue opacity-65 hover:opacity-100 transition-opacity p-2 rounded-md mb-4 cursor-pointer"
+          />
         </div>
       </form>
     </div>

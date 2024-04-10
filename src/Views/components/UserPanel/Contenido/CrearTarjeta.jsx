@@ -8,8 +8,6 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import isEmptyArray from 'src/Controllers/utils/isEmptyArray'
 import { crearTarjeta } from 'src/Model/Tarjetas'
 import { setToast } from 'src/Controllers/context/toast_context'
-import Toast from '../../core/Toast'
-import AsisegLoader from '../../Buttons/AsisegLoader'
 import { useNavigate } from 'react-router'
 import PanelHeader from '../PanelHeader'
 export default function CrearTarjeta() {
@@ -268,16 +266,11 @@ export default function CrearTarjeta() {
                 )}
               </div>
               <div className="flex flex-1 justify-center mt-10">
-                {loading ? (
-                  <div className="flex w-full justify-center items-center">
-                    <AsisegLoader showLogo={false} />
-                  </div>
-                ) : (
-                  <input
-                    type="submit"
-                    className="btn btn-primary text-white opacity-65 transition-opacity p-4 rounded-md mb-4"
-                  />
-                )}
+                <input
+                  type="submit"
+                  value={`${loading ? 'Creando...' : 'Crear'}`}
+                  className="btn btn-primary text-white opacity-65 transition-opacity p-4 rounded-md mb-4"
+                />
               </div>
             </form>
           </div>
@@ -295,7 +288,6 @@ export default function CrearTarjeta() {
             </div>
           </div>
         </div>
-        <Toast />
       </div>
     </>
   )
